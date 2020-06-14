@@ -7,14 +7,11 @@ CS-546 Final Project - NJ_rental_website
 ## Contributor
 
 * Hao Wang
-* Qianyi Zhang
-* Congmin Sui
-* Weijie Pan
 
 ## How to run code?
 #### download code
 ```
-  git clone https://github.com/jasperpwj/NJ_rental_website.git
+  git clone https://github.com/frank-wh/NJ_rental_website.git
 ```
 
 #### install dependencies
