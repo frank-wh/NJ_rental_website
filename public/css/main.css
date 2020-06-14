@@ -1,306 +1,436 @@
-img {
-    width: 10%;
+/* global */
+textarea {
+    resize: none;
+}
+.form-control::-webkit-input-placeholder {
+    color: #bbb;
+}
+
+/* header */
+.navbar {
+    background-color: #e3f2fd;
+}
+
+/* main */
+main { 
+    padding-top: 56px;
+}
+
+/* house index */ 
+#houseIndexMapDiv {
+    position: fixed;
+    top: 56px;
+    bottom: 0px;
+    right: 0px;
+    z-index: 2;
+}
+#houseIndexMap {
+    height: 100vh;
+    width: 40vw;
+}
+.infoWindow{
+    width: 170px;
+    height: auto;
+}
+.infoWindow img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+}
+
+#searchDiv {
+    position: fixed;
+    top: 56px;
+    width: 60vw;
+    height: 80px;
+    z-index: 1;
+    background-color: #fdfdfd;
+    padding: 10px;
+}
+
+#housesDiv {
+    width: 58vw;
+    padding: 10px;
+    padding-left: 20px;
+    margin-top: 90px;
+}
+
+#houselistempty {
+    margin-top: 30vh;
+    margin-bottom: 30vh;
+    text-align: center;
+    font-size: 1.5em;
+}
+
+.card-title {
+    font-size: 1.2em;
+    margin-top: 1vh;
+    text-transform: uppercase;
+}
+
+.card-block {
+    position: relative;
+    margin-top: 10px;
+    margin-right: 5px;
+}
+
+.card-text {
+    margin-top: 10px;
+    text-overflow: ellipsis; 
+    white-space: nowrap;
+    width: 380px;
+    overflow: hidden !important;
+}
+
+.houseindexcard {
+    margin-bottom: 3vh;
+    overflow: hidden;
+    border: none;
+    border-radius: .28571429rem;
+    box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5;
+}
+.houseindexcard:hover {
+    box-shadow: 0 3px 9px 0 #a4a4a5, 0 0 0 1px #a4a4a5;
+    transition: 0.3s linear;
+}
+
+.carousel {
+    width: 400px;
+    height: 250px;
+}
+.carousel img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+}
+
+#houseindextext {
+    word-break: break-all;
+}
+
+/* house single */
+.housesingleinfo {
+    font-size: 1.1em;
+    position: fixed;
+    margin-top: 5vh;
+    word-break: break-all;
+}
+
+#housesingleaddress {
+    font-size: 1.5rem;
+    word-wrap: break-word;
+    margin-bottom: 25px;
+}
+
+#housesingledelete {
+    display: inline;
+}
+
+.fa-heart {
+    font-size: 1.5em;
+}
+
+#storehouse {
+    color: #ff0000;
+}
+#removestore {
+    color: #ff0000;
+}
+
+.housesingleimgcomment {
+    font-size: 1.1em;
+    margin-top: 3vh;
+    margin-left: 24vw;
+}
+
+#houseCarousel {
+    width: 825px;
+    height: 500px;
+}
+#houseCarousel img {
+    width: 100%;
+    height: 500px;
+    object-fit: cover;
+}
+
+#makecommentform {
+    margin: 25px 0;
+}
+
+#comment {
+    display:flex;
+    flex-grow:1 
+}
+
+#commentDiv {
+    border: none;
+    padding: 15px;
+}
+
+/* house edit */
+#houseeditDiv {
+    margin: 40px auto;
+}
+
+.houseeditheader {
+    font-size: 1.5em;
+}
+
+#housesEditForm {
+    font-size: 1.1em;
+}
+
+.editPriceSpan {
+    display: flex;
+}
+
+#editPrice {
+    margin: 0px 3px;
+}
+
+#editFormError {
+    text-align: center;
+    font-size: 0.9em;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    color: #ff0000;
+}
+
+.item {
+    position: relative;
+    float: left;
+    overflow: hidden;
+    margin: 10px 1%;
+    min-width: 220px;
+    max-width: 310px;
+    width: 100%;
+    background: #34495e;
+    text-align: center;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+}
+.item * {
+    box-sizing: border-box;
+}
+.item img {
+    max-width: 100%;
+    vertical-align: top;
+    height: 210px;
+}
+.item form {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border-radius: 50%;
+    font-size: 34px;
+    color: #34495e;
+    width: 60px;
+    height: 60px;
+    line-height: 60px;
+    background: #ffffff;
+}
+.item a {
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    position: absolute;
+}
+.item:hover img {
+    opacity: 0.3;
+    filter: grayscale(100%);
+}
+.item * {
+    transition: all .35s ease-in-out;
+}
+.item form {
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform 300ms 0ms cubic-bezier(0.6, -0.28, 0.735, 0.045);
+}
+.item:hover form {
+    transform: translate(-50%, -50%) scale(1);
+    transition: transform 300ms 100ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.item form button {
+    border: none;
+    border-radius: 50%;
+    height: 50px;
+    background-color: #ffffff;
+    color: #34495e;
+}
+
+/* house new */
+#housenewDiv {
+    width: 560px;
+    margin: auto;
+}
+
+#housenewtitle {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    display: flex;
+    justify-content: center;
+}
+#housenewtitle h1 {
+    font-size: 1.3em;
+    margin-left: 10px;
+}
+
+#addrDiv #address {
+    width: 100%;
 }
 
 #houseNewMap {
     height: 500px;
-    width: 500px;
+    width: 530px;
 }
 
-/*JP new*/
-
-body {
-    font-family: "Times New Roman", Times, serif;
-
-
+.requiredfield {
+    margin: 0px 2px;
+    font-size: 1.2em;
+    color: #ff0000;
 }
 
-.link, .nav-link {
-    color: blue;
+#houseNewErrorDiv {
+    margin-top: 1vh;
+    color: #ff0000;
 }
 
-
-#nav-home {
-    list-style-type: none;
+/* user single */
+#usersingleDiv h1 {
+    font-size: 1.5rem;
+    background-color: #f0f0f0;
     margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #3c3c3c;
-
+    padding: 5px 20px;
+}
+#usersingleDiv .card {
+    background-color: #fcfcfc;
+    margin-bottom: 20px;
+    box-shadow: 0 0 3px rgba(0,0,0,0.1);
 }
 
-#nav-home li a {
-    color: white;
+.usersingleprofile {
+    margin-top: 5vh;
+    font-size: 1.1em;
+}
+.usersingleprofile .card h1 {
+    margin-bottom: 15px !important;
+}
+.usersingleprofile .card p {
+    margin-left: 20px;
+}
+
+.usersingleinfo {
+    margin-top: 5vh;
+    margin-bottom: 5vh;
+    font-size: 1.1em;
+}
+.usersingleinfo .card ul {
+    margin-top: 15px;
+    padding-right: 20px;
+    list-style: none;
+}
+
+.usersinglehouselist {
+    display: flex;
+}
+.usersinglehouselist span {
+    display: flex;
+    width: 0;
+    transition: 0.4s linear;
+    opacity: 0;
+}
+.usersinglehouselist a {
+    height: fit-content;
+}
+.usersinglehouselist:hover span {
+    width: 80px;
+    opacity: 1.0;
+}
+
+.usersinglestorelist {
+    display: flex;
+}
+.usersinglestorelist span {
+    width: 0;
+    transition: 0.4s linear;
+    opacity: 0;
+}
+.usersinglestorelist:hover span {
+    width: 40px;
+    opacity: 1.0;
+}
+
+.usersinglecomment {
+    display: flex;
+    justify-content: space-between;
+}
+.usersinglecomment div {
+    display: inherit;
+}
+
+.usersinglecommentDiv {
+    display: flex;
+    width: 0;
+    transition: 0.4s linear;
+    opacity: 0;
+}
+.usersinglecomment:hover span {
+    width: 80px;
+    opacity: 1.0;
+}
+.usersinglecommentDiv a {
+    height: fit-content;
+}
+
+/* user login */
+#userloginDiv {
+    width: 360px;
+    margin: 20vh auto;
+    font-size: 1.1em;
+}
+
+#userloginmessage {
+    font-size: 0.8em;
     text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
+    margin-top: 2vh;
 }
 
-#nav-home li a:hover{
-    background-color: #111;
+#loginError,
+#loginErrorList {
+    text-align: center;
+    font-size: 0.9em;
+    color: #ff0000;
 }
 
-#acc-info {
-
-    float: right;
-    top: 100px;
-
-    right: 10px;
+/* user new */
+#usernewDiv {
     width: 400px;
-
-
+    margin: 1vh auto;
 }
-#addrDiv, #judgeDiv, #nextDiv{
 
-    float: left;
+#userphoneDiv {
+    display: flex;
+}
+
+.phoneNumber3 {
     width: 50%;
 }
 
-#addrDiv textarea {
-    width: 100%;
-    height: 80px;
-    padding: 12px 20px;
-    box-sizing: border-box;
-    border: 2px solid #ccc;
-    border-radius: 4px;
-    background-color: #f8f8f8;
-    font-size: 20px;
-    resize: none;
+.userErrorDiv {
+    margin-top: 1vh;
+    font-size: 0.9em;
+    color: #ff0000;
 }
 
-
-#houseNewMap {
-
-    width: 40%;
-    float: right;
-
-
-}
-#map {
-    display: block;
-    float: right;
-    height: 1500px;
-    width: 43%;
-
+/* user edit */
+#usereditDiv {
+    width: 400px;
+    margin: 5vh auto;
 }
 
-/* Slideshow container */
-.slideshow-container {
-    width: 30%;
-    position: relative;
-    margin: auto;
-}
-
-/* Next & previous buttons */
-.prev, .next {
-    cursor: pointer;
-    position: absolute;
-    top: 50%;
-    width: auto;
-    padding: 16px;
-    margin-top: -22px;
-    color: white;
-    font-weight: bold;
-    font-size: 18px;
-    transition: 0.6s ease;
-    border-radius: 0 3px 3px 0;
-    user-select: none;
-}
-
-/* Position the "next button" to the right */
-.next {
-    right: 0;
-    border-radius: 3px 0 0 3px;
-}
-
-/* On hover, add a black background color with a little bit see-through */
-.prev:hover, .next:hover {
-    background-color: rgba(0,0,0,0.8);
-}
-
-
-/* On smaller screens, decrease text size */
-@media only screen and (max-width: 300px) {
-    .prev, .next,.text {font-size: 11px}
-}
-
-#house-info {
-    width: 100%;
-    /*border: 2px solid #ccc;*/
-
-}
-
-#add-comment, #house-comment {
-    margin-top: 35px;
-    width: 60%;
-    float: left;
-
-    /*background-color: yellow;*/
-}
-
-#house-comment {
-    border: 2px solid #ccc;
-
-}
-
-#user-name {
-    font-weight: bold;
-}
-
-.form-inline {
-
-    padding: 2px 10px 2px 0px;
-    /*margin: 5px 10px 5px 0px;*/
-}
-
-#sort-error {
-    width: 50%;
-    padding: 10px 5px 10px 10px;
-}
-
-#each-house {
-    width: 100%;
-}
-#index-img {
-    float: left;
-    width: 20%;
-
-    background-color: #555555;
-}
-
-#index-info {
-    float: right;
-    width: 40%;
-    background-color: yellow;
-}
-
-
-/* home page show houses*/
-#house-list {
-    float: left;
-    width: 55%;
-}
-
-.row {
-    margin: 8px -16px;
-    border: 2px solid #ccc;
-
-}
-
-/* Add padding BETWEEN each column */
-#index-row > #con-img,
-#index-row > #con-text {
-    padding: 4px;
-}
-
-/* Clear floats after rows */
-.row:after {
-    content: "";
-    display: table;
-    clear: both;
-}
-
-/* Content */
-.content {
-    background-color: white;
-    padding: 10px;
-
-}
-
-#con-img {
-    float: left;
-    width: 25%;
-}
-
-#con-img img {
-        object-fit: contain;
-        text-align: center;
-        width: auto;
-        height: auto;
-    max-height: 250px;
-    max-width: 400px;
-    padding-left: 30px;
-        margin: 10px auto 20px;
-}
-
-#con-text {
-    width: auto;
-    height: auto;
-    max-width: 400px;
-    max-height: 250px;
+/* error page*/
+.errorPage {
+    margin: 30vh;
+    font-size: 4em;
     text-align: center;
-    margin-left: 30%;
-    float: right;
-    font-size: medium;
-}
-
-/* Responsive layout - makes a two column-layout instead of four columns */
-@media screen and (max-width: 900px) {
-    .column {
-        width: 50%;
-    }
-}
-
-/* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
-@media screen and (max-width: 600px) {
-    .column {
-        width: 100%;
-    }
-}
-
-.infoWindow{
-    width: 100px;
-    height: auto;
-}
-
-.infoImg{
-    width: 100%;
-    height: auto;
-
-}
-
-#usersNewForm {
-    padding-left: 20%;
-    padding-right: 20%;
-    padding-bottom: 30px;
-}
-
-#usersEditForm {
-    padding-left: 20%;
-    padding-right: 20%;
-    padding-bottom: 30px;
-}
-
-/* Create four equal columns that floats next to each other */
-.img-col {
-    float: left;
-    width: 100%;
-    max-width: 400px;
-    padding-left: 30px;
-    height: 300px; /* Should be removed. Only for demonstration */
-}
-#img-col img {
-    width: 200px;
-    height: 200px;
-}
-#img-col #add-button {
-    padding-left: 50px;
-}
-
-/* Clear floats after the columns */
-#img-row:after {
-    content: "";
-    display: table;
-    clear: both;}
-
-#usersNewForm {
-    padding-left: 20%;
-    padding-right: 20%;
-    padding-bottom: 10%;
-}
-
-#usersEditForm {
-    padding-left: 20%;
-    padding-right: 20%;
-    padding-bottom: 10%;
 }
