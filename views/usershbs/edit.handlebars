@@ -1,65 +1,47 @@
-<nav class="navbar nav-tabs justify-content-end" id="nav-home">
-    <ul class="nav nav-tabs">
-        <li class="nav-item" id="nav-home">
-            <a class="nav-link" href="/houses">Home</a>
-        </li>
-        <li class="nav-item" id="nav-logout">
-            <a class="nav-link" href="/users/logout">Sign Out</a>
-        </li>
-        <li class="nav-item" id="nav-profile">
-            <a class="nav-link" href="/users/profile">Profile</a>
-        </li>
-    </ul>
-</nav>
-
-<article class="container-fluid">
-
-    <form action="/users/{{user._id}}" id="usersEditForm" method="POST">
+<article id="usereditDiv">
+    <form action="/users/{{user._id}}/edit" id="usersEditForm" method="POST">
         <input type="hidden" name="_method" value="PATCH" />
-        <div class="alert alert-info">
-            <strong>Note:</strong> Password Format: 1: only letters(a-zA-Z), numbers(0-9) and underscores(_);
-                2: 6-16 letters; 3: at least one uppercase letter (A-Z)
-        </div>
+        <input type="hidden" id="username" value="{{currentUser.name}}" />
 
         <div class="form-group">
-            <label for="pw">New Password: </label>
-            <input class="form-control" type="password" name="password" id="pw" placeholder="Password">
+            <label for="pw"><i class="fas fa-key mr-2"></i>New Password: </label>
+            <input type="password" class="form-control" id="pw" name="password" placeholder="e.g. John_Doe_123" maxlength="16"/>
+
+            <label for="pw2"><i class="fas fa-key mr-2"></i>Confirm Password: </label>
+            <input type="password" class="form-control" id="pw2" aria-describedby="usereditpwHelp" placeholder="Please Enter Again" maxlength="16"/>
+            <small id="usereditpwHelp" class="form-text text-muted">1. different from username; 2. only letters, numbers and underscores; 3. must contain 6-16 letters; 4. at least one uppercase letter</small>
         </div>
         <div class="form-group">
-            <label for="pw2">Confirm Password: </label>
-            <input class="form-control" type="password" id="pw2" placeholder="Confirm Password">
+            <label for="mail"><i class="fas fa-envelope-open-text mr-2"></i>New Email: </label>
+            <input type="email" class="form-control" name="email" id="mail" placeholder="username@example.com"/>
         </div>
+        <fieldset class="form-group">
+            <legend class="col-form-label"><i class="fas fa-phone-alt mr-2"></i>New Phone Number:</legend>
+            <div id="userphoneDiv">
+                <label for="phoneNum"><input type="hidden" name="phoneNumber" id="phoneNum" aria-describedby="usereditphonenumHelp"/></label>
 
-        <div class="form-group">
-            <label for="mail">Email: </label>
-            <input class="form-control" type="email" name="email" id="mail" placeholder="username@example.com">
-        </div>
-
-        <div class="alert alert-info">
-            <strong>Note:</strong> Phone number format: xxx-xxx-xxxx
-        </div>
-        <div class="form-group">
-            <label for="phoneNum">Phone Number: </label>
-            <input class="form-control" type="tel" name="phoneNumber" id="phoneNum" placeholder="e.g. 123-456-7890"
-                   pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}">
-        </div>
-
-        <div class="alert alert-danger" id="pwError" hidden></div>
-
-        <br>
+                <label for="phoneNumberPart1">(+1)</label>
+                <input id="phoneNumberPart1" class="phoneNumber phoneNumber3 form-control" type="text" maxlength="3" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
+                
+                <label for="phoneNumberPart2">-</label>
+                <input id="phoneNumberPart2" class="phoneNumber phoneNumber3 form-control" type="text" maxlength="3" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
+                
+                <label for="phoneNumberPart3">-</label>
+                <input id="phoneNumberPart3" class="phoneNumber form-control" type="text" maxlength="4" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
+            </div>
+            <small id="usereditphonenumHelp" class="form-text text-muted">Format: (+1) xxx-xxx-xxxx</small>
+        </fieldset>
         <div>
-            <button class="btn btn-dark" type="submit">Change your information</button>
-            <button class="btn btn-dark" type="reset">Clear Form</button>
-            <a class="btn btn-dark" href="/users/{{user._id}}">Go Back</a>
+            <button class="btn btn-success" type="submit"><i class="fas fa-edit"></i>Edit</button>
+            <button class="btn btn-warning" type="reset"><i class="fas fa-eraser mr-2"></i>Reset</button>
+            <a class="btn btn-primary" href="/users/{{user._id}}"><i class="fas fa-backspace mr-2"></i>Back to your own page</a>
         </div>
-        <br>
-        {{#if hasErrors}}
-        <div class="alert alert-danger alert-dismissible fade show">
-            <p>{{errors}}</p>
-        </div>
-        {{/if}}
     </form>
-
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-    <script src="/public/js/userseditform.js"></script>
+    <div class="userErrorDiv">
+        <div id="userEditEmptyError"></div>
+        <div id="pwError"></div>
+        <div id="mailError"></div>
+        <div id="phoneNumError"></div>
+        <div id="userEditFormError">{{#if hasErrors}}{{errors}}{{/if}}</div>
+    </div>
 </article>

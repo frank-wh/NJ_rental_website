@@ -1,111 +1,80 @@
-<nav class="navbar nav-tabs justify-content-end" id="nav-home">
-    <ul class="nav nav-tabs">
-        <li class="nav-item" id="nav-home">
-            <a class="nav-link" href="/houses">Home</a>
-        </li>
-        <li class="nav-item" id="nav-logout">
-            <a class="nav-link" href="/users/logout">Sign out</a>
-        </li>
-        <li class="nav-item" id="nav-profile">
-            <a class="nav-link" href="/users/profile">Profile</a>
-        </li>
+<article id="usersingleDiv">
+<div class="container">
+    <div class="row">
 
-    </ul>
-</nav>
+        <div class="col-lg-4 usersingleprofile">
+            <div class="card">
+                <h1 class="card-title"><i class="far fa-address-card mr-2"></i>Your Profile</h1>
+                <p><i class="fas fa-file-signature mr-2"></i>Username: {{user.username}}</p>
+                <p><i class="fas fa-envelope-open-text mr-2"></i>Email: {{user.email}}</p>
+                <p><i class="fas fa-phone-alt mr-2"></i>Phone: {{user.phoneNumber}}</p>
+                <p><i class="fas fa-user-edit mr-2"></i><a href="/users/{{user._id}}/edit">Edit profile</a></p>
+                <p><i class="fas fa-house-user mr-2"></i><a href="/users/{{user._id}}/newHouse">Post Your House</a></p>
+            </div>
+        </div>
 
-<article class="container-fluid">
-
-
-    <div class="col-sm-8" id="acc-info">
-        <h1>Your Information</h1>
-        <p>Username: {{ user.username }}</p>
-        <p>Email: {{ user.email }}</p>
-        <p>Phone: {{ user.phoneNumber }}</p>
-
-        <nav class="nav" id="nav-profile">
-            <ul class="nav nav-tabs">
-                <li class="nav-item" id="post-house">
-                    <a class="nav-link" href="/users/{{user._id}}/newHouse">Post House</a>
-                </li>
-                <li class="nav-item" id="edit-profile">
-                    <a class="nav-link" href="/users/{{user._id}}/edit">Edit profile</a>
-                </li>
-            </ul>
-        </nav>
-    </div>
-<!-- Nav bar-->
-    <div>
-        <ul class="nav nav-tabs" role="tablist">
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#your-house">Houses You Post</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#your-favorite">Your Favorite Houses</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#your-comments">Comments</a>
-            </li>
-        </ul>
-    </div>
-<!--Tab panes-->
-    <div class="tab-content">
-        <div id="your-house" class="container tab-pane active">
-            {{#if user.houseLists.length}}
+        <div class="col-lg-8 usersingleinfo">
+            <div class="card">
+                <h1 class="card-title"><i class="fas fa-house-user mr-2"></i>Posted Houses</h1>
+                {{#if user.houseLists.length}}
                 <ul>
                     {{#each user.houseLists}}
-                        <div>
-                            <p><a class="link" href="/houses/{{this._id}}">house information: {{this.houseInfo}}</a></p>
-                        </div>
-                        <div>
-                            <a class="link" href="/houses/{{this._id}}/edit">Edit house data</a>
-                        </div>
-                        <div>
-                            <form action="/houses/{{this._id}}" method="POST">
-                                <input type="hidden" name="_method" value="DELETE" />
-                                <button type="submit" class="btn btn-dark">Delete this house</button>
+                    <li class="usersinglehouselist">
+                        <span>
+                            <form action="/houses/{{this._id}}">
+                                <button class="btn btn-sm btn-danger" type="submit"><i class="far fa-trash-alt"></i></button>
                             </form>
-                        </div>
+                            <a class="btn btn-sm btn-warning" href="/houses/{{this._id}}/edit"><i class="fas fa-edit"></i></a>
+                        </span>
+                        <a href="/houses/{{this._id}}">{{this.address}}</a>
+                    </li>
                     {{/each}}
                 </ul>
-            {{/if}}
-
-        </div>
-
-        <div id="your-favorite" class="container tab-pane fade">
-            {{#if user.storedHouses.length}}
+                {{/if}}
+            </div>
+            <div class="card">
+                <h1 class="card-title"><i class="fas fa-list mr-2"></i>Store List</h1>
+                {{#if user.storedHouses.length}}
                 <ul>
                     {{#each user.storedHouses}}
-                        <div>
-                            <p>View this <a class="link" href="/houses/{{this._id}}">HOUSE</a></p>
-                            <p>{{this.houseInfo}}</p>
-                            <a href="/users/removestorehouse/{{this._id}}" class="btn btn-dark">Remove</a>
-                        </div>
+                    <li class="usersinglestorelist">
+                        <span>
+                            <form action="/users/removestorehouse/{{this._id}}">
+                                <button class="btn btn-sm btn-danger" type="submit"><i class="far fa-trash-alt"></i></button>
+                            </form>
+                        </span>
+                        <a href="/houses/{{this._id}}">{{this.address}}</a>
+                    </li>
                     {{/each}}
                 </ul>
-            {{/if}}
-        </div>
-
-        <div id="your-comments" class="container tab-pane fade">
-            {{#if user.comments.length}}
+                {{/if}}
+            </div>
+            <div class="card">
+                <h1 class="card-title"><i class="far fa-comment-dots mr-2"></i>Comments</h1>
+                {{#if user.comments.length}}
                 <ul>
                     {{#each user.comments}}
-                        <div>
-                            <p>{{this.text}}</p>
-                            <address>House information: {{this.houseInfo}}</address>
-                            <address>Date: {{this.commentDate}}</address>
+                    <li>
+                        <a href="/houses/{{this.houseId}}">{{this.text}}</a>
+                        <div class="usersinglecomment">
+                            <div>
+                                <span class="usersinglecommentDiv">
+                                    <form action="/comments/{{this._id}}">
+                                        <button class="btn btn-sm btn-danger" type="submit"><i class="far fa-trash-alt"></i></button>
+                                    </form>
+                                    <a class="btn btn-sm btn-primary" href="/houses/{{this.houseId}}"><i class="fas fa-external-link-square-alt"></i></a>
+                                </span>
+                                <address>{{this.address}}</address>
+                            </div>
+                            <address>{{this.commentDate}}</address>
                         </div>
-                        <div>
-                            <form action="/comments/{{this._id}}" method="POST">
-                                <input type="hidden" name="_method" value="DELETE" />
-                                <button type="submit" class="btn btn-dark">Delete the comment</button>
-                            </form>
-                        </div>
+                    </li>
                     {{/each}}
                 </ul>
-            {{/if}}
+                {{/if}}
+            </div>
         </div>
+
     </div>
-
-
-    <script src="/public/js/usersprofile.js"></script>
+</div>
 </article>

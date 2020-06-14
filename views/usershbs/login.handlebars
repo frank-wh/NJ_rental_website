@@ -1,57 +1,26 @@
-<nav class="navbar nav-tabs justify-content-end" id="nav-home">
-    <ul class="nav nav-tabs">
-        <li class="nav-item" id="nav-home">
-            <a class="nav-link" href="/houses">Home</a>
-        </li>
-        <li class="nav-item" id="nav-login">
-            <a class="nav-link" href="/users/login">Sign In</a>
-        </li>
-        <li class="nav-item" id="nav-new">
-            <a class="nav-link" href="/users/new">Sign Up</a>
-        </li>
-
-
-    </ul>
-</nav>
-
-
-<div class="container-fluid" id="div-login">
+<article id="userloginDiv">
     <form action="/users/login" id="usersLoginForm" method="POST">
         <div class="form-group">
-            <label for="name">Username: </label>
-            <input type="text" class="form-control" id="name" placeholder="Username" name="username" required>
-            <div class="invalid-feedback">Please fill out this filed</div>
+            <label for="name" class="form-label"><i class="fas fa-file-signature mr-2"></i>Username: </label>
+            <input class="form-control" type="text" name="username" id="name" placeholder="Username" maxlength="16" />
         </div>
         <div class="form-group">
-            <label for="pword">Password: </label>
-            <input type="password"  class="form-control" id="pword" placeholder="Password" name="password" required>
-            <div class="invalid-feedback">Please fill out this filed</div>
+            <label for="pword" class="form-label"><i class="fas fa-key mr-2"></i>Password: </label>
+            <input class="form-control" type="password" name="password" id="pword" placeholder="Password" maxlength="16" />
         </div>
-        
-        <button class="btn btn-dark" type="submit">
-            <span class="spinner-border spinner-border-sm" id="spinner" hidden></span>
-            Login</button>
-
-
-        <div id="loginError" hidden></div>
+        <div>
+            <button class="btn btn-lg btn-success btn-block" type="submit"><i class="fas fa-sign-in-alt mr-2"></i>Login</button>
+        </div>
     </form>
-    <br>
-
-    {{#if hasErrors}}
-        <ul class="alert alert-danger alert-dismissible fade show">
-            {{#each error}}
-                <li>
-                    {{this}}
-                </li>
-            {{/each}}
-        </ul>
-    {{/if}}
-
-
-
-
+    <div id="userloginmessage"><p>Not registered? <a href="/users/new">Create an account!</a></p></div>
     <div>
-        <p>Haven't got an account? <a class="link" href="/users/new">Create a new one!</a></p>
+        <div id="loginError"></div>
+        <div id="loginErrorList">
+        {{#if hasErrors}}
+            {{#each error}}
+            <div>{{this}}</div>
+            {{/each}}
+        {{/if}}
+        </div>
     </div>
-    <script src="/public/js/usersloginform.js"></script>
-</div>
+</article>
