@@ -12,6 +12,7 @@ module.exports = {
 
     async getUserById(id) {
         if (!id) throw '(USER) You must provide user id';
+
         const userCollection = await users();
         if(typeof id === 'string'){
             id = ObjectId.createFromHexString(id);
@@ -23,6 +24,7 @@ module.exports = {
 
     async getUserByName(name) {
         if (!name || typeof name !== 'string') throw '(USER) You must provide name';
+
         const userCollection = await users();
         const user = await userCollection.findOne({username: name});
         if (!user) throw 'User not found';
@@ -34,6 +36,7 @@ module.exports = {
         if (!email || typeof email !== 'string') throw '(USER) You must provide email';
         if (!phoneNumber || typeof phoneNumber !== 'string') throw '(USER) You must provide phoneNumber';
         if (!password || typeof password !== 'string') throw '(USER) You must provide password';
+
         const userCollection = await users();
         const newUser = {
             username: username,
@@ -52,38 +55,36 @@ module.exports = {
     async updateUser(id, newUser){
         if (!id) throw '(USER) You must provide user id';
         if (!newUser || typeof(newUser) !== 'object') throw '(USER) You must provide new user';
-        const userCollection = await users();
-        let oldUser = null;
-        try{
-            oldUser = await this.getUserById(id);
-        }catch (e){
-            console.log(e);
-            return;
-        }
-        if (newUser.email) oldUser.email = newUser.email;
-        if (newUser.phoneNumber) oldUser.phoneNumber = newUser.phoneNumber;
-        if (newUser.password) oldUser.password = newUser.password;
 
-        const updatedInfo = await userCollection.updateOne({_id: ObjectId.createFromHexString(id)}, {$set: oldUser});
+        const userCollection = await users();
+        let user = await this.getUserById(id);
+
+        if (newUser.email) user.email = newUser.email;
+        if (newUser.phoneNumber) user.phoneNumber = newUser.phoneNumber;
+        if (newUser.password) user.password = newUser.password;
+
+        const updatedInfo = await userCollection.updateOne({_id: ObjectId.createFromHexString(id)}, {$set: user});
         if (!updatedInfo.matchedCount && !updatedInfo.modifiedCount) throw 'user update failed';
         return await this.getUserById(id);
     },
     
     async removeUser(id){
-        if (!id) throw '(USER) You must provide id';
+        if (!id) throw 'You must provide an id to search for';
+
         const userCollection = await users();
         if(typeof id === 'string'){
-          id = ObjectId.createFromHexString(id);
+            id = ObjectId.createFromHexString(id);
         }
         const deletionInfo = await userCollection.deleteOne({_id: id});
         if (deletionInfo.deletedCount === 0) throw `Could not delete user with id of ${id}`;
         return true;
     },
     
-    async addHouseToUser(userId, houseId, houseInfo){
+    async addHouseToUser(userId, houseId, address){
         if (!userId) throw '(USER) You must provide user id';
         if (!houseId) throw '(USER) You must provide house id';
-        if (!houseInfo || typeof houseInfo !== 'string') throw '(USER) You must provide house info';
+        if (!address || typeof address !== 'string') throw '(USER) You must provide house address';
+
         const userCollection = await users();
         if(typeof userId === 'string'){
             userId = ObjectId.createFromHexString(userId);
@@ -93,7 +94,7 @@ module.exports = {
             {$addToSet: {
                 houseLists: {
                     _id: houseId, 
-                    houseInfo: houseInfo,
+                    address: address,
                 }}
             }
         );
@@ -104,28 +105,27 @@ module.exports = {
     async removeHouseFromUser(userId, houseId){
         if (!userId) throw '(USER) You must provide user id';
         if (!houseId) throw '(USER) You must provide house id';
+
         const userCollection = await users();
         if(typeof userId === 'string'){
             userId = ObjectId.createFromHexString(userId);
         }
         const updateInfo = await userCollection.updateOne(
             {_id: userId}, 
-            {$pull: {
-                houseLists: {
-                    _id: houseId
-                }}
-            }
+            {$pull: {houseLists: {_id: houseId}}}
         );
         if (!updateInfo.matchedCount && !updateInfo.modifiedCount) throw 'House deleted from user failed';
         return await this.getUserById(userId);
     },
 
-    async addCommentToUser(userId, commentId, houseInfo, commentDate, text) {
+    async addCommentToUser(userId, commentId, houseId, address, commentDate, text) {
         if (!userId) throw '(USER) You must provide user id';
         if (!commentId) throw '(USER) You must provide comment id';
-        if (!houseInfo || typeof houseInfo !== 'string') throw '(USER) You must provide house info';
+        if (!houseId) throw '(USER) You must provide house id';
+        if (!address || typeof address !== 'string') throw '(USER) You must provide house address';
         if (!commentDate || typeof commentDate !== 'string') throw '(USER) You must provide comment date';
         if (!text || typeof text !== 'string') throw '(USER) You must provide text';
+
         const userCollection = await users();
         if(typeof userId === 'string'){
             userId = ObjectId.createFromHexString(userId);
@@ -134,8 +134,9 @@ module.exports = {
             {_id: userId},
             {$addToSet: {
                 comments: {
-                    _id: commentId, 
-                    houseInfo: houseInfo,
+                    _id: commentId,
+                    houseId: houseId,
+                    address: address,
                     commentDate: commentDate, 
                     text: text
                 }}
@@ -148,26 +149,24 @@ module.exports = {
     async removeCommentFromUser(userId, commentId){
         if (!userId) throw '(USER) You must provide user id';
         if (!commentId) throw '(USER) You must provide comment id';
+
         const userCollection = await users();
         if(typeof userId === 'string'){
             userId = ObjectId.createFromHexString(userId);
         }
         const updateInfo = await userCollection.updateOne(
             {_id: userId}, 
-            {$pull: {
-                comments: {
-                    _id: commentId
-                }}
-            }
+            {$pull: {comments: {_id: commentId}}}
         );
         if (!updateInfo.matchedCount && !updateInfo.modifiedCount) throw 'Failed to delete comment from user';
         return await this.getUserById(userId);
     },
 
-    async userStoreHouse(userId, houseId, houseInfo) {
+    async userStoreHouse(userId, houseId, address) {
         if (!userId) throw '(USER) You must provide user id';
         if (!houseId) throw '(USER) You must provide house id';
-        if (!houseInfo || typeof houseInfo !== 'string') throw '(USER) You must provide house info';
+        if (!address || typeof address !== 'string') throw '(USER) You must provide house address';
+
         const userCollection = await users();
         if(typeof userId === 'string'){
             userId = ObjectId.createFromHexString(userId);
@@ -177,7 +176,7 @@ module.exports = {
             {$addToSet: {
                 storedHouses: {
                     _id: houseId, 
-                    houseInfo: houseInfo
+                    address: address
                 }}
             }
         );
@@ -188,17 +187,14 @@ module.exports = {
     async userRemoveStoredHouse(userId, houseId){
         if (!userId) throw '(USER) You must provide user id';
         if (!houseId) throw '(USER) You must provide house id';
+
         const userCollection = await users();
         if(typeof userId === 'string'){
             userId = ObjectId.createFromHexString(userId);
         }
         const updateInfo = await userCollection.updateOne(
             {_id: userId}, 
-            {$pull: {
-                storedHouses: {
-                    _id: houseId
-                }}
-            }
+            {$pull: {storedHouses: {_id: houseId}}}
         );
         if (!updateInfo.matchedCount && !updateInfo.modifiedCount) throw 'USER Failed (remove stored house)';
         return await this.getUserById(userId);

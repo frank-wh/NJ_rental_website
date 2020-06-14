@@ -14,6 +14,7 @@ module.exports = {
 
     async getCommentById(id) {
         if (!id) throw '(COMMENT) You must provide comment id';
+
         const commentCollection = await comments();
         if(typeof id === 'string'){
             id = ObjectId.createFromHexString(id);
@@ -27,6 +28,7 @@ module.exports = {
         if (!userId) throw '(COMMENT) You must provide user id';
         if (!houseId) throw '(COMMENT) You must provide house id';
         if (!text || typeof text !== 'string') throw '(COMMENT) You must provide text';
+
         const commentCollection = await comments();
         const user = await users.getUserById(userId);
         const house = await houses.getHouseById(houseId);
@@ -37,7 +39,7 @@ module.exports = {
         if(month < 10){
             month = "0" + month;
         }
-        else if(day < 10){
+        if(day < 10){
             day = "0" + day;
         }
         const date = d.getFullYear() + "-" + month + "-" + day;
@@ -49,20 +51,21 @@ module.exports = {
             },
             house: {
                 _id: houseId,
-                houseInfo: `${house.houseInfo}`
+                address: `${house.address}`
             },
             commentDate: date,
             text: text
         };
         const insertInfo = await commentCollection.insertOne(newComment);
         const id = insertInfo.insertedId + "";
-        await users.addCommentToUser(userId, id, house.houseInfo, date, text);
-        await houses.addCommentToHouse(houseId, id, user.username, date, text);
+        await users.addCommentToUser(userId, id, houseId, house.address, date, text);
+        await houses.addCommentToHouse(houseId, id, userId, user.username, date, text);
         return await this.getCommentById(insertInfo.insertedId);
     },
 
     async removeComment(id) {
         if (!id) throw '(COMMENT) You must provide comment id';
+        
         const commentCollection = await comments();
         const comment = await this.getCommentById(id);
         await users.removeCommentFromUser(comment.user._id, id);
