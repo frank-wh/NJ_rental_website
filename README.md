@@ -1,8 +1,6 @@
 ## Project
 
-CS-546 Final Project - NJ_rental_website
-
-![Y0Z4Ig.png](https://s1.ax1x.com/2020/05/14/Y0Z4Ig.png)
+CS-546 Final Project - NJ_rental_website. I fork my group project and have done the rest of the things which my teammates did in this course. So this is my individual project, from front end to back end.
 
 ## Contributor
 
@@ -29,6 +27,11 @@ the dependencies we need:
   "mongodb",
   "multer",
   "multer-gridfs-storage"
+```
+
+#### run seed.js to generate some users and rental houses
+```
+  node .\tasks\seed.js
 ```
 
 #### run code
