@@ -1,0 +1,11 @@
+<div class="row">
+    <div class="col-md-12">
+        <i class="fas fa-user mr-2"></i><strong>{{this.username}}</strong> {{#ifCond ../currentUser.id this.userId}}(me){{/ifCond}}
+        <span class="float-right"><i class="fas fa-calendar-day mr-2"></i>{{this.commentDate}}</span>
+        <p>{{this.text}}</p>
+
+        <form action="/comments/{{this.id}}" class="userRemoveComment" method="POST">
+            <button class="btn btn-sm btn-danger" type="submit"><i class="fas fa-trash-alt mr-2"></i>Delete</button>
+        </form>
+    </div>
+</div>
