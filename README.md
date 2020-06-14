@@ -29,11 +29,9 @@ the dependencies we need:
   "express-handlebars",
   "express-session",
   "gridfs-stream",
-  "handlebars",
   "mongodb",
   "multer",
-  "multer-gridfs-storage",
-  "xss"
+  "multer-gridfs-storage"
 ```
 
 #### run code
@@ -48,4 +46,4 @@ Here are test users and houses information in the following path, you can use th
 ```
 
 ## Github link
-https://github.com/jasperpwj/NJ_rental_website.git
+https://github.com/frank-wh/NJ_rental_website.git
