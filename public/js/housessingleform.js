@@ -1,61 +1,101 @@
-let form = document.getElementById('housesSingleForm');
-let comment = document.getElementById('comment');
-
-let slideNum = 1;
-
-
-let login = document.getElementById('nav-login');
-let logout = document.getElementById('nav-logout');
-let signUp = document.getElementById('nav-new');
-let profile = document.getElementById('nav-profile');
-let usrs = $('#usrs').text();
-
-if(usrs === 'true') {
-    login.hidden = true;
-    signUp.hidden = true;
-    logout.hidden = false;
-    profile.hidden = false;
-
-} else {
-    login.hidden = false;
-    signUp.hidden = false;
-    logout.hidden = true;
-    profile.hidden = true;
-}
-
-showSlides(slideNum);
-
-function nextSlides(n) {
-    showSlides( slideNum += n);
-}
-
-function currentSlide(n) {
-    showSlides(slideNum = n);
-
-}
-function showSlides (n){
-    let i;
-    let slides = document.getElementsByClassName("mySlides");
-    if (n > slides.length) {slideNum = 1}
-    if (n < 1) {slideNum = slides.length}
-    for (i = 0; i < slides.length; i++) {
-        slides[i].style.display = "none";
+(function ($) {
+    function bindEvents() {
+        $('#storeDiv').find('a').on('click' ,function(event) {
+            event.preventDefault();
+            $.ajax({
+                url: $(this).attr('href'),
+                type: 'POST',
+                success: function(res) {
+                    $('#storeDiv').empty();
+                    $('#storeDiv').append($(res));
+                    bindEvents();
+                }
+            });
+        });
     }
-    slides[slideNum-1].style.display = "block";
-}
 
-// if(form){
-//     form.addEventListener('submit', (event) => {
-//         event.preventDefault();
-//         if(comment.value){
-//             form.submit();
-//         }
-//     });
-// }
+    $('#storehouse').on('click', function(event) {
+        event.preventDefault();
+        if($('#currentUser').html() === undefined){
+            return alert("please sign in first");
+        }
+        $.ajax({
+            url: $(this).attr('href'),
+            type: 'POST',
+            success: function(res) {
+                $('#storeDiv').empty();
+                $('#storeDiv').append($(res));
+                bindEvents();
+            }
+        });
+    });
 
-// $('#housesSingleForm').submit((event) => {
-//     event.preventDefault();
-//     if($('#comment').val()){
-//         $('#housesSingleForm').submit();
-//     }
-// })
+    $('#removestore').on('click', function(event) {
+        event.preventDefault();
+        if($('#currentUser').html() === undefined){
+            return alert("please sign in first");
+        }
+        $.ajax({
+            url: $(this).attr('href'),
+            type: 'POST',
+            success: function(res) {
+                $('#storeDiv').empty();
+                $('#storeDiv').append($(res));
+                bindEvents();
+            }
+        });
+    });
+
+    $('#commentSubmit').on('click', function(event) {
+        event.preventDefault();
+        if($('#currentUser').html() === undefined){
+            return alert("please sign in first");
+        }
+        const text = $('#comment').val();
+        $('#comment').val("");
+        if(text){
+            $.ajax({
+                url: $('#commentForm').attr('action'),
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    houseId: $('#houseId').val(),
+                    text: text
+                })
+            })
+            .then(function (res) {
+                $('#commentDiv').append($(res));
+                $('#commentDiv').children().last().find('.userRemoveComment').submit(function(event) {
+                    event.preventDefault();
+                    $(this).addClass('toRemove');
+                    $.ajax({
+                        url: $(this).attr('action'),
+                        type: 'DELETE',
+                        success: function(res) {
+                            $('.toRemove').closest('.row').fadeOut(500, function() {
+                                $(this).remove();
+                            });
+                        }
+                    });
+                });
+            });
+        }
+        else {
+            alert("please enter something to make a comment");
+        }
+    });
+    
+    $('.userRemoveComment').submit(function(event) {
+        event.preventDefault();
+        $(this).addClass('toRemove');
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'DELETE',
+            success: function(res) {
+                $('.toRemove').closest('.row').fadeOut(500, function() {
+                    $(this).remove();
+                });
+            }
+        });
+    });
+})(window.jQuery);

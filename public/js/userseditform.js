@@ -1,51 +1,89 @@
-let userEditForm = document.getElementById("usersEditForm");
-let password = document.getElementById("pw");
-let password2 = document.getElementById("pw2");
-let passwordError = document.getElementById("pwError");
-let email = document.getElementById("mail");
-let phoneNumber = document.getElementById("phoneNum");
+$(".phoneNumber").keyup(function () {
+    if (this.value.length == this.maxLength) {
+        $(this).next().next().focus();
+    }
+});
+// .phoneNumber { width: 32px; margin: 4px; } CSS
 
-if(userEditForm){
-    userEditForm.addEventListener('submit', (event) => {
-        let hasError = false;
-        passwordError.hidden = true;
-        event.preventDefault();
-        const re = /^\w+$/;
-        if(!password.value && !email.value && ! phoneNumber.value){
+$('button[type=submit]').on('click', function(event) {
+    event.preventDefault();
+
+    let hasError = false;
+    $('#userEditEmptyError').hide();
+    $('#pwError').hide();
+    $('#mailError').hide();
+    $('#phoneNumError').hide();
+    $('#userEditFormError').hide();
+
+    let phoneArr = [];
+    $('.phoneNumber').each(function(){
+        phoneArr.push($(this).val());
+    })
+    $('#phoneNum').val(phoneArr.join('-'));
+
+    // check empty
+    if(!$('#pw').val() && !$('#mail').val() && $('#phoneNum').val() === "--"){
+        hasError = true;
+        $('#userEditEmptyError').html('Error: Please enter something to edit your profile!');
+        $('#userEditEmptyError').show();
+    }
+
+    // check password
+    if($('#pw').val()){
+        const passwordRegex = /^\w+$/;
+        const passwordLowerCase = $('#pw').val().toLowerCase();
+        if($('#pw').val() !== $('#pw2').val()){
             hasError = true;
+            $('#pwError').html('Error: Please check that you\'ve entered and confirmed your password!');
+            $('#pwError').show();
         }
-        if(password.value){
-            if(password.value !== password2.value){
-                hasError = true;
-                passwordError.hidden = false;
-                passwordError.innerHTML = 'Error: Please check that you\'ve entered and confirmed your password!';
-            }
-            else if(!re.test(password.value)){
-                hasError = true;
-                passwordError.hidden = false;
-                passwordError.innerHTML = 'Error: Password must contain only letters, numbers and underscores!';
-            } 
-            else if(password.value.length < 6){
-                hasError = true;
-                passwordError.hidden = false;
-                passwordError.innerHTML = 'Error: Password must contain at least six characters!';
-            } 
-            else if(password.value.length > 16){
-                hasError = true;
-                passwordError.hidden = false;
-                passwordError.innerHTML = 'Error: Password must contain at most sixteen characters!';
-            } 
-            else {
-                const pw = password.value.toLowerCase();
-                if(password.value === pw){
-                    hasError = true;
-                    passwordError.hidden = false;
-                    passwordError.innerHTML = 'Error: Password must contain at least one uppercase letter (A-Z)!';
-                }
-            }
+        else if($('#pw').val() === $('#username').val()){
+            hasError = true;
+            $('#pwError').html('Error: Please check that your password is different from your username!');
+            $('#pwError').show();
         }
-        if(!hasError){
-            userEditForm.submit();
+        else if(!passwordRegex.test($('#pw').val())){
+            hasError = true;
+            $('#pwError').html('Error: Password must contain only letters, numbers and underscores!');
+            $('#pwError').show();
+        } 
+        else if($('#pw').val().length < 6){
+            hasError = true;
+            $('#pwError').html('Error: Password must contain at least six characters!');
+            $('#pwError').show();
         }
-    });
-}
+        else if($('#pw').val().length > 16){
+            hasError = true;
+            $('#pwError').html('Error: Password must contain no more than sixteen letters!');
+            $('#pwError').show();
+        } 
+        else if($('#pw').val() === passwordLowerCase){
+            hasError = true;
+            $('#pwError').html('Error: Password must contain at least one uppercase letter (A-Z)!');
+            $('#pwError').show();
+        }
+    }
+
+    // check email
+    const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/; 
+    if($('#mail').val() && !emailRegex.test($('#mail').val()) ) {
+        hasError = true;
+        $('#mailError').html('Error: Please make sure you\'ve entered a valid email');
+        $('#mailError').show();
+    }
+
+    // check phone number
+    const phoneRegex = /^[0-9]{3}-[0-9]{3}-[0-9]{4}$/;
+    if($('#phoneNum').val() === '--'){
+        $('#phoneNum').val('');
+    }
+    if($('#phoneNum').val() && !phoneRegex.test($('#phoneNum').val())){
+        hasError = true;
+        $('#phoneNumError').html('Error: Please make sure you\'ve entered a valid phone number');
+        $('#phoneNumError').show();
+    }
+
+    if(!hasError){
+        $('#usersEditForm').submit();
+    }
+});

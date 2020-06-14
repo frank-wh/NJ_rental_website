@@ -1,82 +1,103 @@
-let userNewForm = document.getElementById("usersNewForm");
+$(".phoneNumber").keyup(function () {
+    if (this.value.length == this.maxLength) {
+        $(this).next().next().focus();
+    }
+});
+// .phoneNumber { width: 32px; margin: 4px; } CSS
 
-let username = document.getElementById("username");
-let password = document.getElementById("password");
-let password2 = document.getElementById("password2");;
-let email = document.getElementById("email");
-let phoneNumber = document.getElementById("phoneNumber");
+$('button[type=submit]').on('click', function(event) {
+    event.preventDefault();
 
-let usernameError = document.getElementById("usernameError");
-let passwordError = document.getElementById("passwordError");
-let emailError = document.getElementById("emailError");
-let phoneNumError = document.getElementById("phoneNumError");
+    let hasError = false;
+    $('#usernameError').hide();
+    $('#passwordError').hide();
+    $('#emailError').hide();
+    $('#phoneNumberError').hide();
+    $('#usersNewFormError').hide();
 
+    // check username
+    if(!$('#username').val()){
+        hasError = true;
+        $('#usernameError').html('Error: Please check that you\'ve entered an username');
+        $('#usernameError').show();
+    } 
+    else if($('#username').val().length < 6){
+        hasError = true;
+        $('#usernameError').html('Error: Username must contain at least six characters!');
+        $('#usernameError').show();
+    } 
+    else if($('#username').val().length > 16){
+        hasError = true;
+        $('#usernameError').html('Error: Username must contain no more than sixteen characters!');
+        $('#usernameError').show();
+    }
 
+    // check password
+    const passwordRegex = /^\w+$/;
+    const passwordLowerCase = $('#password').val().toLowerCase();
+    if(!$('#password').val() || !$('#password2').val() || $('#password').val() !== $('#password2').val()){
+        hasError = true;
+        $('#passwordError').html('Error: Please check that you\'ve entered and confirmed your password!');
+        $('#passwordError').show();
+    }
+    else if($('#password').val() === $('#username').val()){
+        hasError = true;
+        $('#passwordError').html('Error: Please check that your password is different from your username!');
+        $('#passwordError').show();
+    }
+    else if(!passwordRegex.test($('#password').val())){
+        hasError = true;
+        $('#passwordError').html('Error: Password must contain only letters, numbers and underscores!');
+        $('#passwordError').show();
+    } 
+    else if($('#password').val().length < 6){
+        hasError = true;
+        $('#passwordError').html('Error: Password must contain at least six letters!');
+        $('#passwordError').show();
+    } 
+    else if($('#password').val().length > 16){
+        hasError = true;
+        $('#passwordError').html('Error: Password must contain no more than sixteen letters!');
+        $('#passwordError').show();
+    } 
+    else if($('#password').val() === passwordLowerCase){
+        hasError = true;
+        $('#passwordError').html('Error: Password must contain at least one uppercase letter (A-Z)!');
+        $('#passwordError').show();
+    }
 
-if(userNewForm){
-    userNewForm.addEventListener('submit', (event) => {
-        let hasError = false;
-        
-        usernameError.hidden = true;
-        passwordError.hidden = true;
-        emailError.hidden = true;
-        phoneNumError.hidden = true;
+    // check email
+    const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if(!$('#email').val()){
+        hasError = true;
+        $('#emailError').html('Error: Please check that you\'ve entered an email');
+        $('#emailError').show();
+    }
+    else if(!emailRegex.test($('#email').val())){
+        hasError = true;
+        $('#emailError').html('Error: Please make sure you\'ve entered a valid email');
+        $('#emailError').show();
+    }
 
-        event.preventDefault();
-        // check username
-        if(!username.value){
-            hasError = true;
-            usernameError.hidden = false;
-			usernameError.innerHTML = 'Error: Please check that you\'ve entered an username';
-        } else if(username.value.length < 6){
-            hasError = true;
-            usernameError.hidden = false;
-            usernameError.innerHTML = 'Error: Username must contain at least six characters!';
-        } else if(username.value.length > 16){
-            hasError = true;
-            usernameError.hidden = false;
-            usernameError.innerHTML = 'Error: Username must contain at most sixteen characters!';
-        }
-        // check password
-        const re = /^\w+$/;
-        if(!password.value || !password2.value || password.value !== password2.value){
-            hasError = true;
-            passwordError.hidden = false;
-			passwordError.innerHTML = 'Error: Please check that you\'ve entered and confirmed your password!';
-        } else if(!re.test(password.value)){
-            hasError = true;
-            passwordError.hidden = false;
-            passwordError.innerHTML = 'Error: Password must contain only letters, numbers and underscores!';
-        } else if(password.value.length < 6){
-            hasError = true;
-            passwordError.hidden = false;
-            passwordError.innerHTML = 'Error: Password must contain at least six letters!';
-        } else if(password.value.length > 16){
-            hasError = true;
-            passwordError.hidden = false;
-            passwordError.innerHTML = 'Error: Password must contain at most sixteen letters!';
-        } else {
-            const pw = password.value.toLowerCase();
-            if(password.value === pw){
-                hasError = true;
-                passwordError.hidden = false;
-                passwordError.innerHTML = 'Error: Password must contain at least one uppercase letter (A-Z)!';
-            }
-        }
-        // check email
-        if(!email.value){
-            hasError = true;
-            emailError.hidden = false;
-			emailError.innerHTML = 'Error: Please check that you\'ve entered an email';
-        }
-        // check phone number
-        if(!phoneNumber.value){
-            hasError = true;
-            phoneNumError.hidden = false;
-			phoneNumError.innerHTML = 'Error: Please check that you\'ve entered a phone number';
-        }
-        if(!hasError){
-            userNewForm.submit();
-        }
-    });
-}
+    // check phone number
+    const phoneRegex = /^[0-9]{3}-[0-9]{3}-[0-9]{4}$/;
+    let phoneArr = [];
+    $('.phoneNumber').each(function(){
+        phoneArr.push($(this).val());
+    })
+    $('#phoneNumber').val(phoneArr.join('-'));
+    if($('#phoneNumber').val() === '--'){
+        hasError = true;
+        $('#phoneNumberError').html('Error: Please check that you\'ve entered a phone number');
+        $('#phoneNumberError').show();
+    }
+    else if(!phoneRegex.test($('#phoneNumber').val())){
+        hasError = true;
+        $('#phoneNumberError').html('Error: Please make sure you\'ve entered a valid phone number');
+        $('#phoneNumberError').show();
+    }
+
+    if(!hasError){
+        $('#usersNewForm').submit();
+    }
+});

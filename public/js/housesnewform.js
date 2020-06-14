@@ -1,61 +1,60 @@
-let form = document.getElementById('housesNewForm');
-let houseNewMap = document.getElementById('houseNewMap');
-let addrDiv = document.getElementById('addrDiv');
-let judgeDiv = document.getElementById('judgeDiv');
-let nextDiv = document.getElementById('nextDiv');
-
-let statement = document.getElementById('statement');
-let type = document.getElementById('type');
-let price = document.getElementById('price');
-let image = document.getElementById('image');
-let formError = document.getElementById('formError');
-
 let latlng;
+let map;
 
-document.getElementById('back').addEventListener('click', function() {
-    addrDiv.hidden = false;
-    judgeDiv.hidden = true;
-    nextDiv.hidden = true;
+$('#back').on('click', function() {
+    $('#addrDiv').show();
+    $('#judgeDiv').addClass('d-none');
+    $('#nextDiv').addClass('d-none');
+    map = new google.maps.Map(document.getElementById('houseNewMap'), {
+        zoom: 12,
+        center: {lat: 40.728157, lng: -74.077644} // jersey city lat lng
+    });
 });
-document.getElementById('next').addEventListener('click', function() {
-    addrDiv.hidden = true;
-    judgeDiv.hidden = true;
-    houseNewMap.hidden = true;
-    nextDiv.hidden = false;
+$('#next').on('click', function() {
+    $('#addrDiv').hide();
+    $('#judgeDiv').addClass('d-none');
+    $('#houseNewMap').hide();
+    $('#nextDiv').removeClass('d-none');
 });
-document.getElementById('backToAddr').addEventListener('click', function() {
-    addrDiv.hidden = false;
-    judgeDiv.hidden = true;
-    houseNewMap.hidden = false;
-    nextDiv.hidden = true;
+$('#backToAddr').on('click', function() {
+    $('#addrDiv').show();
+    $('#judgeDiv').addClass('d-none');
+    $('#houseNewMap').show();
+    $('#nextDiv').addClass('d-none');
+    map = new google.maps.Map(document.getElementById('houseNewMap'), {
+        zoom: 12,
+        center: {lat: 40.728157, lng: -74.077644} // jersey city lat lng
+    });
 });
 
 function initMap() {
-    const map = new google.maps.Map(houseNewMap, {
+    map = new google.maps.Map(document.getElementById('houseNewMap'), {
         zoom: 12,
         center: {lat: 40.728157, lng: -74.077644} // jersey city lat lng
     });
     const geocoder = new google.maps.Geocoder();
-    document.getElementById('check').addEventListener('click', function() {
+    $('#check').on('click', function() {
         geocodeAddress(geocoder, map);
     });
 }
 
 function geocodeAddress(geocoder, resultsMap) {
-    const address = document.getElementById('address').value;
-    if(address !== ""){
-        geocoder.geocode({'address': address}, function(results, status) {
+    if($('#address').val() !== ""){
+        geocoder.geocode({'address': $('#address').val()}, function(results, status) {
             if (status === 'OK') {
                 latlng = results[0].geometry.location;
+                if(latlng.lat()>=40.77 || latlng.lat()<=40.665 || latlng.lng() >=-74.025 || latlng.lng() <=-74.11){
+                    latlng = undefined;
+                    return alert('Geocode was not successful for the following reason: Not in Jersey City area');
+                }
                 resultsMap.zoom = 18;
                 resultsMap.setCenter(latlng);
                 new google.maps.Marker({
                     map: resultsMap,
                     position: latlng
                 });
-
-                judgeDiv.hidden = false;
-                addrDiv.hidden = true;
+                $('#judgeDiv').removeClass('d-none');
+                $('#addrDiv').hide();
             } else {
                 alert('Geocode was not successful for the following reason: ' + status);
             }
@@ -63,105 +62,34 @@ function geocodeAddress(geocoder, resultsMap) {
     }
 }
 
-if(form){
-    form.addEventListener('submit', (event) => {
-        event.preventDefault();
-        formError.hidden = true;
-        if(latlng !== undefined){
-            document.getElementById('lat').value = latlng.lat();
-            document.getElementById('lng').value = latlng.lng();
-        }
-        if(!statement.value || !type.value || !price.value || !image.value){
-            formError.hidden = false;
-            formError.innerHTML = 'Error: Please make sure that every field is filled and an image is choosen!';
-            return;
-        }
-        else {
-            const arr = image.value.split('.');
-            if(arr[arr.length - 1] !== 'jpg' && arr[arr.length - 1] !== 'png'){
-                formError.hidden = false;
-                formError.innerHTML = 'Error: The file could only be image(jpg, png) format!';
-                return;
-            }
-        }
-        form.submit();
-    });
-}
+$('button[type=submit]').on('click', function(event) {
+    event.preventDefault();
 
-// let latlng;
+    $('#houseNewFormSubmitError').hide();
+    $('#houseNewFormError').hide();
 
-// $('#back').click(() => {
-//     $('#addrDiv').show();
-//     $('#judgeDiv').hide();
-//     $('#nextDiv').hide();
-// });
+    if(latlng !== undefined){
+        $('#lat').val(latlng.lat());
+        $('#lng').val(latlng.lng());
+    }
+    
+    const arr = $('#image').val().split('.');
+    if(!$('#statement').val() || !$('#type').val() || !$('#price').val() || !$('#image').val()){
+        $('#houseNewFormSubmitError').html('Error: Please make sure that every field is filled and an image is choosen!');
+        $('#houseNewFormSubmitError').show();
+        return;
+    }
+    else if(arr[arr.length - 1] !== 'jpg' && arr[arr.length - 1] !== 'png'){
+        $('#houseNewFormSubmitError').html('Error: The file could only be image (jpg, jpeg, png) format!');
+        $('#houseNewFormSubmitError').show();
+        return;
+    }
 
-// $('#next').click(() => {
-//     $('#addrDiv').hide();
-//     $('#judgeDiv').hide();
-//     $('#houseNewMap').hide();
-//     $('#nextDiv').show();
-// });
-
-// $('#backToAddr').click(() => {
-//     $('#addrDiv').show();
-//     $('#judgeDiv').hide();
-//     $('#houseNewMap').show();
-//     $('#nextDiv').hide();
-// });
-
-// function initMap() {
-//     const map = new google.maps.Map($('#houseNewMap'), {
-//         zoom: 12,
-//         center: {lat: 40.728157, lng: -74.077644} // jersey city lat lng
-//     });
-//     const geocoder = new google.maps.Geocoder();
-//     $('#check').click(() => {
-//         geocodeAddress(geocoder, map);
-//     });
-// }
-
-// function geocodeAddress(geocoder, resultsMap) {
-//     const address = $('#address').val();
-//     if(address !== ""){
-//         geocoder.geocode({'address': address}, (results, status) => {
-//             if (status === 'OK') {
-//                 latlng = results[0].geometry.location;
-//                 resultsMap.zoom = 18;
-//                 resultsMap.setCenter(latlng);
-//                 new google.maps.Marker({
-//                     map: resultsMap,
-//                     position: latlng
-//                 });
-
-//                 $('#addrDiv').hide();
-//                 $('#judgeDiv').show();
-//             } else {
-//                 alert('Geocode was not successful for the following reason: ' + status);
-//             }
-//         });
-//     }
-// }
-
-// $('#housesNewForm').submit((event) => {
-//     event.preventDefault();
-//     $('#formError').hide();
-//     if(latlng !== undefined) {
-//         $('#lat').val() = latlng.lat();
-//         $('#lng').val() = latlng.lng();
-//     }
-
-//     if(!$('#statement').val() || !$('#type').val() || !$('#price').val() || !$('#image').val()) {
-//         $('#formError').show();
-//         !$('#formError').html('Error: Please make sure that every field is filled and an image is choosen!');
-//         return;
-//     }else {
-//         const arr = $('#image').val().split('.');
-//             if(arr[arr.length - 1] !== 'jpg' && arr[arr.length - 1] !== 'png'){
-//                 $('#formError').show();
-//                 !$('#formError').html('Error: The file could only be image(jpg, png) format!');
-//                 return;
-//             }
-//     }
-//     $('#housesNewForm').submit();
-// })
+    if($('#price').val() < 1){
+        $('#price').val(1);
+    }
+    else if($('#price').val() > 9999){
+        $('#price').val(9999);
+    }
+    $('#housesNewForm').submit();
+});

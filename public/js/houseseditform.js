@@ -1,83 +1,80 @@
-// $('#nav-login').hide();
-// $('#nav-new').hide();
+$('#editFormSubmit').on('click', function(event) {
+    event.preventDefault();
+    $('#editFormError').hide();
 
-// $('#housesEditForm').submit((event) => {
-//     event.preventDefault();
-//     $('#editFormError').hide();
-
-//     if(!$('#editStatement').val() && !$('#editType').val() && !$('#editPrice').val()) {
-//         $('#editFormError').show();
-//         $('#editFormError').html('Error: Please enter something to edit your house information!');
-//         return;
-//     }else {
-//         $('#housesEditForm').submit();
-//     }
-// })
-
-// $('#housesEditImgForm').submit((event) => {
-//     event.preventDefault();
-//     $('editImgError').hide();
-    
-//     if($('#img').val()) {
-//         const arr = $('#img').val().split('.');
-//         if(arr[arr.lenth - 1] === 'jpg' || arr[arr.length - 1] === 'png') {
-//             $('#housesEditImgForm').submit();
-//         }else {
-//             $('#editImgError').show();
-//             $('#editImgError').html('Error: The file could only be image(jpg, png) format!');
-//         }
-//     }else {
-//         $('#editImgError').show();
-//         $('#editImgError').html('Error: Please check that you\'ve choosen an image file!');
-//     }
-// })
-
-
-
-let housesEditForm = document.getElementById('housesEditForm');
-let statement = document.getElementById('editStatement');
-let type = document.getElementById('editType');
-let price = document.getElementById('editPrice');
-let editFormError = document.getElementById('editFormError');
-
-let housesEditImgForm = document.getElementById('housesEditImgForm');
-let img = document.getElementById('img');
-let editImgError = document.getElementById('editImgError');
-
-
-
-if(housesEditForm){
-    housesEditForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-        editFormError.hidden = true;
-
-        if(!statement.value && !type.value && !price.value){
-            editFormError.hidden = false;
-            editFormError.innerHTML = 'Error: Please enter something to edit your house information!';
-            return;
-        } 
-        else {
-            housesEditForm.submit();
+    if(!$('#editStatement').val() && !$('#editType').val() && !$('#editPrice').val()){
+        $('#editFormError').html('Error: Please enter something before submission!');
+        $('#editFormError').show();
+        return;
+    } 
+    else {
+        if($('#editPrice').val() && $('#editPrice').val() < 1){
+            $('#editPrice').val(1);
         }
-    });
-}
-
-if(housesEditImgForm){
-    housesEditImgForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-        editImgError.hidden = true;
-
-        if(img.value){
-            const arr = img.value.split('.');
-            if(arr[arr.length - 1] === 'jpg' || arr[arr.length - 1] === 'png'){
-                housesEditImgForm.submit();
-            } else {
-                editImgError.hidden = false;
-                editImgError.innerHTML = 'Error: The file could only be image(jpg png) format!';
-            }
-        } else {
-            editImgError.hidden = false;
-            editImgError.innerHTML = 'Error: Please check that you\'ve choosen an image file!';
+        else if($('#editPrice').val() > 9999){
+            $('#editPrice').val(9999);
         }
-    });
-}
+        $('#housesEditForm').submit();
+    }
+});
+
+$('#addImgFormSubmit').on('click', function(event) {
+    event.preventDefault();
+    $('#addImgError').hide();
+
+    if(!$('#img').val()){
+        $('#addImgError').html('Error: Please check that you\'ve choosen an image file!');
+        $('#addImgError').show();
+    }
+    else{
+        const arr = $('#img').val().split('.');
+        if(arr[arr.length - 1] !== 'jpg' && arr[arr.length - 1] !== 'png'){
+            $('#addImgError').html('Error: The file could only be image(jpg, jpeg, png) format!');
+            $('#addImgError').show();
+        }
+        else{
+            // ajax
+            let fd = new FormData();
+            let file = $('#img')[0].files[0];
+            fd.append('image', file);
+            $('#img').val("");
+            $.ajax({
+                url: $('#addImgForm').attr('action'),
+                type: 'POST',
+                contentType: false,
+                processData: false,
+                data: fd,
+                success: function(res){
+                    $('#imageDiv').append($(res));
+                    $('#imageDiv').children().last().find('.removeImgForm').submit(function(event) {
+                        event.preventDefault();
+                        $(this).addClass('toRemove');
+                        $.ajax({
+                            url: $(this).attr('action'),
+                            type: 'DELETE',
+                            success: function(res) {
+                                $('.toRemove').parent('div').fadeOut(500, function() {
+                                    $(this).remove();
+                                });
+                            }
+                        });
+                    });
+                }
+            })
+        }
+    }
+});
+
+$('.removeImgForm').submit(function(event) {
+    event.preventDefault();
+    $(this).addClass('toRemove');
+	$.ajax({
+		url: $(this).attr('action'),
+		type: 'DELETE',
+		success: function(res) {
+			$('.toRemove').parent('div').fadeOut(500, function() {
+                $(this).remove();
+            });
+		}
+	});
+});
