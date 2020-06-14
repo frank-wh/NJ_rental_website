@@ -1,89 +1,73 @@
-<nav class="navbar nav-tabs justify-content-end" id="nav-home">
-    <ul class="nav nav-tabs">
-        <li class="nav-item" id="nav-home">
-            <a class="nav-link" href="/houses">Home</a>
-        </li>
-        <li class="nav-item" id="nav-logout">
-            <a class="nav-link" href="/users/logout">Sign Out</a>
-        </li>
-        <li class="nav-item" id="nav-profile">
-            <a class="nav-link" href="/users/profile">Profile</a>
-        </li>
-
-    </ul>
-</nav>
-
-<article>
-    <div class="container-fluid">
-        <h2>Edit House Information</h2>
-        <p>House Address: {{house.houseInfo}}</p>
-        <form action="/houses/{{house._id}}" id="housesEditForm" method="POST">
-            <input type="hidden" name="_method" value="PATCH" />
-            <div class="form-group">
-                <label for="editStatement">Statement of the house: </label>
-                <textarea class="form-control" name="statement" id="editStatement">{{house.statement}}</textarea>
-            </div>
-            <div class="form-group">
-                <label for="editType">Room Type</label>
-                <select class="form-control mb-2 mr-sm-2" id="editType" name="roomType">
-                    <option value="">Select Type</option>
-                    <option value="Private Room">Private Room</option>
-                    <option value="Entire home/apt">Entire home/apt</option>
-                    <option value="Shared Room">Shared Room</option>
-                    <option value="Hotel Room">Hotel Room</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="editPrice">Price </label>
-                <input class="form-control mb-2 mr-sm-2" type="number" name="price" id="editPrice" min="0" value="{{house.price}}">
-            </div>
-            <button type="submit" class="btn btn-primary">Change house information</button>
-            <a href="/houses/{{house._id}}" class="btn btn-primary">Back to the house page</a>
-            <div id="editFormError" class="alert alert-danger" hidden></div>
-        </form>
-    </div>
-    <br>
-
-
-
-    <div class="container-fluid">
-        <h2>Add image</h2>
-        <form action="/houses/addimg/{{house._id}}" id="housesEditImgForm" method="POST" enctype="multipart/form-data">
-            <div class="form-group">
-                <label for="img">Choose Image</label>
-                <input lass="form-control-file border" type="file" name="image" id="img" accept="image/jpeg, image/png">
-            </div>
-            <div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </div>
-            <div class="alert alert-danger" id="editImgError" hidden></div>
-        </form>
-    </div>
-
-    <div class="container-fluid">
-        <h2>House Images</h2>
-        <div class="row" id="img-row">
-            {{#if hasImages}}
-                {{#each images}}
-                    <div class="column" id="img-col">
-                        <div id="add-img">
-                            <img src="/houses/image/{{this.filename}}" alt="img">
-                        </div>
-                        <div>
-                            <form id="add-button" method="POST" action="/houses/{{../house._id}}/removeimage/{{this.filename}}">
-                                <input type="hidden" name="_method" value="DELETE">
-                                <button class="btn btn-primary" type="submit">Delete</button>
-                            </form>
-                        </div>
+<article id="houseeditDiv">
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <h1 class="houseeditheader">House Information</h1>
+            <form action="/houses/{{house._id}}" id="housesEditForm" method="POST">
+                <input type="hidden" name="_method" value="PATCH" />
+                <div class="form-group">
+                    <label for="address"><i class="fas fa-map-marker-alt mr-2"></i>Address:</label>
+                    <textarea class="form-control" id="address" readonly>{{house.address}}</textarea>
+                </div>
+                <div class="form-group">
+                    <label for="editStatement"><i class="fas fa-pencil-alt mr-2"></i>Statement: </label>
+                    <textarea class="form-control" name="statement" id="editStatement" aria-describedby="statementHelp" rows="4" maxlength="80">{{house.statement}}</textarea>
+                    <small id="statementHelp" class="form-text text-muted">No more than 80 characters.</small>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="editType"><i class="fas fa-home mr-2"></i>Room Type: </label>
+                        <select class="form-control" id="editType" name="roomType">
+                            <option value="">Select Type</option>
+                            <option value="Private Room">Private Room</option>
+                            <option value="Entire home/apt">Entire home/apt</option>
+                            <option value="Shared Room">Shared Room</option>
+                            <option value="Hotel Room">Hotel Room</option>
+                        </select>
                     </div>
+                    <div class="form-group col-md-6">
+                        <label for="editPrice"><i class="fas fa-coins mr-2"></i>Price: <span class="editPriceSpan col-form-label">$
+                        <input class="form-control" type="text" name="price" id="editPrice" maxlength="4" value="{{house.price}}" 
+                            onkeypress='return event.charCode >= 48 && event.charCode <= 57' />/month</span></label>
+                    </div>
+                </div>
+                <div>
+                    <button id="editFormSubmit" class="btn btn-sm btn-warning" type="submit"><i class="fas fa-edit mr-2"></i>Edit</button>
+                    <a class="btn btn-sm btn-primary" href="/houses/{{house._id}}"><i class="fas fa-backspace mr-2"></i>Back to house page</a>
+                </div>
+                <div id="editFormError"></div>
+            </form>
+        </div>
+        <div class="col-md-8">
+            <h1 class="houseeditheader">Image</h1>
+            <div>
+                <form action="/houses/addimg/{{house._id}}" class="form-inline" id="addImgForm" method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="img"></label>
+                        <input class="form-control-file" type="file" name="image" id="img" accept="image/jpeg, image/png" />
+                    </div>
+                    <div>
+                        <button id="addImgFormSubmit" class="btn btn-sm btn-success" type="submit"><i class="far fa-image mr-2"></i>Add Image</button>
+                    </div>
+                    <div id="addImgError"></div>
+                </form>
+            </div>
 
-                {{/each}}
-            {{else}}
-                <p>No images to show</p>
-            {{/if}}
+            <div>
+                <div id="imageDiv">
+                    {{#if hasImages}}
+                    {{#each images}}
+                    <div class="item">
+                        <img src="/houses/image/{{this.filename}}" class="img-fluid" alt="">
+                        <form action="/houses/{{../house._id}}/removeimage/{{this.filename}}" class="removeImgForm">
+                            <button type="submit"><i class="fas fa-trash"></i></button>
+                        </form>
+                    </div>
+                    {{/each}}
+                    {{/if}}
+                </div>
+            </div>
         </div>
     </div>
-
-
-    <script src="/public/js/houseseditform.js"></script>
+</div>
 </article>

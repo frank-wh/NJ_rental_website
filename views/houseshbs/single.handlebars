@@ -1,85 +1,109 @@
-<nav class="navbar nav-tabs justify-content-end" id="nav-home">
-    <ul class="nav nav-tabs">
-        <li class="nav-item" id="nav-home">
-            <a class="nav-link" href="/houses">Home</a>
-        </li>
-        <li class="nav-item" id="nav-login" hidden>
-            <a class="nav-link" href="/users/login">Sign In</a>
-        </li>
-        <li class="nav-item" id="nav-new" hidden>
-            <a class="nav-link" href="/users/new">Sign Up</a>
-        </li>
-        <li class="nav-item" id="nav-logout" hidden>
-            <a class="nav-link" href="/users/logout">Sign Out</a>
-        </li>
-        <li class="nav-item" id="nav-profile" hidden>
-            <a class="nav-link" href="/users/profile">Profile</a>
-        </li>
+<article>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 housesingleinfo">
+                <div>
+                    <h1 id="housesingleaddress"><i class="fas fa-map-marker-alt mr-2"></i>{{houses.address}}</h1>
+                    <p><i class="fas fa-pencil-alt mr-2"></i>{{houses.statement}}</p>
+                    {{#ifCond currentUser.id houses.user._id}}
+                    {{else}}
+                    <p><i class="fas fa-user-tie mr-2"></i>Posted by: {{houses.user.username}}</p>
+                    {{/ifCond}}
+                    <p><i class="far fa-calendar-times mr-2"></i>{{houses.postedDate}}</p>
+                    <p><i class="fas fa-home mr-2"></i>{{houses.roomType}}</p>
+                    <p><i class="fas fa-coins mr-2"></i>${{houses.price}}/month</p>
 
-    </ul>
-</nav>
-<div><p id="usrs" hidden>{{usrs}}</p></div>
-<article class="container-fluid">
-
-    <div class="slideshow-container">
-        {{#if houses.images}}
-            {{#each houses.images}}
-                <div class="mySlides" >
-                    <img src="/houses/image/{{this}}" alt="" style="width:100%">
+                    <div id="storeDiv">
+                        {{#ifCond currentUser.id houses.user._id}}
+                        <p><i class="fas fa-users mr-2"></i>{{houses.storedByUsers.length}} user(s) store the house</p>
+                        <div>
+                            <a class="btn btn-sm btn-warning" href="/houses/{{houses._id}}/edit"><i class="fas fa-edit mr-2"></i>Edit</a>
+                            <form id="housesingledelete" action="/houses/{{houses._id}}" method="POST">
+                                <input type="hidden" name="_method" value="DELETE" />
+                                <button class="btn btn-sm btn-danger" type="submit"><i class="fas fa-trash-alt mr-2"></i>Delete</button>
+                            </form>
+                        </div>
+                        {{else}}
+                            {{#if isStored}}
+                            <a id="removestore" href="/houses/removestorehouse/{{houses._id}}"><i class="fas fa-heart mr-2"></i></a>{{houses.storedByUsers.length}}
+                            {{else}}
+                            <a id="storehouse" href="/houses/storehouse/{{houses._id}}"><i class="far fa-heart mr-2"></i></a>{{houses.storedByUsers.length}}
+                            {{/if}}
+                        {{/ifCond}}
+                    </div>
                 </div>
-            {{/each}}
-        {{/if}}
-        <a class="prev" onclick="nextSlides(-1)" >&#10094;</a>
-        <a class="next" onclick="nextSlides(1)">&#10095;</a>
-    </div>
-    <br>
+            </div>
+            <div class="col-md-9 housesingleimgcomment">
+                {{#if houses.images}}
+                <div id="houseCarousel" class="carousel slide" data-interval="false">
+                    <div class="carousel-inner">
+                        <ol class="carousel-indicators">
+                        {{#each houses.images}}
+                            {{#if @first}}
+                            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                            {{else}}
+                            <li data-target="#carouselExampleIndicators" data-slide-to="{{@index}}"></li>
+                            {{/if}}
+                        {{/each}}
+                        </ol>
 
-    <div class="container" id="house-info">
-        <h1>{{ houses.houseInfo }}</h1>
-        <address>Posted by {{ houses.user.username }}</address>
-        <p>Posted Date: {{ houses.postedDate }}</p>
-        <p>Room Type: {{ houses.roomType }}</p>
-        <p>Price ($): {{ houses.price }}</p>
-        <p>Statement: {{ houses.statement }}</p>
-        <div>
-            <p>Favorite: {{ houses.storedByUsers.length }}</p>
-            {{#if isStored}}
-                <p><a class="link" href="/houses/removestorehouse/{{houses._id}}">Remove from your Favorite List</a></p>
-            {{else}}
-                <p><a class="link" href="/houses/storehouse/{{houses._id}}">Add to Favourite List</a></p>
-            {{/if}}
+                        {{#each houses.images}}
+                        {{#if @first}}
+                        <div class="carousel-item active">
+                            <img src="/houses/image/{{this}}" alt="">
+                        </div>
+                        {{else}}
+                        <div class="carousel-item">
+                            <img src="/houses/image/{{this}}" alt="">
+                        </div>
+                        {{/if}}
+                        {{/each}}
+                    </div>
+                    <a class="carousel-control-prev" href="#houseCarousel" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#houseCarousel" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+                {{/if}}
+
+                <div>
+                    <div id="makecommentform">
+                        {{#ifCond currentUser.id houses.user._id}}
+                        {{else}}
+                        <form action="/comments" class="form-inline" id="commentForm" method="POST">
+                            <textarea name="houseId" id="houseId" hidden>{{houseId}}</textarea>
+
+                            <label for="comment"></label>
+                            <textarea name="text" id="comment" class="form-control" rows="2" maxlength="140" placeholder="make a comment"></textarea>
+                            <button class="btn btn-md btn-success" id="commentSubmit" type="submit">Add a comment</button>
+                        </form>
+                        {{/ifCond}}
+                    </div>
+                    <div class="card" id="commentDiv">
+                        {{#if houses.comments.length}}
+                        {{#each houses.comments}}
+                        <div class="row">
+                            <div class="col-md-12">
+                                <i class="fas fa-user mr-2"></i><strong>{{this.username}}</strong> {{#ifCond ../currentUser.id this.userId}}(me){{/ifCond}}
+                                <span class="float-right"><i class="fas fa-calendar-day mr-2"></i>{{this.commentDate}}</span>
+                                <p>{{this.text}}</p>
+
+                                {{#ifCond ../currentUser.id this.userId}}
+                                <form action="/comments/{{this._id}}" class="userRemoveComment" method="POST">
+                                    <button class="btn btn-sm btn-danger" type="submit"><i class="fas fa-trash-alt mr-2"></i>Delete</button>
+                                </form>
+                                {{/ifCond}}
+                            </div>
+                        </div>
+                        {{/each}}
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    <br>
-
-    <div class="container" id="add-comment">
-        <form id="housesSingleForm" method="POST">
-            <input id="houseFormId" class="form-control" value="{{houseid}}" hidden/>
-
-            <label for="comment">make a comment: </label>
-            <textarea  class="form-control" rows="4" name="text" id="comment" cols="30"></textarea>
-            <button type="submit" class="btn btn-dark">Submit</button>
-        </form>
-    </div>
-    <br>
-
-    <div class="container" id="house-comment">
-
-        {{#if houses.comments.length}}
-            <h1>Comments</h1>
-            <ul>
-                {{#each houses.comments}}
-                    <div class="container" class="each-comment">
-                        <p class="user-name">User: {{this.username}}</p>
-                        <p>{{this.text}}</p>
-                        <address> {{this.commentDate}}</address>
-                    </div>
-                {{/each}}
-            </ul>
-        {{/if}}
-    </div>
-
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-    <script src="/public/js/housessingleform.js"></script>
-
 </article>
