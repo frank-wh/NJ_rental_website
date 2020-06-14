@@ -2,17 +2,16 @@ const express     = require('express'),
  	  data 		  = require('../data'), 
 	  bcrypt  	  = require('bcryptjs'),
 	  router      = express.Router(),
-	  xss         = require('xss')
 	  userData    = data.users,
 	  houseData   = data.houses,
 	  saltRounds  = 5;
 
 router.get('/new', async (req, res) => {
-	res.render('usershbs/new', {});
+	res.render('usershbs/new', {partial: 'users-new-scripts'});
 });
 
 router.get('/login', async (req, res) => {
-	res.render('usershbs/login', {});
+	res.render('usershbs/login', {partial: 'users-login-scripts'});
 });
 
 router.get('/profile', async (req, res) => {
@@ -20,26 +19,8 @@ router.get('/profile', async (req, res) => {
 });
 
 router.get('/logout', async (req, res) => {
-	req.session.user = undefined;
+	req.session.destroy();
 	res.redirect('/houses');
-});
-
-router.get('/:id/edit', async (req, res) => {
-	try {
-		const user = await userData.getUserById(req.params.id);
-		res.render('usershbs/edit', {user: user});
-	} catch (e) {
-		res.status(404).render('errorshbs/error404');
-	}
-});
-
-router.get('/:id/newHouse', async (req, res) => {
-	try {
-		await userData.getUserById(req.params.id);
-		res.render('houseshbs/new', {userid: req.params.id});
-	} catch (e) {
-		res.status(404).render('errorshbs/error404');
-	}
 });
 
 router.get('/:id', async (req, res) => {
@@ -51,22 +32,34 @@ router.get('/:id', async (req, res) => {
 	}
 	try {
 		const user = await userData.getUserById(req.params.id);
-		res.render('usershbs/single', {user: user});
+		res.render('usershbs/single', {user: user, partial: 'users-single-scripts'});
 	} catch (e) {
 		res.status(404).render('errorshbs/error404');
 	}
 });
 
-router.get('/removestorehouse/:houseid', async (req, res) => {
+router.get('/:id/edit', async (req, res) => {
 	try {
-		await houseData.removeStoreByUser(req.params.houseid, req.session.user.id);
-		res.redirect(`/users/${req.session.user.id}`);
+		const user = await userData.getUserById(req.params.id);
+		res.render('usershbs/edit', {user: user, partial: 'users-edit-scripts'});
 	} catch (e) {
 		res.status(404).render('errorshbs/error404');
 	}
 });
 
-router.post('/', async (req, res) => {
+router.get('/:id/newHouse', async (req, res) => {
+	try {
+		await userData.getUserById(req.params.id);
+		res.render('houseshbs/new', {userid: req.params.id, partial: 'houses-new-scripts'});
+	} catch (e) {
+		res.status(404).render('errorshbs/error404');
+	}
+});
+
+router.post('/new', async (req, res) => {
+	if (req.session.user) {
+		return res.status(403).render('errorshbs/error403');
+	}
 	let userInfo = req.body;
 	let errors = [];
 	let allNames = [];
@@ -101,22 +94,26 @@ router.post('/', async (req, res) => {
 		}
 	}
 	if (!userInfo.phoneNumber) errors.push('Error: Please check that you\'ve entered a phone number');
+	let phoneArr = userInfo.phoneNumber.split('-');
+
 	if (!userInfo.password)    errors.push('Error: Please check that you\'ve entered a password');
 	if (errors.length > 0) {
-		return res.status(401).render('usershbs/new', {
+		return res.render('usershbs/new', {
 			errors: errors,
 			hasErrors: true,
-			newUser: userInfo
+			newUser: userInfo,
+			phone: phoneArr,
+			partial: 'users-new-scripts'
 		});
 	}
 
 	try {
 		const pw = await bcrypt.hash(userInfo.password, saltRounds);
-		const newuser = await userData.addUser(
-			xss(userInfo.username), xss(userInfo.email), xss(userInfo.phoneNumber), pw
+		const user = await userData.addUser(
+			userInfo.username, userInfo.email, userInfo.phoneNumber, pw
 		);
-		req.session.user = {id: newuser._id, name: newuser.username};
-		res.redirect(`/users/${newuser._id}`);
+		req.session.user = {id: user._id, name: user.username};
+		res.redirect(`/users/${user._id}`);
 	} catch (e) {
 		res.status(500).render('errorshbs/error500');
 	}
@@ -130,7 +127,11 @@ router.post('/login', async (req, res) => {
 	if (!userInfo.username) errors.push('Error: Please check that you\'ve entered an username');
 	if (!userInfo.password) errors.push('Error: Please check that you\'ve entered a password');
 	if (errors.length > 0) {
-		return res.status(401).render('usershbs/login', {error: errors, hasErrors: true});
+		return res.status(401).render('usershbs/login', {
+			error: errors, 
+			hasErrors: true, 
+			partial: 'users-login-scripts'
+		});
 	}
 
 	try {
@@ -141,17 +142,26 @@ router.post('/login', async (req, res) => {
 			return res.redirect(`/users/${user._id}`);
 		} else {
 			return res.status(401).render('usershbs/login', {
-				error: [message], hasErrors: true
+				error: [message], 
+				hasErrors: true,
+				partial: 'users-login-scripts'
 			});
 		}
 	} catch (e) {
-		res.status(401).render('usershbs/login', {error: [message], hasErrors: true});
+		res.status(401).render('usershbs/login', {
+			error: [message], 
+			hasErrors: true,
+			partial: 'users-login-scripts'
+		});
 	}
 });
 
-router.patch('/:id', async (req, res) => {
+router.patch('/:id/edit', async (req, res) => {
+	if (!req.session.user || req.session.user.id !== req.params.id) {
+		return res.status(403).render('errorshbs/error403');
+	}
 	const reqBody = req.body;
-
+	
 	let allEmails = [];
 	try {
 		const userList = await userData.getAllUsers();
@@ -169,15 +179,16 @@ router.patch('/:id', async (req, res) => {
 			const email = reqBody.email.toLowerCase();
 			for (let i = 0; i < allEmails.length; i++) {
 				if (email === allEmails[i].toLowerCase()) {
-					return res.status(401).render(`usershbs/edit`, {
+					return res.render(`usershbs/edit`, {
+						user: user,
 						errors: 'Error: The email you entered is invalid, please try another one', 
-						hasErrors: true
+						hasErrors: true,
+						partial: 'users-edit-scripts'
 					});
 				}
 			}
-			updatedObject.email = xss(reqBody.email);
+			updatedObject.email = reqBody.email;
 		}
-
         if (reqBody.phoneNumber && reqBody.phoneNumber !== user.phoneNumber) {
 			updatedObject.phoneNumber = reqBody.phoneNumber;
 		}
@@ -194,6 +205,20 @@ router.patch('/:id', async (req, res) => {
 	} catch (e) {
 		res.status(500).render('errorshbs/error500');
 	}
+});
+
+router.delete('/removestorehouse/:houseid', async (req, res) => {
+	try {
+		await houseData.getHouseById(req.params.houseid);
+		await houseData.removeStoreByUser(req.params.houseid, req.session.user.id);
+	} catch (e) {
+		try {
+			await userData.userRemoveStoredHouse(req.session.user.id, req.params.houseid);
+		} catch(err) {
+			return res.status(404).render('errorshbs/error404');
+		}
+	}
+	res.sendStatus(200);
 });
 
 module.exports = router;
