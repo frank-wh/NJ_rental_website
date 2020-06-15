@@ -29,6 +29,11 @@ the dependencies we need:
   "multer-gridfs-storage"
 ```
 
+you can type your code like this:
+```
+  npm i bcryptjs express express-handlebars express-session gridfs-stream mongodb multer multer-gridfs-storage
+```
+
 #### run seed.js to seed database
 ```
   node .\tasks\seed.js
@@ -39,7 +44,7 @@ the dependencies we need:
   npm start
 ```
 
-Here are test users and houses information in the following path, you can use these data to sign up the user and post houses in the website.
+Here are users and houses information in the following path, you can use these data to sign up the user and post houses and images to the website.
 ```
   /public/csv/houseInfo.csv
   /public/csv/userInfo.csv
