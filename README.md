@@ -29,7 +29,7 @@ the dependencies we need:
   "multer-gridfs-storage"
 ```
 
-#### run seed.js to generate some users and rental houses
+#### run seed.js to seed database
 ```
   node .\tasks\seed.js
 ```
@@ -43,6 +43,7 @@ Here are test users and houses information in the following path, you can use th
 ```
   /public/csv/houseInfo.csv
   /public/csv/userInfo.csv
+  /public/img/
 ```
 
 ## Github link
