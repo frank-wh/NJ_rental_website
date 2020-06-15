@@ -50,11 +50,11 @@
                         {{#each houses.images}}
                         {{#if @first}}
                         <div class="carousel-item active">
-                            <img src="/houses/image/{{this}}" alt="">
+                            <a href="/houses/image/{{this}}" target="_blank"><img src="/houses/image/{{this}}" alt=""></a>
                         </div>
                         {{else}}
                         <div class="carousel-item">
-                            <img src="/houses/image/{{this}}" alt="">
+                            <a href="/houses/image/{{this}}" target="_blank"><img src="/houses/image/{{this}}" alt=""></a>
                         </div>
                         {{/if}}
                         {{/each}}
