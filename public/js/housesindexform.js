@@ -63,21 +63,15 @@ function initMap() {
             }
         });
 
+        let imageName = houses[i].images[0] ? '/houses/image/'+ houses[i].images[0] : '/public/img/image-not-found.png';
+
         const infoWindow = new google.maps.InfoWindow({
-            content: 
-                houses[i].images[0]?
-                    '<div class="infoWindow"><a href="/houses/'+ houses[i]._id +'">' +
-                    '<div><img src="/houses/image/'+ houses[i].images[0] +'"></div>' +
-                    '<div>'+ houses[i].address +'</div>' +
-                    '<div>'+ houses[i].roomType +'</div>' +
-                    '<div>$'+ houses[i].price + ' / month</div>'
-                    +'</a></div>'
-                :
-                    '<div class="infoWindow"><a href="/houses/'+ houses[i]._id +'">'+
-                    '<div>'+ houses[i].address +'</div>' +
-                    '<div>'+ houses[i].roomType +'</div>' +
-                    '<div>$'+ houses[i].price + ' / month</div>'
-                    +'</a></div>'
+            content: '<div class="infoWindow"><a href="/houses/'+ houses[i]._id +'">' +
+            '<div><img src='+ imageName +'></div>' +
+            '<div>'+ houses[i].address +'</div>' +
+            '<div>'+ houses[i].roomType +'</div>' +
+            '<div>$'+ houses[i].price + ' / month</div>'
+            +'</a></div>'
         });
 
         marker.addListener('click', function() {
