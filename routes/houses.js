@@ -99,62 +99,39 @@ router.get('/image/:filename', async(req, res) => {
     try{
         const file = await gfs.files.findOne({ filename: req.params.filename });
         if (!file || file.length === 0) {
-            return res.status(404).render('errorshbs/error404');
+            return res.sendStatus(404);
         }
         const readstream = gfs.createReadStream(file.filename);
         readstream.pipe(res);
     }catch(e){
-        res.status(404).render('errorshbs/error404');
+        res.sendStatus(404);
     }
 });
 
-router.post('/sort', async (req, res) => {
-	const sortData = req.body;
-	let houseList = [];
-	if (!sortData.sort) {
-		houseList = await houseData.getAllHouses();
-	}
-	else if (sortData.sort === "priceUp") {
-		houseList = await houseData.getAllHousesSortedByPriceAsc();
-	}
-	else if (sortData.sort === "priceDown") {
-		houseList = await houseData.getAllHousesSortedByPriceDec();
-	}
-	else if (sortData.sort === "newest") {
-		houseList = await houseData.getAllHousesSortedByDateDec();
-	}
-	const isEmpty = houseList.length == 0;
-	const errorMsg = isEmpty ? "Sorry, we couldn't find any house available now!" : null;
-	return res.render('partials/houselist', {
-		layout: null,
-		houses: houseList, 
-		isEmpty: isEmpty, 
-		error: errorMsg
-	});
-});
-
 router.post('/search', async (req, res) => {
-	const roomType = req.body.search;
+	const roomType = req.body.roomType;
+	const sortData = req.body.sort;
 	let low = Number( req.body.low );
 	let high = Number( req.body.high );
 	let houseList = [];
-	if ( (!roomType&&(!low||!high)) || low > high) {
-		return res.status(400).render('errorshbs/error400');
+
+	if(low > high) {
+		high = low;
 	}
-	else if (!roomType) {
-		if(high === 5000){
-			houseList = await houseData.findByMinPrice(low);
-		}
-		else {
-			houseList = await houseData.findByPriceRange(low, high);
-		}
+
+	if(sortData && roomType) {
+		houseList = await houseData.findSortedHouses(sortData, roomType, low, high);
 	}
-	else if (roomType && low===1 && high===5000) {
-		houseList = await houseData.findByRoomType(roomType);
+	else if(sortData && !roomType) {
+		houseList = await houseData.findBySortDataAndPriceRange(sortData, low, high);
 	}
-	else {
+	else if(!sortData && roomType) {
 		houseList = await houseData.findByRoomTypeAndPriceRange(roomType, low, high);
 	}
+	else {
+		houseList = await houseData.findByPriceRange(low, high);
+	}
+	
 	const isEmpty = houseList.length == 0;
 	const errorMsg = isEmpty ? "Sorry, we couldn't find any house, please change your search range!" : null;
 	return res.render('partials/houselist', {
