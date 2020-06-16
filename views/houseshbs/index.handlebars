@@ -5,7 +5,7 @@
     </div>
 
     <div id="searchDiv">
-        <form action="/houses/sort" id="sortForm" method="POST">
+        <form action="/houses/search" id="searchForm" method="POST">
             <label for="sort">Sort: </label>
             <select id="sort" name="sort">
                 <option value="">All</option>
@@ -13,12 +13,9 @@
                 <option value="priceDown">Payment (high to low)</option>
                 <option value="newest">Newest</option>
             </select>
-            <button id="sortSubmit" class="btn btn-sm btn-primary" type="submit">GO!</button>
-        </form>
 
-        <form action="/houses/search" id="searchForm" method="POST">
-            <label for="search">Type: </label>
-            <select id="search" name="search">
+            <label for="roomType">Type: </label>
+            <select id="roomType" name="roomType">
                 <option value="">All</option>
                 <option value="Private Room">Private Room</option>
                 <option value="Entire home/apt">Entire home/apt</option>
@@ -29,21 +26,19 @@
             <label for="low">Price From: </label>
             <select name="low" id="low">
                 <option value="1">$0</option>
-                <option value="500">$500</option>
                 <option value="1000">$1000</option>
-                <option value="1500">$1500</option>
                 <option value="2000">$2000</option>
-                <option value="2500">$2500</option>
+                <option value="3000">$3000</option>
+                <option value="4000">$4000</option>
             </select>
 
             <label for="high">To: </label>
             <select name="high" id="high">
-                <option value="5000">$5000+</option>
-                <option value="2500">$2500</option>
+                <option value="9999">$5000+</option>
+                <option value="1000">$1000</option>
+                <option value="2000">$2000</option>
                 <option value="3000">$3000</option>
-                <option value="3500">$3500</option>
                 <option value="4000">$4000</option>
-                <option value="4500">$4500</option>
             </select>
 
             <button id="searchSubmit" class="btn btn-sm btn-primary" type="submit">Search</button>
