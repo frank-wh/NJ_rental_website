@@ -6,50 +6,67 @@ const ObjectId = require("mongodb").ObjectId;
 module.exports = {
     async getAllHouses() {
         const houseCollection = await houses();
-        return await houseCollection.find({}).toArray();
+        return await houseCollection.find({}).sort({ _id: -1 }).toArray();
     },
-
-    async getAllHousesSortedByPriceAsc() {
-        const houseCollection = await houses();
-		return await houseCollection.find({}).sort({ price: 1 }).toArray();
-    },
-
-    async getAllHousesSortedByPriceDec() {
-        const houseCollection = await houses();
-		return await houseCollection.find({}).sort({ price: -1 }).toArray();
-    },
-
-    async getAllHousesSortedByDateDec() {
-        const houseCollection = await houses();
-		return await houseCollection.find({}).sort({ postedDate: -1 }).toArray();
-    },
-
-    async findByRoomType(roomType){
+    
+    async findSortedHouses(sortData, roomType, low, high){
+        if (!sortData || typeof sortData !== 'string') throw '(HOUSE) You must provide data to sort';
         if (!roomType || typeof roomType !== 'string') throw '(HOUSE) You must provide room type';
+        if (!low || typeof low !== 'number') throw '(HOUSE) You must provide min price';
+        if (!high || typeof high !== 'number') throw '(HOUSE) You must provide max price';
 
         const houseCollection = await houses();
-        return await houseCollection.find({ 'roomType': roomType }).toArray();
+        let houseList = [];
+
+        if(sortData === 'priceUp') {
+            houseList = await houseCollection
+                .find({ 
+                    $and: [ { 'roomType': roomType }, {'price': {$gte: low, $lte: high}} ]
+                })
+                .sort({ price: 1 }).toArray();
+        }
+        else if(sortData === 'priceDown') {
+            houseList = await houseCollection
+                .find({ 
+                    $and: [ { 'roomType': roomType }, {'price': {$gte: low, $lte: high}} ]
+                })
+                .sort({ price: -1 }).toArray();
+        }
+        else if(sortData === 'newest') {
+            houseList = await houseCollection
+                .find({ 
+                    $and: [ { 'roomType': roomType }, {'price': {$gte: low, $lte: high}} ]
+                })
+                .sort({ postedDate: -1 }).toArray();
+        }
+        return houseList;
     },
 
-    async findByMinPrice(low){
-        if (!low || typeof low !== 'number') throw '(HOUSE) You must provide lowest price';
+    
+    async findBySortDataAndPriceRange(sortData, low, high){
+        if (!sortData || typeof sortData !== 'string') throw '(HOUSE) You must provide data to sort';
+        if (!low || typeof low !== 'number') throw '(HOUSE) You must provide min price';
+        if (!high || typeof high !== 'number') throw '(HOUSE) You must provide max price';
 
         const houseCollection = await houses();
-        return await houseCollection.find({ 'price': {$gte: low} }).toArray();
-    },
+        let houseList = [];
 
-    async findByPriceRange(low, high){
-        if (!low || typeof low !== 'number') throw '(HOUSE) You must provide lowest price';
-        if (!high || typeof high !== 'number') throw '(HOUSE) You must provide highest price';
-
-        const houseCollection = await houses();
-        return await houseCollection.find({ 'price': {$gte: low, $lte: high} }).toArray();
+        if(sortData === 'priceUp') {
+            houseList = await houseCollection.find({ 'price': {$gte: low, $lte: high} }).sort({ price: 1 }).toArray();
+        }
+        else if(sortData === 'priceDown') {
+            houseList = await houseCollection.find({ 'price': {$gte: low, $lte: high} }).sort({ price: -1 }).toArray();
+        }
+        else if(sortData === 'newest') {
+            houseList = await houseCollection.find({ 'price': {$gte: low, $lte: high} }).sort({ postedDate: -1 }).toArray();
+        }
+        return houseList;
     },
 
     async findByRoomTypeAndPriceRange(roomType, low, high){
         if (!roomType || typeof roomType !== 'string') throw '(HOUSE) You must provide room type';
-        if (!low || typeof low !== 'number') throw '(HOUSE) You must provide lowest price';
-        if (!high || typeof high !== 'number') throw '(HOUSE) You must provide highest price';
+        if (!low || typeof low !== 'number') throw '(HOUSE) You must provide min price';
+        if (!high || typeof high !== 'number') throw '(HOUSE) You must provide max price';
 
         const houseCollection = await houses();
         return await houseCollection
@@ -57,6 +74,14 @@ module.exports = {
                 $and: [ { 'roomType': roomType }, {'price': {$gte: low, $lte: high}} ]
             })
             .toArray();
+    },
+
+    async findByPriceRange(low, high){
+        if (!low || typeof low !== 'number') throw '(HOUSE) You must provide min price';
+        if (!high || typeof high !== 'number') throw '(HOUSE) You must provide max price';
+
+        const houseCollection = await houses();
+        return await houseCollection.find({ 'price': {$gte: low, $lte: high} }).toArray();
     },
 
     async getHouseById(id) {
@@ -110,6 +135,40 @@ module.exports = {
             roomType: roomType,
             price: price,
             images: imgs,
+            storedByUsers: [],
+            comments: []
+        };
+        const insertInfo = await houseCollection.insertOne(newHouse);
+        const houseId = insertInfo.insertedId + "";
+        await users.addHouseToUser(userId, houseId, address);
+        return await this.getHouseById(insertInfo.insertedId);
+    },
+
+    async addHouseForSeeding(address, statement, postedDate, userId, lat, lng, roomType, price) {
+        if (!address || typeof address !== 'string') throw '(HOUSE) You must provide house address';
+        if (!statement || typeof statement !== 'string') throw '(HOUSE) You must provide statement';
+        if (!postedDate || typeof postedDate !== 'string') throw '(HOUSE) You must provide post date';
+        if (!userId) throw '(HOUSE) You must provide user id';
+        if (!lat || typeof lat !== 'number') throw '(HOUSE) You must provide lat';
+        if (!lng || typeof lng !== 'number') throw '(HOUSE) You must provide lng';
+        if (!roomType || typeof roomType !== 'string') throw '(HOUSE) You must provide room type';
+        if (!price || typeof price !== 'number') throw '(HOUSE) You must provide price';
+
+        const houseCollection = await houses();
+        const user = await users.getUserById(userId);
+        const newHouse = {
+            address: address,
+            postedDate: postedDate,
+            statement: statement,
+            user: {
+                _id: userId,
+                username: `${user.username}`
+            },
+            lat: lat,
+            lng: lng,
+            roomType: roomType,
+            price: price,
+            images: [],
             storedByUsers: [],
             comments: []
         };
