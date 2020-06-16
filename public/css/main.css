@@ -62,26 +62,6 @@ main {
     font-size: 1.5em;
 }
 
-.card-title {
-    font-size: 1.2em;
-    margin-top: 1vh;
-    text-transform: uppercase;
-}
-
-.card-block {
-    position: relative;
-    margin-top: 10px;
-    margin-right: 5px;
-}
-
-.card-text {
-    margin-top: 10px;
-    text-overflow: ellipsis; 
-    white-space: nowrap;
-    width: 380px;
-    overflow: hidden !important;
-}
-
 .houseindexcard {
     margin-bottom: 3vh;
     overflow: hidden;
@@ -106,6 +86,27 @@ main {
 
 #houseindextext {
     word-break: break-all;
+    padding-right: 10px;
+}
+
+.card-title {
+    font-size: 1.2em;
+    margin-top: 1vh;
+    text-transform: uppercase;
+}
+
+.card-block {
+    position: relative;
+    margin-top: 10px;
+    margin-right: 5px;
+}
+
+.card-text {
+    margin-top: 10px;
+    text-overflow: ellipsis; 
+    white-space: nowrap;
+    width: 95%;
+    overflow: hidden !important;
 }
 
 /* house single */
