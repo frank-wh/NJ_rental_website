@@ -2,22 +2,6 @@ let houses = JSON.parse($('#allHouses').val());
 let map;
 let infoObj;
 
-$('#sortSubmit').on('click', function(event) {
-    event.preventDefault();
-    $.ajax({
-        url: $('#sortForm').attr('action'),
-        type: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify({
-            sort: $('#sort').val()
-        })
-    })
-    .then(function(res) {
-        $('#housesDiv').empty();
-        $('#housesDiv').append($(res));
-    });
-});
-
 $('#searchSubmit').on('click', function(event) {
     event.preventDefault();
     $.ajax({
@@ -25,7 +9,8 @@ $('#searchSubmit').on('click', function(event) {
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify({
-            search: $('#search').val(),
+            sort: $('#sort').val(),
+            roomType: $('#roomType').val(),
             low: $('#low').val(),
             high: $('#high').val()
         })
