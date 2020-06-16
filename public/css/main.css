@@ -35,7 +35,8 @@ main {
 .infoWindow img {
     width: 100%;
     height: 120px;
-    object-fit: cover;
+    -o-object-fit: cover;
+       object-fit: cover;
 }
 
 #searchDiv {
@@ -67,10 +68,14 @@ main {
     overflow: hidden;
     border: none;
     border-radius: .28571429rem;
-    box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5;
+    -webkit-box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5;
+            box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5;
 }
 .houseindexcard:hover {
-    box-shadow: 0 3px 9px 0 #a4a4a5, 0 0 0 1px #a4a4a5;
+    -webkit-box-shadow: 0 3px 9px 0 #a4a4a5, 0 0 0 1px #a4a4a5;
+            box-shadow: 0 3px 9px 0 #a4a4a5, 0 0 0 1px #a4a4a5;
+    -webkit-transition: 0.3s linear;
+    -o-transition: 0.3s linear;
     transition: 0.3s linear;
 }
 
@@ -81,7 +86,8 @@ main {
 .carousel img {
     width: 100%;
     height: 250px;
-    object-fit: cover;
+    -o-object-fit: cover;
+       object-fit: cover;
 }
 
 #houseindextext {
@@ -103,7 +109,8 @@ main {
 
 .card-text {
     margin-top: 10px;
-    text-overflow: ellipsis; 
+    -o-text-overflow: ellipsis;
+       text-overflow: ellipsis;
     white-space: nowrap;
     width: 95%;
     overflow: hidden !important;
@@ -151,7 +158,8 @@ main {
 #houseCarousel img {
     width: 100%;
     height: 500px;
-    object-fit: cover;
+    -o-object-fit: cover;
+       object-fit: cover;
 }
 
 #makecommentform {
@@ -159,8 +167,12 @@ main {
 }
 
 #comment {
+    display:-webkit-box;
+    display:-ms-flexbox;
     display:flex;
-    flex-grow:1 
+    -webkit-box-flex:1;
+        -ms-flex-positive:1;
+            flex-grow:1 
 }
 
 #commentDiv {
@@ -182,6 +194,8 @@ main {
 }
 
 .editPriceSpan {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
 }
 
@@ -212,15 +226,18 @@ main {
     width: 100%;
     background: #34495e;
     text-align: center;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
 }
 .item * {
-    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
 }
 .item img {
     width: 100%;
     height: 210px;
-    object-fit: cover;
+    -o-object-fit: cover;
+       object-fit: cover;
 }
 .item form {
     position: absolute;
@@ -243,18 +260,33 @@ main {
 }
 .item:hover img {
     opacity: 0.3;
-    filter: grayscale(100%);
+    -webkit-filter: grayscale(100%);
+            filter: grayscale(100%);
 }
 .item * {
+    -webkit-transition: all .35s ease-in-out;
+    -o-transition: all .35s ease-in-out;
     transition: all .35s ease-in-out;
 }
 .item form {
-    transform: translate(-50%, -50%) scale(0);
+    -webkit-transform: translate(-50%, -50%) scale(0);
+        -ms-transform: translate(-50%, -50%) scale(0);
+            transform: translate(-50%, -50%) scale(0);
+    -webkit-transition: -webkit-transform 300ms 0ms cubic-bezier(0.6, -0.28, 0.735, 0.045);
+    transition: -webkit-transform 300ms 0ms cubic-bezier(0.6, -0.28, 0.735, 0.045);
+    -o-transition: transform 300ms 0ms cubic-bezier(0.6, -0.28, 0.735, 0.045);
     transition: transform 300ms 0ms cubic-bezier(0.6, -0.28, 0.735, 0.045);
+    transition: transform 300ms 0ms cubic-bezier(0.6, -0.28, 0.735, 0.045), -webkit-transform 300ms 0ms cubic-bezier(0.6, -0.28, 0.735, 0.045);
 }
 .item:hover form {
-    transform: translate(-50%, -50%) scale(1);
+    -webkit-transform: translate(-50%, -50%) scale(1);
+        -ms-transform: translate(-50%, -50%) scale(1);
+            transform: translate(-50%, -50%) scale(1);
+    -webkit-transition: -webkit-transform 300ms 100ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: -webkit-transform 300ms 100ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    -o-transition: transform 300ms 100ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
     transition: transform 300ms 100ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: transform 300ms 100ms cubic-bezier(0.175, 0.885, 0.32, 1.275), -webkit-transform 300ms 100ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 .item form button {
     border: none;
@@ -273,8 +305,12 @@ main {
 #housenewtitle {
     padding-top: 10px;
     padding-bottom: 10px;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    justify-content: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
 }
 #housenewtitle h1 {
     font-size: 1.3em;
@@ -311,7 +347,8 @@ main {
 #usersingleDiv .card {
     background-color: #fcfcfc;
     margin-bottom: 20px;
-    box-shadow: 0 0 3px rgba(0,0,0,0.1);
+    -webkit-box-shadow: 0 0 3px rgba(0,0,0,0.1);
+            box-shadow: 0 0 3px rgba(0,0,0,0.1);
 }
 
 .usersingleprofile {
@@ -337,15 +374,23 @@ main {
 }
 
 .usersinglehouselist {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
 }
 .usersinglehouselist span {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     width: 0;
+    -webkit-transition: 0.4s linear;
+    -o-transition: 0.4s linear;
     transition: 0.4s linear;
     opacity: 0;
 }
 .usersinglehouselist a {
+    height: -webkit-fit-content;
+    height: -moz-fit-content;
     height: fit-content;
 }
 .usersinglehouselist:hover span {
@@ -354,10 +399,14 @@ main {
 }
 
 .usersinglestorelist {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
 }
 .usersinglestorelist span {
     width: 0;
+    -webkit-transition: 0.4s linear;
+    -o-transition: 0.4s linear;
     transition: 0.4s linear;
     opacity: 0;
 }
@@ -367,16 +416,24 @@ main {
 }
 
 .usersinglecomment {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    justify-content: space-between;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
 }
 .usersinglecomment div {
     display: inherit;
 }
 
 .usersinglecommentDiv {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     width: 0;
+    -webkit-transition: 0.4s linear;
+    -o-transition: 0.4s linear;
     transition: 0.4s linear;
     opacity: 0;
 }
@@ -385,6 +442,8 @@ main {
     opacity: 1.0;
 }
 .usersinglecommentDiv a {
+    height: -webkit-fit-content;
+    height: -moz-fit-content;
     height: fit-content;
 }
 
@@ -415,6 +474,8 @@ main {
 }
 
 #userphoneDiv {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
 }
 
