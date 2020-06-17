@@ -29,7 +29,7 @@ the dependencies we need:
   "multer-gridfs-storage"
 ```
 
-you can type your code like this:
+you can simply type your code in one line like this:
 ```
   npm i bcryptjs express express-handlebars express-session gridfs-stream mongodb multer multer-gridfs-storage
 ```
