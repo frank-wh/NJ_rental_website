@@ -5,9 +5,9 @@
     </div>
 
     <div id="searchDiv">
-        <form action="/houses/search" id="searchForm" method="POST">
+        <form action="/houses/search" class="form-inline" id="searchForm" method="POST">
             <label for="sort">Sort: </label>
-            <select id="sort" name="sort">
+            <select class="form-control" id="sort" name="sort">
                 <option value="">All</option>
                 <option value="priceUp">Payment (low to high)</option>
                 <option value="priceDown">Payment (high to low)</option>
@@ -15,7 +15,7 @@
             </select>
 
             <label for="roomType">Type: </label>
-            <select id="roomType" name="roomType">
+            <select class="form-control" id="roomType" name="roomType">
                 <option value="">All</option>
                 <option value="Private Room">Private Room</option>
                 <option value="Entire home/apt">Entire home/apt</option>
@@ -24,7 +24,7 @@
             </select>
 
             <label for="low">Price From: </label>
-            <select name="low" id="low">
+            <select class="form-control" id="low" name="low">
                 <option value="1">$0</option>
                 <option value="1000">$1000</option>
                 <option value="2000">$2000</option>
@@ -33,7 +33,7 @@
             </select>
 
             <label for="high">To: </label>
-            <select name="high" id="high">
+            <select class="form-control" id="high" name="high">
                 <option value="9999">$5000+</option>
                 <option value="1000">$1000</option>
                 <option value="2000">$2000</option>
@@ -41,7 +41,7 @@
                 <option value="4000">$4000</option>
             </select>
 
-            <button id="searchSubmit" class="btn btn-sm btn-primary" type="submit">Search</button>
+            <button id="searchSubmit" class="btn btn-md btn-primary" type="submit">Search</button>
         </form>
     </div>
 
