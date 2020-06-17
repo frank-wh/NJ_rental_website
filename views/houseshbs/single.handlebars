@@ -1,39 +1,37 @@
 <article>
     <div class="container">
-        <div class="row">
-            <div class="col-md-3 housesingleinfo">
-                <div>
-                    <h1 id="housesingleaddress"><i class="fas fa-map-marker-alt mr-2"></i>{{houses.address}}</h1>
-                    <p><i class="fas fa-pencil-alt mr-2"></i>{{houses.statement}}</p>
-                    {{#ifCond currentUser.id houses.user._id}}
-                    {{else}}
-                    <p><i class="fas fa-user-tie mr-2"></i>Posted by: {{houses.user.username}}</p>
-                    {{/ifCond}}
-                    <p><i class="far fa-calendar-times mr-2"></i>{{houses.postedDate}}</p>
-                    <p><i class="fas fa-home mr-2"></i>{{houses.roomType}}</p>
-                    <p><i class="fas fa-coins mr-2"></i>${{houses.price}}/month</p>
+        <div class="row housesingleinfo">
+            <div class="col-lg-4">
+                <h1 id="housesingleaddress"><i class="fas fa-map-marker-alt mr-2"></i>{{houses.address}}</h1>
+                <p><i class="fas fa-pencil-alt mr-2"></i>{{houses.statement}}</p>
+                {{#ifCond currentUser.id houses.user._id}}
+                {{else}}
+                <p><i class="fas fa-user-tie mr-2"></i>Posted by: {{houses.user.username}}</p>
+                {{/ifCond}}
+                <p><i class="far fa-calendar-times mr-2"></i>{{houses.postedDate}}</p>
+                <p><i class="fas fa-home mr-2"></i>{{houses.roomType}}</p>
+                <p><i class="fas fa-coins mr-2"></i>${{houses.price}}/month</p>
 
-                    <div id="storeDiv">
-                        {{#ifCond currentUser.id houses.user._id}}
-                        <p><i class="fas fa-users mr-2"></i>{{houses.storedByUsers.length}} user(s) store the house</p>
-                        <div>
-                            <a class="btn btn-sm btn-warning" href="/houses/{{houses._id}}/edit"><i class="fas fa-edit mr-2"></i>Edit</a>
-                            <form id="housesingledelete" action="/houses/{{houses._id}}" method="POST">
-                                <input type="hidden" name="_method" value="DELETE" />
-                                <button class="btn btn-sm btn-danger" type="submit"><i class="fas fa-trash-alt mr-2"></i>Delete</button>
-                            </form>
-                        </div>
-                        {{else}}
-                            {{#if isStored}}
-                            <a id="removestore" href="/houses/removestorehouse/{{houses._id}}"><i class="fas fa-heart mr-2"></i></a>{{houses.storedByUsers.length}}
-                            {{else}}
-                            <a id="storehouse" href="/houses/storehouse/{{houses._id}}"><i class="far fa-heart mr-2"></i></a>{{houses.storedByUsers.length}}
-                            {{/if}}
-                        {{/ifCond}}
+                <div id="storeDiv">
+                    {{#ifCond currentUser.id houses.user._id}}
+                    <p><i class="fas fa-users mr-2"></i>{{houses.storedByUsers.length}} user(s) store the house</p>
+                    <div>
+                        <a class="btn btn-sm btn-warning" href="/houses/{{houses._id}}/edit"><i class="fas fa-edit mr-2"></i>Edit</a>
+                        <form id="housesingledelete" action="/houses/{{houses._id}}" method="POST">
+                            <input type="hidden" name="_method" value="DELETE" />
+                            <button class="btn btn-sm btn-danger" type="submit"><i class="fas fa-trash-alt mr-2"></i>Delete</button>
+                        </form>
                     </div>
+                    {{else}}
+                        {{#if isStored}}
+                        <a id="removestore" href="/houses/removestorehouse/{{houses._id}}"><i class="fas fa-heart mr-2"></i></a>{{houses.storedByUsers.length}}
+                        {{else}}
+                        <a id="storehouse" href="/houses/storehouse/{{houses._id}}"><i class="far fa-heart mr-2"></i></a>{{houses.storedByUsers.length}}
+                        {{/if}}
+                    {{/ifCond}}
                 </div>
             </div>
-            <div class="col-md-9 housesingleimgcomment">
+            <div class="col-lg-8">
                 {{#if houses.images}}
                 <div id="houseCarousel" class="carousel slide" data-interval="false">
                     <div class="carousel-inner">
