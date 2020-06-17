@@ -26,7 +26,7 @@ main {
 }
 #houseIndexMap {
     height: 100vh;
-    width: 40vw;
+    width: 620px;
 }
 .infoWindow{
     width: 170px;
@@ -42,18 +42,27 @@ main {
 #searchDiv {
     position: fixed;
     top: 56px;
-    width: 59vw;
-    height: 50px;
+    width: 900px;
+    height: 60px;
     z-index: 1;
     background-color: #fcfcfc;
     padding: 10px;
 }
 
+#searchForm label {
+    padding-left: 10px;
+    padding-right: 5px;
+}
+
+#searchForm button {
+    margin-left: 10px;
+}
+
 #housesDiv {
-    width: 58vw;
+    width: 880px;
     padding: 10px;
     padding-left: 20px;
-    margin-top: 50px;
+    margin-top: 60px;
 }
 
 #houselistempty {
