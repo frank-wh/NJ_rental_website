@@ -1,9 +1,9 @@
 const express      = require('express'),
-	  session      = require('express-session'),
-	  exphbs  	   = require('express-handlebars'),
+      session      = require('express-session'),
+      exphbs  	   = require('express-handlebars'),
       app          = express(),
-	  static  	   = express.static(__dirname + '/public'),
-	  configRoutes = require('./routes');
+      static  	   = express.static(__dirname + '/public'),
+      configRoutes = require('./routes');
 
 const rewriteUnsuppBrowserMethods = (req, res, next) => {
 	if (req.body && req.body._method) {
