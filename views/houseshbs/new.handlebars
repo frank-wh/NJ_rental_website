@@ -1,77 +1,77 @@
 <article id="housenewDiv">
-<div class="container">
-    <div id="housenewtitle">
-        <a class="btn btn-sm btn-primary" href="/users/{{userid}}"><i class="fas fa-backspace mr-2"></i>Profile page</a>
-        <h1>New Rental House</h1>
-    </div>
-    <form action="/houses" id="housesNewForm" method="POST" enctype="multipart/form-data">
-        <input type="hidden" name="userId" value="{{userid}}" />
-        <input type="hidden" name="lat" id="lat" />
-        <input type="hidden" name="lng" id="lng" />
-
-        <div id="addrDiv">
-            <div class="form-group">
-                <label for="address">House Address: <small id="addressHelp" class="text-muted">(No more than 60 characters.)</small></label>
-                <textarea name="address" class="form-control" id="address" rows="1" aria-describedby="addressHelp" placeholder="e.g. 100 1st ST, Downtown, NJ 07302" maxlength="60" />{{newHouse.address}}</textarea>
-            </div>
-            <div>
-                <label for="check"><input id="check" class="btn btn-sm btn-secondary" type="button" value="CHECK" /> the address in the map before going to the next step.</label>
-            </div>
+    <div class="container">
+        <div id="housenewtitle">
+            <a class="btn btn-sm btn-primary" href="/users/{{userid}}"><i class="fas fa-backspace mr-2"></i>Profile page</a>
+            <h1>New Rental House</h1>
         </div>
+        <form action="/houses" id="housesNewForm" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="userId" value="{{userid}}" />
+            <input type="hidden" name="lat" id="lat" />
+            <input type="hidden" name="lng" id="lng" />
 
-        <div class="d-none" id="judgeDiv">
-            Is the location in map right?
-            <label for="next"><input id="next" class="btn btn-sm btn-secondary" type="button" value="Yes, next step" /></label>
-            <label for="back"><input id="back" class="btn btn-sm btn-secondary" type="button" value="No, back and check address" /></label>
-        </div>
-
-        <div id="houseNewMap"></div>
-
-        <div class="d-none" id="nextDiv">
-            <div class="form-group">
-                <label for="statement"><i class="fas fa-pencil-alt mr-2"></i>Statement<span class="requiredfield">*</span>: </label>
-                <textarea class="form-control" name="statement" id="statement" aria-describedby="statementHelp" placeholder="e.g. Jersey City Downtown, 1-Bedroom Garden Apt." rows="3" maxlength="80" />{{newHouse.statement}}</textarea>
-                <small id="statementHelp" class="form-text text-muted">No more than 80 characters.</small>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label for="type"><i class="fas fa-home mr-2"></i>Room Type<span class="requiredfield">*</span>: </label>
-                    <select class="form-control" id="type" name="roomType">
-                        <option value="">Select Type</option>
-                        <option value="Private Room">Private Room</option>
-                        <option value="Entire home/apt">Entire home/apt</option>
-                        <option value="Shared Room">Shared Room</option>
-                        <option value="Hotel Room">Hotel Room</option>
-                    </select>
+            <div id="addrDiv">
+                <div class="form-group">
+                    <label for="address">House Address: <small id="addressHelp" class="text-muted">(No more than 60 characters.)</small></label>
+                    <textarea name="address" class="form-control" id="address" rows="1" aria-describedby="addressHelp" placeholder="e.g. 100 1st ST, Downtown, NJ 07302" maxlength="60" />{{newHouse.address}}</textarea>
                 </div>
-                <div class="form-group col-md-6">
-                    <label for="price"><i class="fas fa-coins mr-2"></i>Price (per month) <span class="requiredfield">*</span>: </label>
-                    <input class="form-control" type="text" name="price" id="price" placeholder="e.g. 2000" maxlength="4" value="{{newHouse.price}}" 
-                        onkeypress='return event.charCode >= 48 && event.charCode <= 57' />
+                <div>
+                    <label for="check"><input id="check" class="btn btn-sm btn-secondary" type="button" value="CHECK" /> the address in the map before going to the next step.</label>
                 </div>
             </div>
 
-            <div class="form-group">
-                <label for="image">Choose An Image<span class="requiredfield">*</span>: </label>
-                <input type="file" name="image" class="form-control-file" id="image" accept="image/jpeg, image/png" />
+            <div class="d-none" id="judgeDiv">
+                Is the location in map right?
+                <label for="next"><input id="next" class="btn btn-sm btn-secondary" type="button" value="Yes, next step" /></label>
+                <label for="back"><input id="back" class="btn btn-sm btn-secondary" type="button" value="No, back and check address" /></label>
             </div>
 
-            <div>
-                <button class="btn btn-sm btn-success" type="submit">Post</button>
-                <button class="btn btn-sm btn-danger" type="reset">Clear</button>
-                <label for="backToAddr"><input class="btn btn-sm btn-secondary" type="button" id="backToAddr" value="Back to address" /></label>
+            <div id="houseNewMap"></div>
+
+            <div class="d-none" id="nextDiv">
+                <div class="form-group">
+                    <label for="statement"><i class="fas fa-pencil-alt mr-2"></i>Statement<span class="requiredfield">*</span>: </label>
+                    <textarea class="form-control" name="statement" id="statement" aria-describedby="statementHelp" placeholder="e.g. Jersey City Downtown, 1-Bedroom Garden Apt." rows="3" maxlength="80" />{{newHouse.statement}}</textarea>
+                    <small id="statementHelp" class="form-text text-muted">No more than 80 characters.</small>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="type"><i class="fas fa-home mr-2"></i>Room Type<span class="requiredfield">*</span>: </label>
+                        <select class="form-control" id="type" name="roomType">
+                            <option value="">Select Type</option>
+                            <option value="Private Room">Private Room</option>
+                            <option value="Entire home/apt">Entire home/apt</option>
+                            <option value="Shared Room">Shared Room</option>
+                            <option value="Hotel Room">Hotel Room</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="price"><i class="fas fa-coins mr-2"></i>Price (per month) <span class="requiredfield">*</span>: </label>
+                        <input class="form-control" type="text" name="price" id="price" placeholder="e.g. 2000" maxlength="4" value="{{newHouse.price}}" 
+                            onkeypress='return event.charCode >= 48 && event.charCode <= 57' />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="image">Choose An Image<span class="requiredfield">*</span>: </label>
+                    <input type="file" name="image" class="form-control-file" id="image" accept="image/jpeg, image/png" />
+                </div>
+
+                <div>
+                    <button class="btn btn-sm btn-success" type="submit">Post</button>
+                    <button class="btn btn-sm btn-danger" type="reset">Clear</button>
+                    <label for="backToAddr"><input class="btn btn-sm btn-secondary" type="button" id="backToAddr" value="Back to address" /></label>
+                </div>
+            </div>
+        </form>
+        <div id="houseNewErrorDiv">
+            <div id="houseNewFormSubmitError"></div>
+            <div id="houseNewFormError">
+            {{#if hasErrors}}
+                {{#each errors}}
+                <div>{{this}}</div>
+                {{/each}}
+            {{/if}}
             </div>
         </div>
-    </form>
-    <div id="houseNewErrorDiv">
-        <div id="houseNewFormSubmitError"></div>
-        <div id="houseNewFormError">
-        {{#if hasErrors}}
-            {{#each errors}}
-            <div>{{this}}</div>
-            {{/each}}
-        {{/if}}
-        </div>
     </div>
-</div>
 </article>
