@@ -503,7 +503,7 @@ main {
 
 /* error page*/
 .errorPage {
-    margin: 30vh;
+    margin: 30vh 0;
     font-size: 4em;
     text-align: center;
 }
@@ -511,6 +511,81 @@ main {
 /* resize when screen size is changed */
 @media screen and (max-width: 992px) {
     /* house index */
+    #houseIndexMapDiv {
+        display: none;
+    }
+
+    #searchDiv {
+        width: 100%;
+    }
+
+    #housesDiv {
+        width: 100%;
+        padding-right: 20px;
+    }
+
+    /* user single */
+    .usersingleinfo {
+        margin-top: 0;
+    }
+
+    /* error page*/
+    .errorPage {
+        margin: 30vh 20vw;
+        font-size: 3em;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    /* house single */
+    #houseCarousel {
+        width: 100%;
+        height: 300px;
+    }
+    #houseCarousel img {
+        width: 100%;
+        height: 300px;
+        -o-object-fit: cover;
+        object-fit: cover;
+    }
+
+    /* error page*/
+    .errorPage {
+        margin: 30vh 20vw;
+        font-size: 2.5em;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    /* house index */
+    #searchDiv {
+        width: 100%;
+        height: 340px;
+    }
+    
+    #searchSubmit {
+        margin-top: 5px;
+    }
+
+    #housesDiv {
+        margin-top: 350px;
+    }
+
+    /* house new */
+    #housenewDiv {
+        width: 480px;
+        margin: auto;
+    }
+
+    #housenewtitle h1 {
+        font-size: 1.1em;
+        margin-left: 5px;
+    }
+
+    #houseNewMap {
+        height: 450px;
+        width: 460px;
+    }
 }
 
 @media screen and (max-width: 480px) {
@@ -520,5 +595,27 @@ main {
     }
     nav a .fa-laptop-house {
         display: none;
+    }
+
+    /* user new & user edit */
+    #usernewDiv,
+    #usereditDiv {
+        width: 320px;
+    }
+
+    /* house new */
+    #housenewDiv {
+        width: 320px;
+        margin: auto;
+    }
+
+    #housenewtitle h1 {
+        font-size: 0.9em;
+        margin-left: 3px;
+    }
+
+    #houseNewMap {
+        height: 280px;
+        width: 300px;
     }
 }
