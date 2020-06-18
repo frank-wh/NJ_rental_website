@@ -3,7 +3,7 @@ const data = require('../data/');
 const bcrypt = require('bcryptjs');
 const users = data.users;
 const houses = data.houses;
-// const comments = data.comments;
+const comments = data.comments;
 const saltRounds = 5;
 
 async function main() {
@@ -15,7 +15,7 @@ async function main() {
 	const house1 = await houses.addHouseForSeeding(
 		'313 7th St, Downtown, NJ 07302', 
 		'Downtown Charmer - 17 Mins to NYC!', 
-		'2020-04-01', user1._id+'', 40.726246, -74.0481387, 'Entire home/apt', 4100
+		'2020-04-01', user1._id.toHexString(), 40.726246, -74.0481387, 'Entire home/apt', 4100
 	);
 
 	const user2_pw = await bcrypt.hash('Javier', saltRounds);
@@ -23,7 +23,7 @@ async function main() {
 	const house2 = await houses.addHouseForSeeding(
 		'38 Romaine Ave, Jersey City, NJ 07306', 
 		'Beautiful apt., 10 min subway ride to Manhattan', 
-		'2020-04-25', user2._id+'', 40.730931, -74.06998, 'Entire home/apt', 2950
+		'2020-04-25', user2._id.toHexString(), 40.730931, -74.06998, 'Entire home/apt', 2950
 	);
 
     const user3_pw = await bcrypt.hash('Martin', saltRounds);
@@ -31,7 +31,7 @@ async function main() {
 	const house3 = await houses.addHouseForSeeding(
 		'360 Marin Blvd, Downtown, NJ 07302', 
 		'HUGE PENTHOUSE LUXURY!!', 
-		'2020-04-11', user3._id+'', 40.7212416, -74.0407989, 'Entire home/apt', 3520
+		'2020-04-11', user3._id.toHexString(), 40.7212416, -74.0407989, 'Entire home/apt', 3520
 	);
 
 	const user4_pw = await bcrypt.hash('Massimo', saltRounds);
@@ -39,7 +39,7 @@ async function main() {
 	const house4 = await houses.addHouseForSeeding(
 		'149 Terhune Ave, Greenville, NJ 07305', 
 		'2 bedroom, minutes from bus stop to journal sq', 
-		'2020-04-01', user4._id+'', 40.705586, -74.0969139, 'Entire home/apt', 2000
+		'2020-04-01', user4._id.toHexString(), 40.705586, -74.0969139, 'Entire home/apt', 2000
 	);
 
 	const user5_pw = await bcrypt.hash('Susan8', saltRounds);
@@ -47,7 +47,7 @@ async function main() {
 	const house5 = await houses.addHouseForSeeding(
 		'133 Lafayette St, Bergen Lafayette, NJ 07304', 
 		'Jersey City, 1-Bedroom Garden Apt.', 
-		'2020-04-23', user5._id+'', 40.7136919, -74.0633154, 'Entire home/apt', 2370
+		'2020-04-23', user5._id.toHexString(), 40.7136919, -74.0633154, 'Entire home/apt', 2370
 	);
 
 	const user6_pw = await bcrypt.hash('Juliet', saltRounds);
@@ -55,7 +55,7 @@ async function main() {
 	const house6 = await houses.addHouseForSeeding(
 		'2091 John F. Kennedy Blvd, North Bergen, NJ 07047', 
 		'BNB by NYC: You own 2Floors & 5 Room...Spread Out!', 
-		'2020-05-02', user6._id+'', 40.7686981, -74.0405169, 'Private Room', 900
+		'2020-05-02', user6._id.toHexString(), 40.7686981, -74.0405169, 'Private Room', 900
 	);
 
     const user7_pw = await bcrypt.hash('Patricia', saltRounds);
@@ -63,7 +63,7 @@ async function main() {
 	const house7 = await houses.addHouseForSeeding(
 		'201 Washington St, Downtown, NJ 07302', 
 		'Shared Room Downtown', 
-		'2020-05-05', user7._id+'', 40.7140661, -74.038208, 'Shared Room', 695
+		'2020-05-05', user7._id.toHexString(), 40.7140661, -74.038208, 'Shared Room', 695
 	);
 
 	const user8_pw = await bcrypt.hash('Charlaine', saltRounds);
@@ -71,12 +71,12 @@ async function main() {
 	const house8 = await houses.addHouseForSeeding(
 		'382 Van Horne St, Jersey City, NJ 07304', 
 		'Minutes to Manhattan & Jersey Shore', 
-		'2020-04-18', user8._id+'', 40.710149, -74.060111, 'Entire home/apt', 3180
+		'2020-04-18', user8._id.toHexString(), 40.710149, -74.060111, 'Entire home/apt', 3180
 	);
 	const house9 = await houses.addHouseForSeeding(
 		'7 Monitor St, Jersey City, NJ 07304', 
 		'Minutes to Manhattan and NJ Shore', 
-		'2020-04-18', user8._id+'', 40.7165239, -74.0580937, 'Entire home/apt', 2900
+		'2020-04-18', user8._id.toHexString(), 40.7165239, -74.0580937, 'Entire home/apt', 2900
 	);
 
 	const user9_pw = await bcrypt.hash('Bozena', saltRounds);
@@ -84,7 +84,7 @@ async function main() {
 	const house10 = await houses.addHouseForSeeding(
 		'138 Leonard St, Jersey City, NJ 07307', 
 		'Cozy Shared Room / Free WiFi / 25 Min To Time Sq', 
-		'2020-04-27', user9._id+'', 40.757235, -74.049168, 'Shared Room', 500
+		'2020-04-27', user9._id.toHexString(), 40.757235, -74.049168, 'Shared Room', 500
 	);
 
 	const user10_pw = await bcrypt.hash('Merlin', saltRounds);
@@ -92,12 +92,12 @@ async function main() {
 	const house11 = await houses.addHouseForSeeding(
 		'175 Van Horne St, Jersey City, NJ 07304', 
 		'Private room with own bathroom close to NYC', 
-		'2020-05-01', user10._id+'', 40.7118974, -74.0652272, 'Private Room', 1190
+		'2020-05-01', user10._id.toHexString(), 40.7118974, -74.0652272, 'Private Room', 1190
 	);
 	const house12 = await houses.addHouseForSeeding(
 		'291 Halladay St, Jersey City, NJ 07304', 
 		'Large Room with private bathroom 20 min to Manhattan', 
-		'2020-05-01', user10._id+'', 40.7125955, -74.0628522, 'Private Room', 1000
+		'2020-05-01', user10._id.toHexString(), 40.7125955, -74.0628522, 'Private Room', 1000
 	);
 
 	const user11_pw = await bcrypt.hash('Armanda', saltRounds);
@@ -105,7 +105,7 @@ async function main() {
 	const house13 = await houses.addHouseForSeeding(
 		'11 Saddlewood Ct, Downtown, NJ 07302', 
 		'1500sf 1BR Loft: Open Plan+NYC View', 
-		'2020-05-31', user11._id+'', 40.721962, -74.041651, 'Entire home/apt', 4200
+		'2020-05-31', user11._id.toHexString(), 40.721962, -74.041651, 'Entire home/apt', 4200
 	);
 
 	const user12_pw = await bcrypt.hash('Micheal', saltRounds);
@@ -113,7 +113,7 @@ async function main() {
 	const house14 = await houses.addHouseForSeeding(
 		'321 8th St, Jersey City, NJ 07302', 
 		'Your Own Apartment Two Stops Away', 
-		'2020-06-02', user12._id+'', 40.7269078, -74.0479109, 'Entire home/apt', 3600
+		'2020-06-02', user12._id.toHexString(), 40.7269078, -74.0479109, 'Entire home/apt', 3600
 	);
 
 	const user13_pw = await bcrypt.hash('Christopher', saltRounds);
@@ -121,7 +121,7 @@ async function main() {
 	const house15 = await houses.addHouseForSeeding(
 		'201 Newark Ave, Downtown, NJ 07302', 
 		'LARGE SUNNY ROOM 15 MIN to NYC!', 
-		'2020-05-18', user13._id+'', 40.7215897, -74.0464906, 'Private Room', 1500
+		'2020-05-18', user13._id.toHexString(), 40.7215897, -74.0464906, 'Private Room', 1500
 	);
 
 	const user14_pw = await bcrypt.hash('Robert', saltRounds);
@@ -129,7 +129,7 @@ async function main() {
 	const house16 = await houses.addHouseForSeeding(
 		'410 Marin Blvd, Downtown, NJ 07302', 
 		'Lavish 2BR in Jersey City + Great Amenities', 
-		'2020-05-19', user14._id+'', 40.7241331, -74.0374535, 'Hotel Room', 5000
+		'2020-05-19', user14._id.toHexString(), 40.7241331, -74.0374535, 'Hotel Room', 5000
 	);
 
 	const user15_pw = await bcrypt.hash('Faisal', saltRounds);
@@ -137,8 +137,34 @@ async function main() {
 	const house17 = await houses.addHouseForSeeding(
 		'609 Grove St, Jersey City, NJ 07310', 
 		'Shared 2 bedrooms/ male only/ 6 min drive from Manhattan', 
-		'2020-05-22', user15._id+'', 40.7325677, -74.0411308, 'Shared Room', 880
+		'2020-05-22', user15._id.toHexString(), 40.7325677, -74.0411308, 'Shared Room', 880
 	);
+	
+	await houses.storedByUser(house1._id, user2._id.toHexString());
+	await houses.storedByUser(house1._id, user5._id.toHexString());
+	await houses.storedByUser(house1._id, user11._id.toHexString());
+
+	await houses.storedByUser(house4._id, user5._id.toHexString());
+	await houses.storedByUser(house4._id, user7._id.toHexString());
+
+	await houses.storedByUser(house5._id, user2._id.toHexString());
+	await houses.storedByUser(house5._id, user9._id.toHexString());
+	await houses.storedByUser(house5._id, user14._id.toHexString());
+	await houses.storedByUser(house5._id, user15._id.toHexString());
+
+	await houses.storedByUser(house10._id, user6._id.toHexString());
+
+	await houses.storedByUser(house12._id, user2._id.toHexString());
+	await houses.storedByUser(house12._id, user5._id.toHexString());
+
+	await houses.storedByUser(house16._id, user13._id.toHexString());
+
+	await comments.addComment(user2._id, house1._id, "nice but a little bit expensive");
+	await comments.addComment(user2._id, house3._id, "good!!");
+
+	await comments.addComment(user8._id, house10._id, "wow only 500");
+
+	await comments.addComment(user12._id, house17._id, "accept pets?");
 
 	console.log('Done seeding database');
 	await db.serverConfig.close();
