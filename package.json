@@ -2,8 +2,9 @@
   "name": "jc-rental-web",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "/tasks/seed.js",
   "scripts": {
+    "seed": "node ./tasks/seed.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js"
   },
