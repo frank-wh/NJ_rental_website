@@ -29,12 +29,16 @@ main {
     width: 40vw;
 }
 .infoWindow{
-    width: 170px;
+    width: 200px;
     height: auto;
+    font-size: 1.1em;
+}
+.infoWindow a {
+    text-decoration: none;
 }
 .infoWindow img {
     width: 100%;
-    height: 120px;
+    height: 150px;
     -o-object-fit: cover;
        object-fit: cover;
 }
@@ -509,6 +513,16 @@ main {
 }
 
 /* resize when screen size is changed */
+@media screen and (max-width: 1200px) {
+    /* house single*/
+    #houseCarousel {
+        height: 400px;
+    }
+    #houseCarousel img {
+        height: 400px;
+    }
+}
+
 @media screen and (max-width: 992px) {
     /* house index */
     #houseIndexMapDiv {
@@ -522,6 +536,14 @@ main {
     #housesDiv {
         width: 100%;
         padding-right: 20px;
+    }
+
+    /* house single*/
+    #houseCarousel {
+        height: 500px;
+    }
+    #houseCarousel img {
+        height: 500px;
     }
 
     /* user single */
