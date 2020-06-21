@@ -4,7 +4,7 @@ let infoObj;
 let prevMarker;
 let prevLabel;
 
-$('#searchSubmit').on('click', function(event) {
+$('#searchSubmit').on('click', (event) => {
     event.preventDefault();
     $.ajax({
         url: $('#searchForm').attr('action'),
@@ -17,7 +17,7 @@ $('#searchSubmit').on('click', function(event) {
             high: $('#high').val()
         })
     })
-    .then(function(res) {
+    .then( (res) => {
         $('#housesDiv').empty();
         $('#housesDiv').append($(res));
     }); 
@@ -114,7 +114,7 @@ function initMap() {
             map.panTo(this.position);
         });
 
-        infoWindow.addListener('closeclick', function() {
+        infoWindow.addListener('closeclick', () => {
             marker.isClicked = false;
             marker.setIcon(iconDefault);
             marker.setLabel(labelDefault);

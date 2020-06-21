@@ -1,4 +1,4 @@
-$('button').on('click', function(event) {
+$('button').on('click', (event) => {
     event.preventDefault();
     $('#loginErrorList').hide();
     $('#loginError').hide();

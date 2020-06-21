@@ -5,7 +5,7 @@ $(".phoneNumber").keyup(function () {
 });
 // .phoneNumber { width: 32px; margin: 4px; } CSS
 
-$('button[type=submit]').on('click', function(event) {
+$('button[type=submit]').on('click', (event) => {
     event.preventDefault();
 
     let hasError = false;

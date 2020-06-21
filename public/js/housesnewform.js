@@ -1,7 +1,7 @@
 let latlng;
 let map;
 
-$('#back').on('click', function() {
+$('#back').on('click', () => {
     $('#addrDiv').show();
     $('#judgeDiv').addClass('d-none');
     $('#nextDiv').addClass('d-none');
@@ -10,13 +10,13 @@ $('#back').on('click', function() {
         center: {lat: 40.728157, lng: -74.077644} // jersey city lat lng
     });
 });
-$('#next').on('click', function() {
+$('#next').on('click', () => {
     $('#addrDiv').hide();
     $('#judgeDiv').addClass('d-none');
     $('#houseNewMap').hide();
     $('#nextDiv').removeClass('d-none');
 });
-$('#backToAddr').on('click', function() {
+$('#backToAddr').on('click', () => {
     $('#addrDiv').show();
     $('#judgeDiv').addClass('d-none');
     $('#houseNewMap').show();
@@ -33,14 +33,14 @@ function initMap() {
         center: {lat: 40.728157, lng: -74.077644} // jersey city lat lng
     });
     const geocoder = new google.maps.Geocoder();
-    $('#check').on('click', function() {
+    $('#check').on('click', () => {
         geocodeAddress(geocoder, map);
     });
 }
 
 function geocodeAddress(geocoder, resultsMap) {
     if($('#address').val() !== ""){
-        geocoder.geocode({'address': $('#address').val()}, function(results, status) {
+        geocoder.geocode({'address': $('#address').val()}, (results, status) => {
             if (status === 'OK') {
                 latlng = results[0].geometry.location;
                 if(latlng.lat()>=40.77 || latlng.lat()<=40.665 || latlng.lng() >=-74.025 || latlng.lng() <=-74.11){
@@ -62,7 +62,7 @@ function geocodeAddress(geocoder, resultsMap) {
     }
 }
 
-$('button[type=submit]').on('click', function(event) {
+$('button[type=submit]').on('click', (event) => {
     event.preventDefault();
 
     $('#houseNewFormSubmitError').hide();

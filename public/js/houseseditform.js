@@ -1,5 +1,6 @@
-$('#editFormSubmit').on('click', function(event) {
+$('#editFormSubmit').on('click', (event) => {
     event.preventDefault();
+    $('#addImgError').hide();
     $('#editFormError').hide();
 
     if(!$('#editStatement').val() && !$('#editType').val() && !$('#editPrice').val()){
@@ -18,9 +19,10 @@ $('#editFormSubmit').on('click', function(event) {
     }
 });
 
-$('#addImgFormSubmit').on('click', function(event) {
+$('#addImgFormSubmit').on('click', (event) => {
     event.preventDefault();
     $('#addImgError').hide();
+    $('#editFormError').hide();
 
     if(!$('#img').val()){
         $('#addImgError').html('Error: Please check that you\'ve choosen an image file!');
@@ -44,7 +46,7 @@ $('#addImgFormSubmit').on('click', function(event) {
                 contentType: false,
                 processData: false,
                 data: fd,
-                success: function(res){
+                success: (res) => {
                     $('#imageDiv').append($(res));
                     $('#imageDiv').children().last().find('.removeImgForm').submit(function(event) {
                         event.preventDefault();
