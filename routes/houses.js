@@ -13,7 +13,7 @@ const Grid = require('gridfs-stream');
 const GridFsStorage = require('multer-gridfs-storage');
 
 let gfs;
-mongo.MongoClient.connect('mongodb://localhost:27017', function(err, client) {
+mongo.MongoClient.connect('mongodb://localhost:27017', (err, client) => {
     const db = client.db('JerseyCityRentalWeb');
     gfs = Grid(db, mongo);
     gfs.collection('images');
@@ -95,7 +95,7 @@ router.get('/:id/edit', async (req, res) => {
 	}
 });
 
-router.get('/image/:filename', async(req, res) => {
+router.get('/image/:filename', async (req, res) => {
     try{
         const file = await gfs.files.findOne({ filename: req.params.filename });
         if (!file || file.length === 0) {
@@ -291,7 +291,7 @@ router.patch('/:id', async (req, res) => {
 	}
 });
 
-router.delete('/:id/removeimage/:filename', async(req, res) => {
+router.delete('/:id/removeimage/:filename', async (req, res) => {
 	let updatedObject = {};
 	try {
 		const house = await houseData.getHouseById(req.params.id);
