@@ -1,73 +1,72 @@
 <article id="houseeditDiv">
-<div class="container">
-    <div class="row">
-        <div class="col-md-4">
-            <h1 class="houseeditheader">House Information</h1>
-            <form action="/houses/{{house._id}}" id="housesEditForm" method="POST">
-                <input type="hidden" name="_method" value="PATCH" />
-                <div class="form-group">
-                    <label for="address"><i class="fas fa-map-marker-alt mr-2"></i>Address:</label>
-                    <textarea class="form-control" id="address" readonly>{{house.address}}</textarea>
-                </div>
-                <div class="form-group">
-                    <label for="editStatement"><i class="fas fa-pencil-alt mr-2"></i>Statement: </label>
-                    <textarea class="form-control" name="statement" id="editStatement" aria-describedby="statementHelp" rows="4" maxlength="80">{{house.statement}}</textarea>
-                    <small id="statementHelp" class="form-text text-muted">No more than 80 characters.</small>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="editType"><i class="fas fa-home mr-2"></i>Room Type: </label>
-                        <select class="form-control" id="editType" name="roomType">
-                            <option value="">Select Type</option>
-                            <option value="Private Room">Private Room</option>
-                            <option value="Entire home/apt">Entire home/apt</option>
-                            <option value="Shared Room">Shared Room</option>
-                            <option value="Hotel Room">Hotel Room</option>
-                        </select>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="editPrice"><i class="fas fa-coins mr-2"></i>Price: <span class="editPriceSpan col-form-label">$
-                        <input class="form-control" type="text" name="price" id="editPrice" maxlength="4" value="{{house.price}}" 
-                            onkeypress='return event.charCode >= 48 && event.charCode <= 57' />/month</span></label>
-                    </div>
-                </div>
-                <div>
-                    <button id="editFormSubmit" class="btn btn-sm btn-warning" type="submit"><i class="fas fa-edit mr-2"></i>Edit</button>
-                    <a class="btn btn-sm btn-primary" href="/houses/{{house._id}}"><i class="fas fa-backspace mr-2"></i>Back to house page</a>
-                </div>
-                <div id="editFormError"></div>
-            </form>
-        </div>
-        <div class="col-md-8">
-            <h1 class="houseeditheader">Image</h1>
-            <div>
-                <form action="/houses/addimg/{{house._id}}" class="form-inline" id="addImgForm" method="POST" enctype="multipart/form-data">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <h1 class="houseeditheader">House Information</h1>
+                <form action="/houses/{{house._id}}" id="housesEditForm" method="POST">
+                    <input type="hidden" name="_method" value="PATCH" />
                     <div class="form-group">
-                        <label for="img"></label>
-                        <input class="form-control-file" type="file" name="image" id="img" accept="image/jpeg, image/png" />
+                        <label for="address"><i class="fas fa-map-marker-alt mr-2"></i>Address:</label>
+                        <textarea class="form-control" id="address" readonly>{{house.address}}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="editStatement"><i class="fas fa-pencil-alt mr-2"></i>Statement: </label>
+                        <textarea class="form-control" name="statement" id="editStatement" aria-describedby="statementHelp" rows="4" maxlength="80">{{house.statement}}</textarea>
+                        <small id="statementHelp" class="form-text text-muted">No more than 80 characters.</small>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="editType"><i class="fas fa-home mr-2"></i>Room Type: </label>
+                            <select class="form-control" id="editType" name="roomType">
+                                <option value="">Select Type</option>
+                                <option value="Private Room">Private Room</option>
+                                <option value="Entire home/apt">Entire home/apt</option>
+                                <option value="Shared Room">Shared Room</option>
+                                <option value="Hotel Room">Hotel Room</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="editPrice"><i class="fas fa-coins mr-2"></i>Price: <span class="editPriceSpan col-form-label">$
+                            <input class="form-control" type="text" name="price" id="editPrice" maxlength="4" value="{{house.price}}" 
+                                onkeypress='return event.charCode >= 48 && event.charCode <= 57' />/month</span></label>
+                        </div>
                     </div>
                     <div>
-                        <button id="addImgFormSubmit" class="btn btn-sm btn-success" type="submit"><i class="far fa-image mr-2"></i>Add Image</button>
+                        <button id="editFormSubmit" class="btn btn-sm btn-warning" type="submit"><i class="fas fa-edit mr-2"></i>Edit</button>
+                        <a class="btn btn-sm btn-primary" href="/houses/{{house._id}}"><i class="fas fa-backspace mr-2"></i>Back to house page</a>
                     </div>
-                    <div id="addImgError"></div>
+                    <div id="editFormError"></div>
                 </form>
             </div>
-
-            <div>
-                <div id="imageDiv">
-                    {{#if hasImages}}
-                    {{#each images}}
-                    <div class="item">
-                        <img src="/houses/image/{{this.filename}}" class="img-fluid" alt="">
-                        <form action="/houses/{{../house._id}}/removeimage/{{this.filename}}" class="removeImgForm">
-                            <button type="submit"><i class="fas fa-trash"></i></button>
-                        </form>
+            <div class="col-md-8">
+                <h1 class="houseeditheader">Image</h1>
+                <div>
+                    <form action="/houses/addimg/{{house._id}}" class="form-inline" id="addImgForm" method="POST" enctype="multipart/form-data">
+                        <div>
+                            <button id="addImgFormSubmit" class="btn btn-sm btn-success" type="submit"><i class="far fa-image mr-2"></i>Add Image</button>
+                        </div>
+                        <div class="form-group">
+                            <label for="img"></label>
+                            <input class="form-control-file" type="file" name="image" id="img" accept="image/jpeg, image/png" />
+                        </div>
+                        <div id="addImgError"></div>
+                    </form>
+                </div>
+                <div>
+                    <div id="imageDiv">
+                        {{#if hasImages}}
+                        {{#each images}}
+                        <div class="item">
+                            <img src="/houses/image/{{this.filename}}" class="img-fluid" alt="">
+                            <form action="/houses/{{../house._id}}/removeimage/{{this.filename}}" class="removeImgForm">
+                                <button type="submit"><i class="fas fa-trash"></i></button>
+                            </form>
+                        </div>
+                        {{/each}}
+                        {{/if}}
                     </div>
-                    {{/each}}
-                    {{/if}}
                 </div>
             </div>
         </div>
     </div>
-</div>
 </article>
