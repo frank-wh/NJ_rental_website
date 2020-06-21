@@ -16,9 +16,7 @@ const rewriteUnsuppBrowserMethods = (req, res, next) => {
 const handlebarsInstance = exphbs.create({
 	defaultLayout: 'main',
 	helpers: {
-		toJson : function(context) {
-			return JSON.stringify(context).replace(/[\']/g, "&apos;");
-		},
+		toJson : context => JSON.stringify(context).replace(/[\']/g, "&apos;"),
 		ifCond : function(v1, v2, options) {
 			return v1 === v2 ? options.fn(this) : options.inverse(this);
 		}
