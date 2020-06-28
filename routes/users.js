@@ -121,11 +121,12 @@ router.post('/new', async (req, res) => {
 
 router.post('/login', async (req, res) => {
 	let userInfo = req.body;
-	let errors = []; 
-	const message = "Error: Either username or password does not match";
+	let errors = [];
+	let user;
+	let message;
 	
-	if (!userInfo.username) errors.push('Error: Please check that you\'ve entered an username');
-	if (!userInfo.password) errors.push('Error: Please check that you\'ve entered a password');
+	if (!userInfo.username && !userInfo.email) errors.push('Error: Please check that you\'ve entered username or email');
+	if (!userInfo.password) errors.push('Error: Password couldn\'t be empty');
 	if (errors.length > 0) {
 		return res.status(401).render('usershbs/login', {
 			error: errors, 
@@ -135,7 +136,13 @@ router.post('/login', async (req, res) => {
 	}
 
 	try {
-		const user = await userData.getUserByName(userInfo.username);
+		if(userInfo.username) {
+			message = "Error: Either username or password does not match";
+			user = await userData.getUserByName(userInfo.username);
+		} else {
+			message = "Error: Either email or password does not match";
+			user = await userData.getUserByEmail(userInfo.email);
+		}
 		const passwordIsCorrect = await bcrypt.compare(userInfo.password, user.password);
 		if (passwordIsCorrect) {
 			req.session.user = {id: user._id, name: user.username};
