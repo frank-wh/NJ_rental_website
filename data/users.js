@@ -31,6 +31,15 @@ module.exports = {
         return user;
     },
     
+    async getUserByEmail(email) {
+        if (!email || typeof email !== 'string') throw '(USER) You must provide email';
+
+        const userCollection = await users();
+        const user = await userCollection.findOne({email: email});
+        if (!user) throw 'User not found';
+        return user;
+    },
+
     async addUser(username, email, phoneNumber, password) {
         if (!username || typeof username !== 'string') throw '(USER) You must provide username';
         if (!email || typeof email !== 'string') throw '(USER) You must provide email';
