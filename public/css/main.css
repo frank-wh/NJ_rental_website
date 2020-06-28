@@ -460,7 +460,7 @@ main {
 /* user login */
 #userloginDiv {
     width: 360px;
-    margin: 20vh auto;
+    margin: 18vh auto;
     font-size: 1.1em;
 }
 
@@ -623,6 +623,15 @@ main {
     #usernewDiv,
     #usereditDiv {
         width: 320px;
+    }
+
+    /* user login */
+    #userloginDiv {
+        width: 320px;
+        font-size: 1em;
+    }
+    #userloginDiv .card .card-header {
+        font-size: 0.9em;
     }
 
     /* house new */
