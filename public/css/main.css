@@ -11,6 +11,13 @@ textarea {
     background: #e3f2fd;
 }
 
+.navbar-light .navbar-nav .nav-link {
+    color: rgba(0,0,0,.7);
+}
+.navbar-light .navbar-nav .nav-link:hover {
+    color: rgba(0,0,0,.9);
+}
+
 /* main */
 main { 
     padding-top: 56px;
@@ -102,7 +109,7 @@ main {
        object-fit: cover;
 }
 
-#houseindextext {
+.houseindextext {
     word-break: break-all;
     padding-right: 10px;
 }
@@ -214,12 +221,12 @@ main {
     font-size: 0.9em;
     margin-top: 10px;
     margin-bottom: 10px;
-    color: #ff0000;
+    color: #ee0000;
 }
 
 #addImgError {
     font-size: 0.9em;
-    color: #ff0000;
+    color: #ee0000;
 }
 
 .item {
@@ -335,12 +342,12 @@ main {
 .requiredfield {
     margin: 0px 2px;
     font-size: 1.2em;
-    color: #ff0000;
+    color: #ee0000;
 }
 
 #houseNewErrorDiv {
     margin-top: 1vh;
-    color: #ff0000;
+    color: #ee0000;
 }
 
 /* user single */
@@ -388,7 +395,7 @@ main {
     display: -ms-flexbox;
     display: flex;
 }
-.usersinglehouselist span {
+.usersinglehouselist div {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -398,11 +405,11 @@ main {
     transition: 0.4s linear;
     opacity: 0;
 }
-.usersinglehouselist:hover span {
+.usersinglehouselist:hover div {
     width: 80px;
     opacity: 1.0;
 }
-.usersinglehouselist span a {
+.usersinglehouselist div a {
     height: -webkit-fit-content;
     height: -moz-fit-content;
     height: fit-content;
@@ -413,14 +420,14 @@ main {
     display: -ms-flexbox;
     display: flex;
 }
-.usersinglestorelist span {
+.usersinglestorelist div {
     width: 0;
     -webkit-transition: 0.4s linear;
     -o-transition: 0.4s linear;
     transition: 0.4s linear;
     opacity: 0;
 }
-.usersinglestorelist:hover span {
+.usersinglestorelist:hover div {
     width: 40px;
     opacity: 1.0;
 }
@@ -447,8 +454,8 @@ main {
     transition: 0.4s linear;
     opacity: 0;
 }
-.usersinglecomment:hover span {
-    width: 80px;
+.usersinglecomment:hover .usersinglecommentDiv {
+    width: 70px;
     opacity: 1.0;
 }
 .usersinglecommentDiv a {
@@ -474,7 +481,7 @@ main {
 #loginErrorList {
     text-align: center;
     font-size: 0.9em;
-    color: #ff0000;
+    color: #ee0000;
 }
 
 /* user new */
@@ -496,7 +503,7 @@ main {
 .userErrorDiv {
     margin-top: 1vh;
     font-size: 0.9em;
-    color: #ff0000;
+    color: #ee0000;
 }
 
 /* user edit */
@@ -569,6 +576,26 @@ main {
         height: 300px;
         -o-object-fit: cover;
         object-fit: cover;
+    }
+
+    /* user single */
+    .usersingleinfo .card ul {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .usersinglehouselist:hover div {
+        width: 70px;
+        opacity: 1.0;
+    }
+
+    .usersinglestorelist:hover div {
+        width: 40px;
+        opacity: 1.0;
+    }
+
+    .commentDate {
+        display: none;
     }
 
     /* error page*/
