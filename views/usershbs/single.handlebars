@@ -7,8 +7,10 @@
                     <p><i class="fas fa-file-signature mr-2"></i>Username: {{user.username}}</p>
                     <p><i class="fas fa-envelope-open-text mr-2"></i>Email: {{user.email}}</p>
                     <p><i class="fas fa-phone-alt mr-2"></i>Phone: {{user.phoneNumber}}</p>
-                    <p><i class="fas fa-user-edit mr-2"></i><a href="/users/{{user._id}}/edit">Edit profile</a></p>
-                    <p><i class="fas fa-house-user mr-2"></i><a href="/users/{{user._id}}/newHouse">Post Your House</a></p>
+                    <p>
+                        <a href="/users/{{user._id}}/edit" class="btn btn-sm btn-warning"><i class="fas fa-user-edit mr-2"></i>Edit Profile</a>
+                        <a href="/users/{{user._id}}/newHouse" class="btn btn-sm btn-success"><i class="fas fa-house-user mr-2"></i>Post Your House</a>
+                    </p>
                 </div>
             </div>
             <div class="col-lg-8 usersingleinfo">
@@ -18,12 +20,12 @@
                     <ul>
                         {{#each user.houseLists}}
                         <li class="usersinglehouselist">
-                            <span>
+                            <div>
                                 <form action="/houses/{{this._id}}">
                                     <button class="btn btn-sm btn-danger" type="submit"><i class="far fa-trash-alt"></i></button>
                                 </form>
                                 <a class="btn btn-sm btn-warning" href="/houses/{{this._id}}/edit"><i class="fas fa-edit"></i></a>
-                            </span>
+                            </div>
                             <a href="/houses/{{this._id}}">{{this.address}}</a>
                         </li>
                         {{/each}}
@@ -36,11 +38,11 @@
                     <ul>
                         {{#each user.storedHouses}}
                         <li class="usersinglestorelist">
-                            <span>
+                            <div>
                                 <form action="/users/removestorehouse/{{this._id}}">
                                     <button class="btn btn-sm btn-danger" type="submit"><i class="far fa-trash-alt"></i></button>
                                 </form>
-                            </span>
+                            </div>
                             <a href="/houses/{{this._id}}">{{this.address}}</a>
                         </li>
                         {{/each}}
@@ -56,15 +58,15 @@
                             <a href="/houses/{{this.houseId}}">{{this.text}}</a>
                             <div class="usersinglecomment">
                                 <div>
-                                    <span class="usersinglecommentDiv">
+                                    <div class="usersinglecommentDiv">
                                         <form action="/comments/{{this._id}}">
                                             <button class="btn btn-sm btn-danger" type="submit"><i class="far fa-trash-alt"></i></button>
                                         </form>
                                         <a class="btn btn-sm btn-primary" href="/houses/{{this.houseId}}"><i class="fas fa-external-link-square-alt"></i></a>
-                                    </span>
+                                    </div>
                                     <address>{{this.address}}</address>
                                 </div>
-                                <address>{{this.commentDate}}</address>
+                                <address class="commentDate">{{this.commentDate}}</address>
                             </div>
                         </li>
                         {{/each}}
