@@ -12,7 +12,7 @@
             <div id="addrDiv">
                 <div class="form-group">
                     <label for="address">House Address: <small id="addressHelp" class="text-muted">(No more than 60 characters.)</small></label>
-                    <textarea name="address" class="form-control" id="address" rows="1" aria-describedby="addressHelp" placeholder="e.g. 100 1st ST, Downtown, NJ 07302" maxlength="60" />{{newHouse.address}}</textarea>
+                    <textarea name="address" class="form-control" id="address" rows="1" aria-describedby="addressHelp" placeholder="e.g. 100 1st ST, Downtown, NJ 07302" maxlength="60">{{newHouse.address}}</textarea>
                 </div>
                 <div>
                     <label for="check"><input id="check" class="btn btn-sm btn-secondary" type="button" value="CHECK" /> the address in the map before going to the next step.</label>
@@ -30,7 +30,7 @@
             <div class="d-none" id="nextDiv">
                 <div class="form-group">
                     <label for="statement"><i class="fas fa-pencil-alt mr-2"></i>Statement<span class="requiredfield">*</span>: </label>
-                    <textarea class="form-control" name="statement" id="statement" aria-describedby="statementHelp" placeholder="e.g. Jersey City Downtown, 1-Bedroom Garden Apt." rows="3" maxlength="80" />{{newHouse.statement}}</textarea>
+                    <textarea class="form-control" name="statement" id="statement" aria-describedby="statementHelp" placeholder="e.g. Jersey City Downtown, 1-Bedroom Garden Apt." rows="3" maxlength="80">{{newHouse.statement}}</textarea>
                     <small id="statementHelp" class="form-text text-muted">No more than 80 characters.</small>
                 </div>
                 <div class="form-row">
