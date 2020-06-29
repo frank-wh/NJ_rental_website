@@ -17,7 +17,12 @@
     $('#storehouse').on('click', function(event) {
         event.preventDefault();
         if($('#currentUser').html() === undefined){
-            return alert("please sign in first");
+            return Swal.fire({
+                icon: 'error',
+                title: 'Please sign in first',
+                showConfirmButton: false,
+                timer: 1500,
+            });
         }
         $.ajax({
             url: $(this).attr('href'),
@@ -33,7 +38,12 @@
     $('#removestore').on('click', function(event) {
         event.preventDefault();
         if($('#currentUser').html() === undefined){
-            return alert("please sign in first");
+            return Swal.fire({
+                icon: 'error',
+                title: 'Please sign in first',
+                showConfirmButton: false,
+                timer: 1500,
+            });
         }
         $.ajax({
             url: $(this).attr('href'),
@@ -49,7 +59,12 @@
     $('#commentSubmit').on('click', function(event) {
         event.preventDefault();
         if($('#currentUser').html() === undefined){
-            return alert("please sign in first");
+            return Swal.fire({
+                icon: 'error',
+                title: 'Please sign in first',
+                showConfirmButton: false,
+                timer: 1500,
+            });
         }
         const text = $('#comment').val();
         $('#comment').val("");
@@ -81,7 +96,12 @@
             });
         }
         else {
-            alert("please enter something to make a comment");
+            return Swal.fire({
+                icon: 'error',
+                title: 'Please enter something to make a comment',
+                showConfirmButton: false,
+                timer: 1500,
+            });
         }
     });
     
