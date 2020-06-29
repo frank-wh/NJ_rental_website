@@ -20,7 +20,7 @@ router.get('/profile', async (req, res) => {
 
 router.get('/logout', async (req, res) => {
 	req.session.destroy();
-	res.redirect('/houses');
+	res.redirect('back');
 });
 
 router.get('/:id', async (req, res) => {
