@@ -159,12 +159,12 @@ async function main() {
 
 	await houses.storedByUser(house16._id, user13._id.toHexString());
 
-	await comments.addComment(user2._id, house1._id, "nice but a little bit expensive");
-	await comments.addComment(user2._id, house3._id, "good!!");
+	await comments.addComment(user2._id.toHexString(), house1._id.toHexString(), "nice but a little bit expensive");
+	await comments.addComment(user2._id.toHexString(), house3._id.toHexString(), "good!!");
 
-	await comments.addComment(user8._id, house10._id, "wow only 500");
+	await comments.addComment(user8._id.toHexString(), house10._id.toHexString(), "wow only 500 is that real?");
 
-	await comments.addComment(user12._id, house17._id, "accept pets?");
+	await comments.addComment(user12._id.toHexString(), house17._id.toHexString(), "Hi, are pets acceptible?");
 
 	console.log('Done seeding database');
 	await db.serverConfig.close();
