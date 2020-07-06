@@ -89,13 +89,16 @@ main {
     border-radius: .28571429rem;
     -webkit-box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5;
             box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5;
+    -webkit-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
 }
 .houseindexcard:hover {
     -webkit-box-shadow: 0 3px 9px 0 #a4a4a5, 0 0 0 1px #a4a4a5;
             box-shadow: 0 3px 9px 0 #a4a4a5, 0 0 0 1px #a4a4a5;
-    -webkit-transition: 0.3s linear;
-    -o-transition: 0.3s linear;
-    transition: 0.3s linear;
+    -webkit-transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
 }
 
 .carousel {
