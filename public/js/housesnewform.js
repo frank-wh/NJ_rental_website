@@ -17,6 +17,8 @@ $('#next').on('click', () => {
     $('#nextDiv').removeClass('d-none');
 });
 $('#backToAddr').on('click', () => {
+    $('#houseNewFormSubmitError').hide();
+    $('#houseNewFormError').hide();
     $('#addrDiv').show();
     $('#judgeDiv').addClass('d-none');
     $('#houseNewMap').show();
@@ -45,7 +47,12 @@ function geocodeAddress(geocoder, resultsMap) {
                 latlng = results[0].geometry.location;
                 if(latlng.lat()>=40.77 || latlng.lat()<=40.665 || latlng.lng() >=-74.025 || latlng.lng() <=-74.11){
                     latlng = undefined;
-                    return alert('Geocode was not successful for the following reason: Not in Jersey City area');
+                    return Swal.fire({
+                        icon: 'warning',
+                        title: 'Geocode was not successful for the following reason: Not in Jersey City area',
+                        showConfirmButton: false,
+                        timer: 3000,
+                    });
                 }
                 resultsMap.zoom = 18;
                 resultsMap.setCenter(latlng);
@@ -56,7 +63,12 @@ function geocodeAddress(geocoder, resultsMap) {
                 $('#judgeDiv').removeClass('d-none');
                 $('#addrDiv').hide();
             } else {
-                alert('Geocode was not successful for the following reason: ' + status);
+                return Swal.fire({
+                    icon: 'warning',
+                    title: 'Geocode was not successful for the following reason: ' + status,
+                    showConfirmButton: false,
+                    timer: 3000,
+                });
             }
         });
     }
