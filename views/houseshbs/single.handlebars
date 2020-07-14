@@ -19,7 +19,7 @@
                         <a class="btn btn-sm btn-warning" href="/houses/{{houses._id}}/edit"><i class="fas fa-edit mr-2"></i>Edit</a>
                         <form id="housesingledelete" action="/houses/{{houses._id}}" method="POST">
                             <input type="hidden" name="_method" value="DELETE" />
-                            <button class="btn btn-sm btn-danger" type="submit"><i class="fas fa-trash-alt mr-2"></i>Delete</button>
+                            <button class="btn btn-sm btn-danger" id="deleteSubmit" type="submit"><i class="fas fa-trash-alt mr-2"></i>Delete</button>
                         </form>
                     </div>
                     {{else}}
