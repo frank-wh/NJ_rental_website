@@ -4,6 +4,9 @@ const data = require('../data');
 const commentData = data.comments;
 
 router.post('/', async (req, res) => {
+	if (!req.session.user) {
+		return res.status(403).render('errorshbs/error403');
+	}
 	if (!req.body || !req.body.text) {
 		return res.redirect(`/houses/${req.body.houseId}`);
 	}
