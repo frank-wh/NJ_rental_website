@@ -468,45 +468,28 @@ main {
 }
 
 /* user login */
-#userloginDiv {
-    width: 360px;
-    margin: 18vh auto;
-    font-size: 1.1em;
+#loginDiv {
+    width: 480px;
+    margin: 10vh auto;
 }
 
-#userloginmessage {
-    font-size: 0.8em;
-    text-align: center;
-    margin-top: 2vh;
-}
-
-#loginError,
-#loginErrorList {
+#signInClientError,
+#signInServerError,
+.signUpErrorDiv {
+    margin-top: 5px;
     text-align: center;
     font-size: 0.9em;
     color: #ee0000;
 }
 
-/* user new */
-#usernewDiv {
-    width: 400px;
-    margin: 1vh auto;
-}
-
-#userphoneDiv {
+#signUpPhoneDiv {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
 }
 
-.phoneNumber3 {
+.signUpPhone3 {
     width: 50%;
-}
-
-.userErrorDiv {
-    margin-top: 1vh;
-    font-size: 0.9em;
-    color: #ee0000;
 }
 
 /* user edit */
@@ -633,6 +616,11 @@ main {
         height: 450px;
         width: 460px;
     }
+
+    /* user login */
+    #loginDiv {
+        width: 400px;
+    }
 }
 
 @media screen and (max-width: 479.98px) {
@@ -644,18 +632,17 @@ main {
         display: none;
     }
 
-    /* user new & user edit */
-    #usernewDiv,
+    /* user edit */
     #usereditDiv {
         width: 320px;
     }
 
     /* user login */
-    #userloginDiv {
+    #loginDiv {
         width: 320px;
         font-size: 1em;
     }
-    #userloginDiv .card .card-header {
+    #loginDiv .card .card-header {
         font-size: 0.9em;
     }
 
