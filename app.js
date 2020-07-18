@@ -31,9 +31,6 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(rewriteUnsuppBrowserMethods);
 
-/***************
-*  Middleware  *
-***************/
 app.use(
 	session({
 		name: 'AuthCookie',
@@ -62,101 +59,6 @@ app.use(async (req, res, next) => {
 	next();
 });
 
-/**********
-*  Users  *
-**********/
-app.use('/users/new', async (req, res, next) => {
-	if (req.session.user) {
-		return res.status(403).redirect('/houses/');
-	}
-	next();
-});
-
-app.use('/users/login', async (req, res, next) => {
-	if (req.session.user) {
-		return res.status(403).redirect('/houses/');
-	}
-	next();
-});
-
-app.use('/users/profile', async (req, res, next) => {
-	if (!req.session.user) {
-		return res.status(403).redirect('/users/login');
-	}
-	next();
-});
-
-app.use('/users/logout', async (req, res, next) => {
-	if (!req.session.user) {
-		return res.status(403).redirect('/users/login');
-	}
-	next();
-});
-
-app.use('/users/:id/edit', async (req, res, next) => {
-	if (!req.session.user) {
-		return res.status(403).redirect('/users/login');
-	}
-	else if (req.session.user.id !== req.params.id) {
-		return res.status(403).render('errorshbs/error403');
-	}
-	next();
-});
-
-app.use('/users/:id/newHouse', async (req, res, next) => {
-	if (!req.session.user) {
-		return res.status(403).redirect('/users/login');
-	}
-	else if (req.session.user.id !== req.params.id) {
-		return res.status(403).render('errorshbs/error403');
-	}
-	next();
-});
-
-app.use('/users/removestorehouse/:houseid', async (req, res, next) => {
-	if (!req.session.user) {
-		return res.status(403).redirect('/users/login');
-	}
-	next();
-});
-
-/***********
-*  Houses  *
-***********/
-app.use('/houses/storehouse/:id', async (req, res, next) => {
-	if (!req.session.user) {
-		return res.status(403).redirect('/users/login');
-	}
-	next();
-});
-
-app.use('/houses/removestorehouse/:id', async (req, res, next) => {
-	if (!req.session.user) {
-		return res.status(403).redirect('/users/login');
-	}
-	next();
-});
-
-app.use('/houses/:id/edit', async (req, res, next) => {
-	if (!req.session.user) {
-		return res.status(403).redirect('/users/login');
-	}
-	next();
-});
-
-/************
-*  Comments *
-************/
-app.use('/comments', async (req, res, next) => {
-	if (!req.session.user) {
-		return res.status(403).redirect('/users/login');
-	}
-	next();
-});
-
-/***********
-*  Routes  *
-***********/
 configRoutes(app);
 
 app.listen(3000, () => {
