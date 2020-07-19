@@ -5,73 +5,126 @@
                 <div class="card">
                     <h1 class="card-title"><i class="far fa-address-card mr-2"></i>Your Profile</h1>
                     <p><i class="fas fa-user mr-2"></i>Username: {{user.username}}</p>
-                    <p><i class="fas fa-envelope-open-text mr-2"></i>Email: {{user.email}}</p>
-                    <p><i class="fas fa-phone-alt mr-2"></i>Phone: {{user.phoneNumber}}</p>
-                    <p>
-                        <a href="/users/{{user._id}}/edit" class="btn btn-sm btn-warning"><i class="fas fa-user-edit mr-2"></i>Edit Profile</a>
+                    <p><i class="fas fa-envelope-open-text mr-2"></i>Email: <span id="emailSpan">{{user.email}}</span></p>
+                    <p><i class="fas fa-phone-alt mr-2"></i>Phone: <span id="phoneSpan">{{user.phoneNumber}}</span></p>
+                    <p id="editAndPost">
+                        <button id="editBtn" class="btn btn-sm btn-warning"><i class="fas fa-user-edit mr-2"></i>Edit Your Profile</button>
                         <a href="/users/{{user._id}}/newHouse" class="btn btn-sm btn-success"><i class="fas fa-house-user mr-2"></i>Post Your House</a>
+                    </p>
+                    <p id="editCancel">
+                        <button id="editCancelBtn" class="btn btn-sm btn-danger btn-block"><i class="fas fa-window-close mr-2"></i>Cancel</button>
                     </p>
                 </div>
             </div>
-            <div class="col-lg-8 usersingleinfo">
-                <div class="card">
-                    <h1 class="card-title"><i class="fas fa-house-user mr-2"></i>Posted Houses</h1>
-                    {{#if user.houseLists.length}}
-                    <ul>
-                        {{#each user.houseLists}}
-                        <li class="usersinglehouselist">
-                            <div>
-                                <form action="/houses/{{this._id}}">
-                                    <button class="btn btn-sm btn-danger" type="submit"><i class="far fa-trash-alt"></i></button>
-                                </form>
-                                <a class="btn btn-sm btn-warning" href="/houses/{{this._id}}/edit"><i class="fas fa-edit"></i></a>
-                            </div>
-                            <a href="/houses/{{this._id}}">{{this.address}}</a>
-                        </li>
-                        {{/each}}
-                    </ul>
-                    {{/if}}
-                </div>
-                <div class="card">
-                    <h1 class="card-title"><i class="fas fa-list mr-2"></i>Store List</h1>
-                    {{#if user.storedHouses.length}}
-                    <ul>
-                        {{#each user.storedHouses}}
-                        <li class="usersinglestorelist">
-                            <div>
-                                <form action="/users/removestorehouse/{{this._id}}">
-                                    <button class="btn btn-sm btn-danger" type="submit"><i class="far fa-trash-alt"></i></button>
-                                </form>
-                            </div>
-                            <a href="/houses/{{this._id}}">{{this.address}}</a>
-                        </li>
-                        {{/each}}
-                    </ul>
-                    {{/if}}
-                </div>
-                <div class="card">
-                    <h1 class="card-title"><i class="far fa-comment-dots mr-2"></i>Comments</h1>
-                    {{#if user.comments.length}}
-                    <ul>
-                        {{#each user.comments}}
-                        <li>
-                            <a href="/houses/{{this.houseId}}">{{this.text}}</a>
-                            <div class="usersinglecomment">
+            <div class="col-lg-8">
+                <div id="usersingleinfo">
+                    <div class="card">
+                        <h1 class="card-title"><i class="fas fa-house-user mr-2"></i>Posted Houses</h1>
+                        {{#if user.houseLists.length}}
+                        <ul>
+                            {{#each user.houseLists}}
+                            <li class="usersinglehouselist">
                                 <div>
-                                    <div class="usersinglecommentDiv">
-                                        <form action="/comments/{{this._id}}">
-                                            <button class="btn btn-sm btn-danger" type="submit"><i class="far fa-trash-alt"></i></button>
-                                        </form>
-                                        <a class="btn btn-sm btn-primary" href="/houses/{{this.houseId}}"><i class="fas fa-external-link-square-alt"></i></a>
-                                    </div>
-                                    <address>{{this.address}}</address>
+                                    <form class="infoForm" action="/houses/{{this._id}}">
+                                        <button class="btn btn-sm btn-danger" type="submit"><i class="far fa-trash-alt"></i></button>
+                                    </form>
+                                    <a class="btn btn-sm btn-warning" href="/houses/{{this._id}}/edit"><i class="fas fa-edit"></i></a>
                                 </div>
-                                <address class="commentDate">{{this.commentDate}}</address>
+                                <a href="/houses/{{this._id}}">{{this.address}}</a>
+                            </li>
+                            {{/each}}
+                        </ul>
+                        {{/if}}
+                    </div>
+                    <div class="card">
+                        <h1 class="card-title"><i class="fas fa-list mr-2"></i>Store List</h1>
+                        {{#if user.storedHouses.length}}
+                        <ul>
+                            {{#each user.storedHouses}}
+                            <li class="usersinglestorelist">
+                                <div>
+                                    <form class="infoForm" action="/users/removestorehouse/{{this._id}}">
+                                        <button class="btn btn-sm btn-danger" type="submit"><i class="far fa-trash-alt"></i></button>
+                                    </form>
+                                </div>
+                                <a href="/houses/{{this._id}}">{{this.address}}</a>
+                            </li>
+                            {{/each}}
+                        </ul>
+                        {{/if}}
+                    </div>
+                    <div class="card">
+                        <h1 class="card-title"><i class="far fa-comment-dots mr-2"></i>Comments</h1>
+                        {{#if user.comments.length}}
+                        <ul>
+                            {{#each user.comments}}
+                            <li>
+                                <a href="/houses/{{this.houseId}}">{{this.text}}</a>
+                                <div class="usersinglecomment">
+                                    <div>
+                                        <div class="usersinglecommentDiv">
+                                            <form class="infoForm" action="/comments/{{this._id}}">
+                                                <button class="btn btn-sm btn-danger" type="submit"><i class="far fa-trash-alt"></i></button>
+                                            </form>
+                                            <a class="btn btn-sm btn-primary" href="/houses/{{this.houseId}}"><i class="fas fa-external-link-square-alt"></i></a>
+                                        </div>
+                                        <address>{{this.address}}</address>
+                                    </div>
+                                    <address class="commentDate">{{this.commentDate}}</address>
+                                </div>
+                            </li>
+                            {{/each}}
+                        </ul>
+                        {{/if}}
+                    </div>
+                </div>
+                <div id="editDiv">
+                    <div class="card">
+                        <h1 class="card-title"><i class="fas fa-user-edit mr-2"></i>Edit Information</h1>
+                        <form action="/users/{{user._id}}/edit" id="editForm" method="POST">
+                            <input type="hidden" id="username" value="{{currentUser.name}}" />
+
+                            <div class="form-group">
+                                <label for="password"><i class="fas fa-lock mr-2"></i>New Password: </label>
+                                <input type="password" class="form-control" id="password" name="password" placeholder="e.g. John_Doe_123" maxlength="16"/>
+
+                                <label for="password2"><i class="fas fa-lock mr-2"></i>Confirm Password: </label>
+                                <input type="password" class="form-control" id="password2" aria-describedby="passwordHelp" placeholder="e.g. John_Doe_123" maxlength="16"/>
+                                <small id="passwordHelp" class="form-text text-muted">1. different from username; 2. only letters, numbers and underscores; 3. must contain 6-16 letters; 4. at least one uppercase letter</small>
+
+                                <div id="passwordError"></div>
                             </div>
-                        </li>
-                        {{/each}}
-                    </ul>
-                    {{/if}}
+                            <div class="form-group">
+                                <label for="email"><i class="fas fa-envelope mr-2"></i>New Email: </label>
+                                <input type="email" class="form-control" name="email" id="email" placeholder="username@example.com"/>
+                            
+                                <div id="emailError"></div>
+                                <div id="editServerError"></div>
+                            </div>
+                            <fieldset class="form-group">
+                                <legend class="col-form-label"><i class="fas fa-phone-alt mr-2"></i>New Phone Number:</legend>
+                                <div id="phoneDiv">
+                                    <label><input type="hidden" name="phoneNumber" id="phoneNumber" aria-describedby="phoneHelp"/></label>
+
+                                    <label for="phoneNumberPart1">(+1)</label>
+                                    <input id="phoneNumberPart1" class="phoneNumber phoneNumber3 form-control" type="text" maxlength="3" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
+                                    
+                                    <label for="phoneNumberPart2">-</label>
+                                    <input id="phoneNumberPart2" class="phoneNumber phoneNumber3 form-control" type="text" maxlength="3" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
+                                    
+                                    <label for="phoneNumberPart3">-</label>
+                                    <input id="phoneNumberPart3" class="phoneNumber form-control" type="text" maxlength="4" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
+                                </div>
+                                <small id="phoneHelp" class="form-text text-muted">Format: (+1) xxx-xxx-xxxx</small>
+                            
+                                <div id="phoneError"></div>
+                                <div id="emptyError"></div>
+                            </fieldset>
+                            <div>
+                                <button id="editSubmitBtn" class="btn btn-success btn-block" type="submit"><i class="fas fa-edit mr-2"></i>Edit</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
