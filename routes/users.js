@@ -29,21 +29,6 @@ router.get('/:id', async (req, res) => {
 	}
 });
 
-router.get('/:id/edit', async (req, res) => {
-	if (!req.session.user) {
-		return res.redirect('/houses');
-	}
-	else if (req.session.user.id !== req.params.id) {
-		return res.status(403).render('errorshbs/error403');
-	}
-	try {
-		const user = await userData.getUserById(req.params.id);
-		res.render('usershbs/edit', {user: user, partial: 'users-edit-scripts'});
-	} catch (e) {
-		res.status(404).render('errorshbs/error404');
-	}
-});
-
 router.get('/:id/newHouse', async (req, res) => {
 	if (!req.session.user) {
 		return res.redirect('/houses');
@@ -77,34 +62,34 @@ router.post('/new', async (req, res) => {
 		return res.status(500).render('errorshbs/error500');
 	}
 	if (!userInfo.username) {
-		errors.push('Error: Please check that you\'ve entered an username');
+		errors.push('Please check that you\'ve entered an username');
 	} 
 	else {
 		let username = userInfo.username;
 		for (let i = 0; i < allNames.length; i++) {
 			if (username.toLowerCase() === allNames[i].toLowerCase()) {
-				errors.push('Error: The username you entered is invalid, please try another one');
+				errors.push('The username you entered is invalid, please try another one');
 			}
 		}
 	}
 	if (!userInfo.email) {
-		errors.push('Error: Please check that you\'ve entered an email');
+		errors.push('Please check that you\'ve entered an email');
 	} 
 	else {
 		const email = userInfo.email.toLowerCase();
 		for (let i = 0; i < allEmails.length; i++) {
 			if (email === allEmails[i].toLowerCase()) {
-				errors.push('Error: The email you entered is invalid, please try another one');
+				errors.push('The email you entered is invalid, please try another one');
 			}
 		}
 	}
 	if (!userInfo.phoneNumber) {
-		errors.push('Error: Please check that you\'ve entered a phone number');
+		errors.push('Please check that you\'ve entered a phone number');
 	}
 	let phoneArr = userInfo.phoneNumber.split('-');
 
 	if (!userInfo.password) {
-		errors.push('Error: Please check that you\'ve entered a password');
+		errors.push('Please check that you\'ve entered a password');
 	}
 	if (errors.length > 0) {
 		req.session.signUpError = errors;
@@ -131,7 +116,7 @@ router.post('/login', async (req, res) => {
 	let user;
 	
 	if (!userInfo.loginInfo || !userInfo.password) {
-		req.session.signInError = 'Error: Please check that you\'ve entered username/email and password';
+		req.session.signInError = 'Please check that you\'ve entered username/email and password';
 		return res.redirect('back');
 	}
 
@@ -148,21 +133,21 @@ router.post('/login', async (req, res) => {
 			return res.redirect('back');
 		} 
 		else {
-			req.session.signInError = 'Error: Either username/email or password does not match';
+			req.session.signInError = 'Either username/email or password does not match';
 			res.redirect('back');
 		}
 	} catch (e) {
-		req.session.signInError = 'Error: Either username/email or password does not match';
+		req.session.signInError = 'Either username/email or password does not match';
 		res.redirect('back');
 	}
 });
 
-router.patch('/:id/edit', async (req, res) => {
+router.put('/:id/edit', async (req, res) => {
 	if (!req.session.user || req.session.user.id !== req.params.id) {
-		return res.status(403).render('errorshbs/error403');
+		return res.sendStatus(403);
 	}
 	const reqBody = req.body;
-	
+	let user;
 	let allEmails = [];
 	try {
 		const userList = await userData.getAllUsers();
@@ -170,41 +155,34 @@ router.patch('/:id/edit', async (req, res) => {
 			allEmails.push(userList[i].email);
 		}
 	} catch (e) {
-		return res.status(500).render('errorshbs/error500');
+		return res.sendStatus(500);
 	}
 
-	let updatedObject = {};
 	try {
-		const user = await userData.getUserById(req.params.id);
+		user = await userData.getUserById(req.params.id);
         if (reqBody.email) {
 			const email = reqBody.email.toLowerCase();
 			for (let i = 0; i < allEmails.length; i++) {
 				if (email === allEmails[i].toLowerCase()) {
-					return res.render(`usershbs/edit`, {
-						user: user,
-						errors: 'Error: The email you entered is invalid, please try another one', 
-						hasErrors: true,
-						partial: 'users-edit-scripts'
-					});
+					return res.status(403).send('The email you entered is invalid, please try another one');
 				}
 			}
-			updatedObject.email = reqBody.email;
+			user.email = reqBody.email;
 		}
         if (reqBody.phoneNumber && reqBody.phoneNumber !== user.phoneNumber) {
-			updatedObject.phoneNumber = reqBody.phoneNumber;
+			user.phoneNumber = reqBody.phoneNumber;
 		}
         if (reqBody.password) {
-			const pw = await bcrypt.hash(reqBody.password, saltRounds);
-			updatedObject.password = pw;
+			user.password = await bcrypt.hash(reqBody.password, saltRounds);
 		}
 	} catch (e) {
-		return res.status(404).render('errorshbs/error404');
+		return res.sendStatus(404);
 	}
 	try {
-		await userData.updateUser(req.params.id, updatedObject);
-		res.redirect(`/users/${req.params.id}`);
+		await userData.updateUser(req.params.id, user);
+		res.sendStatus(200);
 	} catch (e) {
-		res.status(500).render('errorshbs/error500');
+		res.sendStatus(500);
 	}
 });
 
