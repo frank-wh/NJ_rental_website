@@ -321,16 +321,8 @@ main {
 #housenewtitle {
     padding-top: 10px;
     padding-bottom: 10px;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-pack: center;
-        -ms-flex-pack: center;
-            justify-content: center;
-}
-#housenewtitle h1 {
     font-size: 1.3em;
-    margin-left: 10px;
+    text-align: center;
 }
 
 #addrDiv #address {
@@ -376,20 +368,21 @@ main {
 }
 .usersingleprofile .card p {
     margin-left: 20px;
+    margin-right: 20px;
 }
 
-.usersingleinfo {
+#usersingleinfo {
     margin-top: 5vh;
     margin-bottom: 5vh;
     font-size: 1.1em;
 }
-.usersingleinfo .card ul {
+#usersingleinfo .card ul {
     margin-bottom: 0;
     padding-right: 30px;
     list-style: none;
 }
 
-.usersingleinfo li {
+#usersingleinfo li {
     margin: 10px auto;
 }
 
@@ -467,6 +460,38 @@ main {
     height: fit-content;
 }
 
+#editDiv {
+    margin-top: 5vh;
+    margin-bottom: 5vh;
+}
+#editForm {
+    margin: 15px 10vw 20px 10vw;
+}
+
+#emptyError,
+#passwordError,
+#emailError,
+#phoneError,
+#editServerError {
+    margin-top: 5px;
+    text-align: center;
+    font-size: 0.9em;
+    color: #ee0000;
+}
+
+/* user edit */
+/**************************/
+#phoneDiv {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+.phoneNumber3 {
+    width: 50%;
+}
+/**************************/
+
 /* user login */
 #loginDiv {
     width: 480px;
@@ -490,12 +515,6 @@ main {
 
 .signUpPhone3 {
     width: 50%;
-}
-
-/* user edit */
-#usereditDiv {
-    width: 400px;
-    margin: 5vh auto;
 }
 
 /* error page*/
@@ -540,7 +559,8 @@ main {
     }
 
     /* user single */
-    .usersingleinfo {
+    #usersingleinfo,
+    #editDiv {
         margin-top: 0;
     }
 
@@ -565,7 +585,7 @@ main {
     }
 
     /* user single */
-    .usersingleinfo .card ul {
+    #usersingleinfo .card ul {
         padding-left: 20px;
         padding-right: 20px;
     }
@@ -607,11 +627,6 @@ main {
         margin: auto;
     }
 
-    #housenewtitle h1 {
-        font-size: 1.1em;
-        margin-left: 5px;
-    }
-
     #houseNewMap {
         height: 450px;
         width: 460px;
@@ -632,11 +647,6 @@ main {
         display: none;
     }
 
-    /* user edit */
-    #usereditDiv {
-        width: 320px;
-    }
-
     /* user login */
     #loginDiv {
         width: 320px;
@@ -650,11 +660,6 @@ main {
     #housenewDiv {
         width: 320px;
         margin: auto;
-    }
-
-    #housenewtitle h1 {
-        font-size: 0.9em;
-        margin-left: 3px;
     }
 
     #houseNewMap {
