@@ -75,39 +75,33 @@
                     </div>
                 </div>
                 {{/if}}
+                {{#ifCond currentUser.id houses.user._id}}
+                {{else}}
+                <form action="/comments" class="form-inline" id="commentForm" method="POST">
+                    <textarea name="houseId" id="houseId" hidden>{{houseId}}</textarea>
 
-                <div>
-                    <div id="makecommentform">
-                        {{#ifCond currentUser.id houses.user._id}}
-                        {{else}}
-                        <form action="/comments" class="form-inline" id="commentForm" method="POST">
-                            <textarea name="houseId" id="houseId" hidden>{{houseId}}</textarea>
-
-                            <label for="comment"></label>
-                            <textarea name="text" id="comment" class="form-control" rows="2" maxlength="140" placeholder="make a comment"></textarea>
-                            <button class="btn btn-md btn-success" id="commentSubmit" type="submit">Add a comment</button>
-                        </form>
-                        {{/ifCond}}
-                    </div>
-                    <div class="card" id="commentDiv">
-                        {{#if houses.comments.length}}
-                        {{#each houses.comments}}
-                        <div class="row">
-                            <div class="col-md-12">
-                                <i class="fas fa-user mr-2"></i><strong>{{this.username}}</strong> {{#ifCond ../currentUser.id this.userId}}(me){{/ifCond}}
-                                <span class="float-right"><i class="fas fa-calendar-day mr-2"></i>{{this.commentDate}}</span>
-                                <p>{{this.text}}</p>
-
-                                {{#ifCond ../currentUser.id this.userId}}
-                                <form action="/comments/{{this._id}}" class="userRemoveComment" method="POST">
-                                    <button class="btn btn-sm btn-danger" type="submit"><i class="fas fa-trash-alt mr-2"></i>Delete</button>
-                                </form>
-                                {{/ifCond}}
-                            </div>
+                    <label for="comment"></label>
+                    <textarea name="text" id="comment" class="form-control" rows="2" maxlength="140" placeholder="make a comment"></textarea>
+                    <button class="btn btn-md btn-success" id="commentSubmit" type="submit">Add a comment</button>
+                </form>
+                {{/ifCond}}
+                <div class="card" id="commentDiv">
+                    {{#if houses.comments.length}}
+                    {{#each houses.comments}}
+                    <div class="row">
+                        <div class="col-md-12">
+                            <i class="fas fa-user mr-2"></i><strong>{{this.username}}</strong> {{#ifCond ../currentUser.id this.userId}}(me){{/ifCond}}
+                            <span class="float-right"><i class="fas fa-calendar-day mr-2"></i>{{this.commentDate}}</span>
+                            <p>{{this.text}}</p>
+                            {{#ifCond ../currentUser.id this.userId}}
+                            <form action="/comments/{{this._id}}" class="userRemoveComment" method="POST">
+                                <button class="btn btn-sm btn-danger" type="submit"><i class="fas fa-trash-alt mr-2"></i>Delete</button>
+                            </form>
+                            {{/ifCond}}
                         </div>
-                        {{/each}}
-                        {{/if}}
                     </div>
+                    {{/each}}
+                    {{/if}}
                 </div>
             </div>
         </div>
