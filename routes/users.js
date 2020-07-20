@@ -1,9 +1,9 @@
 const express    = require('express'), 
- 	  data 		 = require('../data'), 
-	  bcrypt  	 = require('bcryptjs'),
-	  router     = express.Router(),
-	  userData   = data.users,
-	  saltRounds = 5;
+      data 	 = require('../data'), 
+      bcrypt  	 = require('bcryptjs'),
+      router     = express.Router(),
+      userData   = data.users,
+      saltRounds = 5;
 
 router.get('/logout', async (req, res) => {
 	if (!req.session.user) {
