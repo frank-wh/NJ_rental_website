@@ -41,7 +41,7 @@ $('.infoForm').on('click', function(event) {
 			$.ajax({
 				url: formUrl,
 				type: 'DELETE',
-				success: function(res) {
+				success: () => {
 					$('.toRemove').closest('li').fadeOut(500, function() {
 						$(this).remove();
 					});
@@ -150,7 +150,7 @@ $('#editSubmitBtn').on('click', (event) => {
 				phoneNumber: $('#phoneNumber').val()
 			})
 		})
-		.done(function() {
+		.done(() => {
 			if ($('#email').val()) {
 				$('#emailSpan').text($('#email').val());
 				$('#email').val('');
@@ -168,7 +168,7 @@ $('#editSubmitBtn').on('click', (event) => {
 				timer: 1500
 			})
 		})
-		.fail(function(jqXHR, textStatus, errorThrown) {
+		.fail((jqXHR, textStatus, errorThrown) => {
 			$('#editServerError').html(jqXHR.responseText);
 			$('#editServerError').show();
 		});
