@@ -1,10 +1,9 @@
-const express     = require('express'), 
- 	  data 		  = require('../data'), 
-	  bcrypt  	  = require('bcryptjs'),
-	  router      = express.Router(),
-	  userData    = data.users,
-	  houseData   = data.houses,
-	  saltRounds  = 5;
+const express    = require('express'), 
+ 	  data 		 = require('../data'), 
+	  bcrypt  	 = require('bcryptjs'),
+	  router     = express.Router(),
+	  userData   = data.users,
+	  saltRounds = 5;
 
 router.get('/logout', async (req, res) => {
 	if (!req.session.user) {
@@ -29,116 +28,65 @@ router.get('/:id', async (req, res) => {
 	}
 });
 
-router.get('/:id/newHouse', async (req, res) => {
-	if (!req.session.user) {
-		return res.redirect('/houses');
-	}
-	else if (req.session.user.id !== req.params.id) {
-		return res.status(403).render('errorshbs/error403');
-	}
-	try {
-		await userData.getUserById(req.params.id);
-		res.render('houseshbs/new', {userid: req.params.id, partial: 'houses-new-scripts'});
-	} catch (e) {
-		res.status(404).render('errorshbs/error404');
-	}
-});
-
 router.post('/new', async (req, res) => {
 	if (req.session.user) {
-		return res.status(403).render('errorshbs/error403');
+		return res.sendStatus(403);
 	}
 	let userInfo = req.body;
-	let errors = [];
-	let allNames = [];
-	let allEmails = [];
+	if (!userInfo.username || !userInfo.email || !userInfo.phoneNumber || !userInfo.password) {
+		return res.status(401).send('Please check that every field is filled');
+	}
 	try {
 		const userList = await userData.getAllUsers();
-		for (let i = 0; i < userList.length; i++) {
-			allNames.push(userList[i].username);
-			allEmails.push(userList[i].email);
-		}
-	} catch (e) {
-		return res.status(500).render('errorshbs/error500');
-	}
-	if (!userInfo.username) {
-		errors.push('Please check that you\'ve entered an username');
-	} 
-	else {
-		let username = userInfo.username;
-		for (let i = 0; i < allNames.length; i++) {
-			if (username.toLowerCase() === allNames[i].toLowerCase()) {
-				errors.push('The username you entered is invalid, please try another one');
-			}
-		}
-	}
-	if (!userInfo.email) {
-		errors.push('Please check that you\'ve entered an email');
-	} 
-	else {
+		const username = userInfo.username.toLowerCase();
 		const email = userInfo.email.toLowerCase();
-		for (let i = 0; i < allEmails.length; i++) {
-			if (email === allEmails[i].toLowerCase()) {
-				errors.push('The email you entered is invalid, please try another one');
+		for (let i = 0; i < userList.length; i++) {
+			if (username === userList[i].username.toLowerCase()) {
+				return res.status(401).send('The username you entered is invalid, please try another one');
+			}
+			if (email === userList[i].email.toLowerCase()) {
+				return res.status(401).send('The email you entered is invalid, please try another one');
 			}
 		}
-	}
-	if (!userInfo.phoneNumber) {
-		errors.push('Please check that you\'ve entered a phone number');
-	}
-	let phoneArr = userInfo.phoneNumber.split('-');
-
-	if (!userInfo.password) {
-		errors.push('Please check that you\'ve entered a password');
-	}
-	if (errors.length > 0) {
-		req.session.signUpError = errors;
-		req.session.newUser = userInfo;
-		req.session.newPhone = phoneArr;
-		return res.redirect('back');
-	}
-
-	try {
-		const pw = await bcrypt.hash(userInfo.password, saltRounds);
-		const user = await userData.addUser(userInfo.username, userInfo.email, userInfo.phoneNumber, pw);
-		req.session.user = {id: user._id, name: user.username};
-		res.redirect('back');
 	} catch (e) {
-		res.status(500).render('errorshbs/error500');
+		return res.sendStatus(500);
+	}
+	try {
+		const password = await bcrypt.hash(userInfo.password, saltRounds);
+		const user = await userData.addUser(userInfo.username, userInfo.email, userInfo.phoneNumber, password);
+		req.session.user = {id: user._id, name: user.username};
+		res.sendStatus(200);
+	} catch (e) {
+		res.sendStatus(500);
 	}
 });
 
 router.post('/login', async (req, res) => {
 	if (req.session.user) {
-		return res.status(403).render('errorshbs/error403');
+		return res.sendStatus(403);
 	}
 	let userInfo = req.body;
 	let user;
 	
 	if (!userInfo.loginInfo || !userInfo.password) {
-		req.session.signInError = 'Please check that you\'ve entered username/email and password';
-		return res.redirect('back');
+		return res.status(401).send('Please check that you\'ve entered username/email and password');
 	}
-
 	try {
 		try {
 			user = await userData.getUserByName(userInfo.loginInfo);
 		} catch (e) {
 			user = await userData.getUserByEmail(userInfo.loginInfo);
 		}
-
 		const isCorrectPassword = await bcrypt.compare(userInfo.password, user.password);
 		if (isCorrectPassword) {
 			req.session.user = {id: user._id, name: user.username};
-			return res.redirect('back');
+			return res.sendStatus(200);
 		} 
 		else {
-			req.session.signInError = 'Either username/email or password does not match';
-			res.redirect('back');
+			res.status(401).send('Either username/email or password does not match');
 		}
 	} catch (e) {
-		req.session.signInError = 'Either username/email or password does not match';
-		res.redirect('back');
+		res.sendStatus(500);
 	}
 });
 
@@ -157,7 +105,6 @@ router.put('/:id/edit', async (req, res) => {
 	} catch (e) {
 		return res.sendStatus(500);
 	}
-
 	try {
 		user = await userData.getUserById(req.params.id);
         if (reqBody.email) {
@@ -184,23 +131,6 @@ router.put('/:id/edit', async (req, res) => {
 	} catch (e) {
 		res.sendStatus(500);
 	}
-});
-
-router.delete('/removestorehouse/:houseid', async (req, res) => {
-	if (!req.session.user) {
-		return res.status(403).render('errorshbs/error403');
-	}
-	try {
-		await houseData.getHouseById(req.params.houseid);
-		await houseData.removeStoreByUser(req.params.houseid, req.session.user.id);
-	} catch (e) {
-		try {
-			await userData.userRemoveStoredHouse(req.session.user.id, req.params.houseid);
-		} catch(err) {
-			return res.status(404).render('errorshbs/error404');
-		}
-	}
-	res.sendStatus(200);
 });
 
 module.exports = router;
