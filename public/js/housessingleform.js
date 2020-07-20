@@ -1,11 +1,11 @@
 (function ($) {
     function bindEvents() {
-        $('#storeDiv').find('a').on('click' ,function(event) {
+        $('#storeDiv').find('a').on('click', function(event) {
             event.preventDefault();
             $.ajax({
                 url: $(this).attr('href'),
                 type: 'POST',
-                success: function(res) {
+                success: (res) => {
                     $('#storeDiv').empty();
                     $('#storeDiv').append($(res));
                     bindEvents();
@@ -16,7 +16,7 @@
 
     $('#storehouse').on('click', function(event) {
         event.preventDefault();
-        if($('#currentUser').html() === undefined){
+        if ($('#currentUser').html() === undefined) {
             return Swal.fire({
                 icon: 'error',
                 title: 'Please sign in first',
@@ -27,7 +27,7 @@
         $.ajax({
             url: $(this).attr('href'),
             type: 'POST',
-            success: function(res) {
+            success: (res) => {
                 $('#storeDiv').empty();
                 $('#storeDiv').append($(res));
                 bindEvents();
@@ -37,7 +37,7 @@
 
     $('#removestore').on('click', function(event) {
         event.preventDefault();
-        if($('#currentUser').html() === undefined){
+        if ($('#currentUser').html() === undefined) {
             return Swal.fire({
                 icon: 'error',
                 title: 'Please sign in first',
@@ -48,7 +48,7 @@
         $.ajax({
             url: $(this).attr('href'),
             type: 'POST',
-            success: function(res) {
+            success: (res) => {
                 $('#storeDiv').empty();
                 $('#storeDiv').append($(res));
                 bindEvents();
@@ -56,7 +56,7 @@
         });
     });
 
-    $('#deleteSubmit').on('click', function(event) {
+    $('#deleteSubmit').on('click', (event) => {
         event.preventDefault();
         Swal.fire({
             title: 'Are you sure to delete?',
@@ -66,7 +66,8 @@
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: 'Yes, delete it!'
-        }).then((result) => {
+        })
+        .then((result) => {
             if (result.value) {
                 $('#housesingledelete').submit();
             }
@@ -75,7 +76,7 @@
 
     $('#commentSubmit').on('click', function(event) {
         event.preventDefault();
-        if($('#currentUser').html() === undefined){
+        if ($('#currentUser').html() === undefined) {
             return Swal.fire({
                 icon: 'error',
                 title: 'Please sign in first',
@@ -85,7 +86,7 @@
         }
         const text = $('#comment').val();
         $('#comment').val("");
-        if(text){
+        if (text) {
             $.ajax({
                 url: $('#commentForm').attr('action'),
                 type: 'POST',
@@ -95,7 +96,7 @@
                     text: text
                 })
             })
-            .then(function (res) {
+            .done((res) => {
                 $('#commentDiv').append($(res));
                 $('#commentDiv').children().last().find('.userRemoveComment').submit(function(event) {
                     event.preventDefault();
@@ -103,7 +104,7 @@
                     $.ajax({
                         url: $(this).attr('action'),
                         type: 'DELETE',
-                        success: function(res) {
+                        success: () => {
                             $('.toRemove').closest('.row').fadeOut(500, function() {
                                 $(this).remove();
                             });
@@ -128,7 +129,7 @@
         $.ajax({
             url: $(this).attr('action'),
             type: 'DELETE',
-            success: function(res) {
+            success: () => {
                 $('.toRemove').closest('.row').fadeOut(500, function() {
                     $(this).remove();
                 });
