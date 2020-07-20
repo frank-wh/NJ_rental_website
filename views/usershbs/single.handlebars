@@ -9,7 +9,7 @@
                     <p><i class="fas fa-phone-alt mr-2"></i>Phone: <span id="phoneSpan">{{user.phoneNumber}}</span></p>
                     <p id="editAndPost">
                         <button id="editBtn" class="btn btn-sm btn-warning"><i class="fas fa-user-edit mr-2"></i>Edit Your Profile</button>
-                        <a href="/users/{{user._id}}/newHouse" class="btn btn-sm btn-success"><i class="fas fa-house-user mr-2"></i>Post Your House</a>
+                        <a href="/houses/new" class="btn btn-sm btn-success"><i class="fas fa-house-user mr-2"></i>Post Your House</a>
                     </p>
                     <p id="editCancel">
                         <button id="editCancelBtn" class="btn btn-sm btn-danger btn-block"><i class="fas fa-window-close mr-2"></i>Cancel</button>
@@ -43,7 +43,7 @@
                             {{#each user.storedHouses}}
                             <li class="usersinglestorelist">
                                 <div>
-                                    <form class="infoForm" action="/users/removestorehouse/{{this._id}}">
+                                    <form class="infoForm" action="/houses/removestorehouse/{{this._id}}">
                                         <button class="btn btn-sm btn-danger" type="submit"><i class="far fa-trash-alt"></i></button>
                                     </form>
                                 </div>
