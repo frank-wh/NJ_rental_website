@@ -178,8 +178,8 @@ main {
        object-fit: cover;
 }
 
-#makecommentform {
-    margin: 25px 0;
+#commentForm {
+    margin-top: 25px;
 }
 
 #comment {
@@ -192,6 +192,7 @@ main {
 }
 
 #commentDiv {
+    margin-top: 10px;
     border: none;
     padding: 15px;
 }
