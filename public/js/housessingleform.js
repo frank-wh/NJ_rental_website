@@ -1,14 +1,14 @@
 (function ($) {
-    function bindEvents() {
+    function bindEvents(currType, nextType) {
         $('#storeDiv').find('a').on('click', function(event) {
             event.preventDefault();
             $.ajax({
                 url: $(this).attr('href'),
-                type: 'POST',
+                type: currType,
                 success: (res) => {
                     $('#storeDiv').empty();
                     $('#storeDiv').append($(res));
-                    bindEvents();
+                    bindEvents(nextType, currType);
                 }
             });
         });
@@ -30,7 +30,7 @@
             success: (res) => {
                 $('#storeDiv').empty();
                 $('#storeDiv').append($(res));
-                bindEvents();
+                bindEvents('DELETE', 'POST');
             }
         });
     });
@@ -47,11 +47,11 @@
         }
         $.ajax({
             url: $(this).attr('href'),
-            type: 'POST',
+            type: 'DELETE',
             success: (res) => {
                 $('#storeDiv').empty();
                 $('#storeDiv').append($(res));
-                bindEvents();
+                bindEvents('POST', 'DELETE');
             }
         });
     });
