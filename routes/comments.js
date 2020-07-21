@@ -4,11 +4,8 @@ const data = require('../data');
 const commentData = data.comments;
 
 router.post('/', async (req, res) => {
-	if (!req.session.user) {
-		return res.status(403).render('errorshbs/error403');
-	}
-	if (!req.body || !req.body.text) {
-		return res.redirect(`/houses/${req.body.houseId}`);
+	if (!req.session.user || !req.body || !req.body.text) {
+		return res.sendStatus(403);
 	}
 	try {
 		const comment = await commentData.addComment(req.session.user.id, req.body.houseId, req.body.text);
@@ -20,7 +17,7 @@ router.post('/', async (req, res) => {
 			text: comment.text
 		});
 	} catch (e) {
-		res.status(500).render('errorshbs/error500');
+		res.sendStatus(500);
 	}
 });
 
@@ -28,12 +25,12 @@ router.delete('/:id', async (req, res) => {
 	try {
 		const comment = await commentData.getCommentById(req.params.id);
 		if (!req.session.user || req.session.user.id !== comment.user._id) {
-			return res.status(403).render('errorshbs/error403');
+			return res.sendStatus(403);
 		}
 		await commentData.removeComment(req.params.id);
 		res.sendStatus(200);
 	} catch (e) {
-		res.status(500).render('errorshbs/error500');
+		res.sendStatus(500);
 	}
 });
 

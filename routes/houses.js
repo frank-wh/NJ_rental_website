@@ -1,8 +1,9 @@
-const express = require('express');
-const data = require('../data');
-const router = express.Router();
-const houseData = data.houses;
-const commentData = data.comments;
+const express     = require('express'),
+	  data        = require('../data'),
+	  router      = express.Router(),
+	  houseData   = data.houses,
+	  userData    = data.users,
+	  commentData = data.comments;
 
 /*********************************************************************************/
 const path = require('path');
@@ -40,24 +41,26 @@ router.get('/', async (req, res) => {
 		const isEmpty = houseList.length == 0;
 		const errorMsg = isEmpty ? "Sorry, we couldn't find any house available now!" : null;
 		res.render('houseshbs/index', {
-			hasSignInErrors: req.session.signInError !== undefined,
-			hasSignUpErrors: req.session.signUpError !== undefined,
-			signUpError: req.session.signUpError,
-			signInError: req.session.signInError,
-			newUser: req.session.newUser,
-			phone: req.session.newPhone,
 			houses: houseList, 
 			isEmpty: isEmpty, 
 			error: errorMsg,
+			login: 'login',
 			partial: 'houses-index-scripts'
 		});
-		delete req.session.signInError;
-		delete req.session.signUpError;
-		delete req.session.newUser;
-		delete req.session.newPhone;
 	} catch (e) {
 		res.status(404).render('errorshbs/error404');
 	}
+});
+
+// todo!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+router.get('/new', async (req, res) => {
+	if (!req.session.user) {
+		return res.redirect('/houses');
+	}
+	res.render('houseshbs/new', {
+		userid: req.session.user.id, 
+		partial: 'houses-new-scripts'
+	});
 });
 
 router.get('/:id', async (req, res) => {
@@ -73,21 +76,12 @@ router.get('/:id', async (req, res) => {
 			}
 		}
 		res.render('houseshbs/single', {
-			hasSignInErrors: req.session.signInError !== undefined,
-			hasSignUpErrors: req.session.signUpError !== undefined,
-			signUpError: req.session.signUpError,
-			signInError: req.session.signInError,
-			newUser: req.session.newUser,
-			phone: req.session.newPhone,
 			houses: house, 
 			houseId: req.params.id,
 			isStored: isStored,
+			login: 'login',
 			partial: 'houses-single-scripts'
 		});
-		delete req.session.signInError;
-		delete req.session.signUpError;
-		delete req.session.newUser;
-		delete req.session.newPhone;
 	} catch (e) {
 		res.status(404).render('errorshbs/error404');
 	}
@@ -141,11 +135,9 @@ router.post('/search', async (req, res) => {
 	let low = Number( req.body.low );
 	let high = Number( req.body.high );
 	let houseList = [];
-
 	if (low > high) {
 		high = low;
 	}
-	
 	try {
 		if (sortData && roomType) {
 			houseList = await houseData.findSortedHouses(sortData, roomType, low, high);
@@ -160,9 +152,8 @@ router.post('/search', async (req, res) => {
 			houseList = await houseData.findByPriceRange(low, high);
 		}
 	} catch (e) {
-		return res.status(500).render('errorshbs/error500');
+		return res.sendStatus(500);
 	}
-	
 	const isEmpty = houseList.length == 0;
 	const errorMsg = isEmpty ? "Sorry, we couldn't find any house, please change your search range!" : null;
 	return res.render('partials/houselist', {
@@ -194,79 +185,24 @@ router.post('/storehouse/:id', async (req, res) => {
 	}
 });
 
-router.post('/removestorehouse/:id', async (req, res) => {
+router.post('/', upload.single('image'), async (req, res) => {
 	if (!req.session.user) {
 		return res.sendStatus(403);
 	}
-	try {
-		await houseData.getHouseById(req.params.id);
-	} catch (e) {
-		return res.sendStatus(404);
+	let house = req.body;
+	if (!house.address || !house.statement || !house.lat || !house.lng || !house.roomType || !house.price || !req.file) {
+		return res.status(403).send('Please make sure that every field is filled');
 	}
+	house.lat = Number( house.lat );
+	house.lng = Number( house.lng );
+	house.price = Number( house.price );
+	house.id = req.session.user.id;
 	try {
-		const house = await houseData.removeStoreByUser(req.params.id, req.session.user.id);
-		res.render('partials/removestore', {
-			layout: null,
-			houseId: house._id,
-			storeLength: house.storedByUsers.length
-		});
+		const {address, statement, id, lat, lng, roomType, price} = house;
+		const newhouse = await houseData.addHouse(address, statement, id, lat, lng, roomType, price, req.file.filename);
+		res.json({redirectURL : `/houses/${newhouse._id}`});
 	} catch (e) {
 		res.sendStatus(500);
-	}
-});
-
-router.post('/', upload.single('image'), async (req, res) => {
-	if (!req.session.user) {
-		return res.status(403).redirect('/houses');
-	}
-
-	let housePostData = req.body;
-	let errors = [];
-
-	if (!housePostData.address) {
-		errors.push('No house address provided');
-	}
-	if (!housePostData.statement) {
-		errors.push('No house statement provided');
-	}
-	if (!housePostData.lat) {
-		errors.push('No latitude provided');
-	} 
-	else {
-		housePostData.lat = Number( housePostData.lat );
-	}
-	if (!housePostData.lng) {
-		errors.push('No longitude provided');
-	} 
-	else {
-		housePostData.lng = Number( housePostData.lng );
-	}
-    if (!housePostData.roomType) {
-		errors.push('No room type provided');
-	}
-    if (!housePostData.price) {
-		errors.push('No rental price provided');
-	} 
-	else {
-		housePostData.price = Number( housePostData.price );
-	}
-	if (!req.file) {
-		errors.push('No image provided');
-	}
-	if (errors.length > 0) {
-		return res.render('houseshbs/new', {
-			errors: errors,
-			hasErrors: true,
-			newHouse: housePostData,
-			partial: 'houses-new-scripts'
-		});
-	}
-	try {
-		const {address, statement, userId, lat, lng, roomType, price} = housePostData;
-		const newhouse = await houseData.addHouse(address, statement, userId, lat, lng, roomType, price, req.file.filename);
-		res.redirect(`/houses/${newhouse._id}`);
-	} catch (e) {
-		res.status(500).render('errorshbs/error500');
 	}
 });
 
@@ -300,7 +236,6 @@ router.post('/addimg/:id', upload.single('image'), async (req, res) => {
 
 router.patch('/:id', async (req, res) => {
 	const reqBody = req.body;
-
 	let updatedObject = {};
 	try {
 		const house = await houseData.getHouseById(req.params.id);
@@ -335,29 +270,49 @@ router.delete('/:id/removeimage/:filename', async (req, res) => {
 	try {
 		const house = await houseData.getHouseById(req.params.id);
 		if (!req.session.user || req.session.user.id !== house.user._id) {
-			return res.status(403).redirect('errorshbs/error403');
+			return res.sendStatus(403);
 		}
 		updatedObject.images = house.images;
-
 		const index = updatedObject.images.indexOf(req.params.filename);
 		if (index > -1) {
 			updatedObject.images.splice(index, 1);
 		}
 	} catch (e) {
-		return res.status(404).render('errorshbs/error404');
+		return res.sendStatus(404);
 	}
-	try {
-		await houseData.updateHouse(req.params.id, updatedObject);
-	} catch (e) {
-		res.status(500).render('errorshbs/error500');
-	}
-	
     try{
+		await houseData.updateHouse(req.params.id, updatedObject);
         await gfs.remove({ filename: req.params.filename, root: 'images' });
         res.sendStatus(200);
     } catch(e) {
-        res.status(500).render('errorshbs/error500');
+        res.sendStatus(500);
     }
+});
+
+router.delete('/removestorehouse/:id', async (req, res) => {
+	if (!req.session.user) {
+		return res.sendStatus(403);
+	}
+	try {
+		await houseData.getHouseById(req.params.id);
+	} catch (e) {
+		try {
+			await userData.userRemoveStoredHouse(req.session.user.id, req.params.id);
+		} catch (err) {
+			return res.sendStatus(404);
+		}
+		return res.sendStatus(200);
+	}
+	try {
+		const house = await houseData.removeStoreByUser(req.params.id, req.session.user.id);
+		res.render('partials/removestore', {
+			layout: null,
+			houseId: house._id,
+			storeLength: house.storedByUsers.length
+		});
+	} catch (e) {
+		res.sendStatus(500);
+	}
 });
 
 router.delete('/:id', async (req, res) => {
@@ -366,14 +321,14 @@ router.delete('/:id', async (req, res) => {
 		if (!req.session.user || req.session.user.id !== house.user._id) {
 			return res.status(403).redirect('errorshbs/error403');
 		}
-		if(house.comments.length !== 0){
-			for(let i = 0; i < house.comments.length; i++){
+		if (house.comments.length !== 0) {
+			for (let i = 0; i < house.comments.length; i++) {
 				const commentId = house.comments[i]._id;
 				await commentData.removeComment(commentId);
 			}
 		}
-		if(house.images.length !== 0){
-			for(let i = 0; i < house.images.length; i++){
+		if (house.images.length !== 0) {
+			for (let i = 0; i < house.images.length; i++) {
 				const filename = house.images[i];
 				await gfs.remove({ filename: filename, root: 'images' });
 			}
