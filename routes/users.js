@@ -1,6 +1,6 @@
 const express    = require('express'), 
-      data 		 = require('../data'), 
-      bcrypt  	 = require('bcryptjs'),
+      data 	     = require('../data'), 
+      bcrypt     = require('bcryptjs'),
       router     = express.Router(),
       userData   = data.users,
       saltRounds = 5;
