@@ -59,6 +59,15 @@ main {
     background-color: #fcfcfc;
     padding: 10px;
 }
+#searchDiv select {
+    font-size: 0.9em;
+}
+
+#sort,
+#low,
+#high {
+    font-family: 'FontAwesome';
+}
 
 #searchForm label {
     padding-left: 10px;
