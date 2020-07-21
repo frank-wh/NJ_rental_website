@@ -1,9 +1,9 @@
 const express     = require('express'),
-	  data        = require('../data'),
-	  router      = express.Router(),
-	  houseData   = data.houses,
-	  userData    = data.users,
-	  commentData = data.comments;
+      data        = require('../data'),
+      router      = express.Router(),
+      houseData   = data.houses,
+      userData    = data.users,
+      commentData = data.comments;
 
 /*********************************************************************************/
 const path = require('path');
@@ -50,17 +50,6 @@ router.get('/', async (req, res) => {
 	} catch (e) {
 		res.status(404).render('errorshbs/error404');
 	}
-});
-
-// todo!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-router.get('/new', async (req, res) => {
-	if (!req.session.user) {
-		return res.redirect('/houses');
-	}
-	res.render('houseshbs/new', {
-		userid: req.session.user.id, 
-		partial: 'houses-new-scripts'
-	});
 });
 
 router.get('/:id', async (req, res) => {
