@@ -140,6 +140,7 @@ main {
 
 /* house single */
 .housesingleinfo {
+    word-break: break-all;
     font-size: 1.1em;
     margin: 40px 0px;
 }
@@ -313,39 +314,6 @@ main {
     color: #34495e;
 }
 
-/* house new */
-#housenewDiv {
-    width: 560px;
-    margin: auto;
-}
-
-#housenewtitle {
-    padding-top: 10px;
-    padding-bottom: 10px;
-    font-size: 1.3em;
-    text-align: center;
-}
-
-#addrDiv #address {
-    width: 100%;
-}
-
-#houseNewMap {
-    height: 500px;
-    width: 530px;
-}
-
-.requiredfield {
-    margin: 0px 2px;
-    font-size: 1.2em;
-    color: #ee0000;
-}
-
-#houseNewErrorDiv {
-    margin-top: 1vh;
-    color: #ee0000;
-}
-
 /* user single */
 #usersingleDiv h1 {
     font-size: 1.5rem;
@@ -461,11 +429,13 @@ main {
     height: fit-content;
 }
 
-#editDiv {
+#editDiv,
+#postDiv {
     margin-top: 5vh;
     margin-bottom: 5vh;
 }
-#editForm {
+#editForm,
+#postForm {
     margin: 15px 10vw 20px 10vw;
 }
 
@@ -473,15 +443,15 @@ main {
 #passwordError,
 #emailError,
 #phoneError,
-#editServerError {
+#editServerError,
+#postFormError,
+#postFormServerError {
     margin-top: 5px;
     text-align: center;
     font-size: 0.9em;
     color: #ee0000;
 }
 
-/* user edit */
-/**************************/
 #phoneDiv {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -491,12 +461,43 @@ main {
 .phoneNumber3 {
     width: 50%;
 }
-/**************************/
+
+#houseNewMap {
+    margin-top: 15px;
+    padding-top: 100%;
+    width: 100%;
+}
+
+#nextBtn,
+#postSubmitBtn {
+    width: 49%;
+}
+
+#backBtn,
+#backToAddrBtn {
+    width: 49%;
+    float: right;
+}
+
+.requiredfield {
+    margin: 0px 2px;
+    font-size: 1.2em;
+    color: #ee0000;
+}
 
 /* user login */
 #loginDiv {
     width: 480px;
-    margin: 10vh auto;
+    margin: 50px auto;
+}
+
+.close {
+    margin-left: 10px;
+}
+
+.login-header {
+    text-align: center;
+    flex-grow: 1;
 }
 
 #signInClientError,
@@ -561,7 +562,8 @@ main {
 
     /* user single */
     #usersingleinfo,
-    #editDiv {
+    #editDiv,
+    #postDiv {
         margin-top: 0;
     }
 
@@ -622,20 +624,11 @@ main {
         margin-top: 10px;
     }
 
-    /* house new */
-    #housenewDiv {
-        width: 480px;
-        margin: auto;
-    }
-
-    #houseNewMap {
-        height: 450px;
-        width: 460px;
-    }
 
     /* user login */
     #loginDiv {
         width: 400px;
+        margin: 30px auto;
     }
 }
 
@@ -657,14 +650,4 @@ main {
         font-size: 0.9em;
     }
 
-    /* house new */
-    #housenewDiv {
-        width: 320px;
-        margin: auto;
-    }
-
-    #houseNewMap {
-        height: 280px;
-        width: 300px;
-    }
 }
