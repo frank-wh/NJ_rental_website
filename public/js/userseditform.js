@@ -94,7 +94,11 @@ $('#editSubmitBtn').on('click', (event) => {
 			})
 		})
 		.done(() => {
-			if ($('#email').val()) {
+            if ($('#password').val()) {
+                $('#password').val('');
+                $('#password2').val('');
+            }
+			else if ($('#email').val()) {
 				$('#emailSpan').text($('#email').val());
 				$('#email').val('');
 			}
