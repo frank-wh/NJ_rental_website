@@ -9,7 +9,7 @@
                     <p><i class="fas fa-phone-alt mr-2"></i>Phone: <span id="phoneSpan">{{user.phoneNumber}}</span></p>
                     <p id="editAndPost">
                         <button id="editBtn" class="btn btn-sm btn-warning"><i class="fas fa-user-edit mr-2"></i>Edit Your Profile</button>
-                        <a href="/houses/new" class="btn btn-sm btn-success"><i class="fas fa-house-user mr-2"></i>Post Your House</a>
+                        <button id="postBtn" class="btn btn-sm btn-success"><i class="fas fa-house-user mr-2"></i>Post Your House</button>
                     </p>
                     <p id="editCancel">
                         <button id="editCancelBtn" class="btn btn-sm btn-danger btn-block"><i class="fas fa-window-close mr-2"></i>Cancel</button>
@@ -25,7 +25,7 @@
                             {{#each user.houseLists}}
                             <li class="usersinglehouselist">
                                 <div>
-                                    <form class="infoForm" action="/houses/{{this._id}}">
+                                    <form class="infoListForm" action="/houses/{{this._id}}">
                                         <button class="btn btn-sm btn-danger" type="submit"><i class="far fa-trash-alt"></i></button>
                                     </form>
                                     <a class="btn btn-sm btn-warning" href="/houses/{{this._id}}/edit"><i class="fas fa-edit"></i></a>
@@ -123,6 +123,66 @@
                             <div>
                                 <button id="editSubmitBtn" class="btn btn-success btn-block" type="submit"><i class="fas fa-edit mr-2"></i>Edit</button>
                             </div>
+                        </form>
+                    </div>
+                </div>
+                <div id="postDiv">
+                    <div class="card">
+                        <h1 class="card-title"><i class="fas fa-house-user mr-2"></i>New Rental House</h1>
+                        <form action="/houses" id="postForm" method="POST" enctype="multipart/form-data">
+                            <input type="hidden" name="lat" id="lat" />
+                            <input type="hidden" name="lng" id="lng" />
+
+                            <div id="addrDiv" class="form-group">
+                                <label for="address">
+                                    <i class="fas fa-map-marker-alt mr-2"></i>House Address<span class="requiredfield">*</span>: <small id="addressHelp" class="text-muted">(No more than 60 characters.)</small>
+                                </label>
+                                <textarea name="address" class="form-control" id="address" rows="1" aria-describedby="addressHelp" 
+                                placeholder="e.g. 100 1st ST, Downtown, NJ 07302" maxlength="60">{{newHouse.address}}</textarea>
+                            </div>
+
+                            <button id="checkBtn" class="btn btn-sm btn-success btn-block" type="button"><i class="fas fa-search-location mr-2"></i>Check the address in map</button>
+                            <button id="nextBtn" class="btn btn-sm btn-success" type="button"><i class="far fa-check-circle mr-2"></i>Next</button>
+                            <button id="backBtn" class="btn btn-sm btn-danger" type="button"><i class="far fa-times-circle mr-2"></i>Back</button>
+
+                            <div id="houseNewMap"></div>
+
+                            <div id="nextDiv">
+                                <div class="form-group">
+                                    <label for="statement">
+                                        <i class="fas fa-pencil-alt mr-2"></i>Statement<span class="requiredfield">*</span>: <small id="statementHelp" class="text-muted">(No more than 80 characters.)</small>
+                                    </label>
+                                    <textarea class="form-control" name="statement" id="statement" aria-describedby="statementHelp" 
+                                    placeholder="e.g. Jersey City Downtown, 1-Bedroom Garden Apt." rows="3" maxlength="80">{{newHouse.statement}}</textarea>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="type"><i class="fas fa-home mr-2"></i>Room Type<span class="requiredfield">*</span>: </label>
+                                        <select class="form-control" id="type" name="roomType">
+                                            <option value="">Select Type</option>
+                                            <option value="Private Room">Private Room</option>
+                                            <option value="Entire home/apt">Entire home/apt</option>
+                                            <option value="Shared Room">Shared Room</option>
+                                            <option value="Hotel Room">Hotel Room</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="price"><i class="fas fa-coins mr-2"></i>Price (per month) <span class="requiredfield">*</span>: </label>
+                                        <input class="form-control" type="text" name="price" id="price" placeholder="from 1 to 9999" maxlength="4" value="{{newHouse.price}}" 
+                                        onkeypress='return event.charCode >= 48 && event.charCode <= 57' />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="image">Choose An Image<span class="requiredfield">*</span>: </label>
+                                    <input class="form-control-file" type="file" name="image" id="image" accept="image/jpeg, image/png" />
+                                </div>
+                                <div>
+                                    <button id="postSubmitBtn" class="btn btn-sm btn-success" type="submit"><i class="far fa-check-circle mr-2"></i>Submit</button>
+                                    <button id="backToAddrBtn" class="btn btn-sm btn-danger" type="button"><i class="far fa-times-circle mr-2"></i>Back</button>
+                                </div>
+                            </div>
+                            <div id="postFormError"></div>
+                            <div id="postFormServerError"></div>
                         </form>
                     </div>
                 </div>
