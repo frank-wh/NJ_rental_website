@@ -1,7 +1,6 @@
 ## Project
 
-CS-546 Final Project - Jersey city house rental website. I fork my group project and have done the rest of the things which my teammates did in this course. So this is my individual project, from the front end to the back end.
-
+CS-546 Final Project - Jersey city house rental website. Fork from my group project.
 ## Contributor
 
 * Hao Wang
